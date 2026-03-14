@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://paradoxsid.github.io/One-Piece-Journey/sitemap.xml
