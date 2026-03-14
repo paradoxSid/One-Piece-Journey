@@ -1,14 +1,26 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
+
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1SSFMRTHPF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-1SSFMRTHPF');
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
   <title>One Piece Journey Map — Interactive 3D Globe of the Straw Hat Crew</title>
-  <meta name="description" content="Explore the Straw Hat Pirates' journey across the Grand Line on an interactive 3D globe. Track Luffy, Zoro, Nami and the full crew from East Blue to Elbaf.">
-  <meta name="keywords" content="One Piece, journey map, Straw Hat Pirates, Grand Line, interactive map, 3D globe, Luffy, anime map, one piece map">
+  <meta name="description"
+    content="Explore the Straw Hat Pirates' journey across the Grand Line on an interactive 3D globe. Track Luffy, Zoro, Nami and the full crew from East Blue to Elbaf.">
+  <meta name="keywords"
+    content="One Piece, journey map, Straw Hat Pirates, Grand Line, interactive map, 3D globe, Luffy, anime map, one piece map">
   <link rel="canonical" href="https://strawhatmap.is-a.dev/">
   <meta property="og:title" content="One Piece Journey Map">
-  <meta property="og:description" content="Interactive 3D globe tracking the Straw Hat crew's journey from East Blue to Elbaf">
+  <meta property="og:description"
+    content="Interactive 3D globe tracking the Straw Hat crew's journey from East Blue to Elbaf">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="One Piece Journey Map">
@@ -24,20 +36,25 @@
   }
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0"
+    rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<!-- ── Splash ── -->
+  <!-- ── Splash ── -->
   <div id="splash">
     <div class="splash-content">
       <div class="splash-icon">☠️</div>
       <h1 class="splash-title">One Piece</h1>
       <h2 class="splash-subtitle">Journey Map</h2>
-      <div class="splash-loader"><div class="loader-bar"></div></div>
+      <div class="splash-loader">
+        <div class="loader-bar"></div>
+      </div>
     </div>
   </div>
 
@@ -116,8 +133,10 @@
       <div class="card-stats">
         <div class="stat"><span class="stat-label">Role</span><span class="stat-value" id="cardRole"></span></div>
         <div class="stat"><span class="stat-label">Bounty</span><span class="stat-value" id="cardBounty"></span></div>
-        <div class="stat"><span class="stat-label">Devil Fruit</span><span class="stat-value" id="cardFruit"></span></div>
-        <div class="stat"><span class="stat-label">Islands Visited</span><span class="stat-value" id="cardIslands"></span></div>
+        <div class="stat"><span class="stat-label">Devil Fruit</span><span class="stat-value" id="cardFruit"></span>
+        </div>
+        <div class="stat"><span class="stat-label">Islands Visited</span><span class="stat-value"
+            id="cardIslands"></span></div>
       </div>
       <p class="card-bio" id="cardBio"></p>
     </div>
@@ -197,4 +216,5 @@
   <script src="data.js"></script>
   <script src="app.js"></script>
 </body>
+
 </html>
