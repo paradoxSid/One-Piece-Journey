@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+  <title>One Piece Journey Map — Interactive 3D Globe of the Straw Hat Crew</title>
+  <meta name="description" content="Explore the Straw Hat Pirates' journey across the Grand Line on an interactive 3D globe. Track Luffy, Zoro, Nami and the full crew from East Blue to Elbaf.">
+  <meta name="keywords" content="One Piece, journey map, Straw Hat Pirates, Grand Line, interactive map, 3D globe, Luffy, anime map, one piece map">
+  <link rel="canonical" href="https://strawhatmap.is-a.dev/">
+  <meta property="og:title" content="One Piece Journey Map">
+  <meta property="og:description" content="Interactive 3D globe tracking the Straw Hat crew's journey from East Blue to Elbaf">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="One Piece Journey Map">
+  <meta name="twitter:description" content="Interactive 3D globe tracking the Straw Hat crew's journey across all seas">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "One Piece Journey Map",
+    "description": "Interactive 3D globe tracking the Straw Hat Pirates' journey across the Grand Line",
+    "applicationCategory": "Entertainment",
+    "operatingSystem": "Web Browser"
+  }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ── Splash ── -->
+  <div id="splash">
+    <div class="splash-content">
+      <div class="splash-icon">☠️</div>
+      <h1 class="splash-title">One Piece</h1>
+      <h2 class="splash-subtitle">Journey Map</h2>
+      <div class="splash-loader"><div class="loader-bar"></div></div>
+    </div>
+  </div>
+
+  <!-- ── Spoiler Gate ── -->
+  <div id="spoilerGate" style="display:none">
+    <div class="gate-content">
+      <div class="gate-icon">🛡️</div>
+      <h1 class="gate-title">Spoiler Shield</h1>
+      <p class="gate-desc">How far are you in the story?</p>
+      <div class="gate-select-wrapper">
+        <select id="gateSelect" class="gate-select" onchange="onGateSelect(this.value)">
+          <option value="" disabled selected>Select a saga...</option>
+        </select>
+        <span class="material-symbols-rounded gate-select-arrow">expand_more</span>
+      </div>
+      <button class="gate-skip" onclick="skipSpoilerGate()">
+        I'm all caught up!
+      </button>
+    </div>
+  </div>
+
+  <!-- ── App Shell ── -->
+  <div id="app" style="display:none">
+
+    <!-- Top Bar -->
+    <header id="topBar">
+      <div class="top-bar-left">
+        <span class="logo-skull">☠️</span>
+        <h1 class="app-title">Journey Map</h1>
+      </div>
+      <div class="top-bar-right">
+        <button id="btnSearch" class="icon-btn" onclick="toggleSearch()">
+          <span class="material-symbols-rounded">search</span>
+        </button>
+        <button id="btnAutoRotate" class="icon-btn" onclick="toggleAutoRotate()">
+          <span class="material-symbols-rounded">360</span>
+        </button>
+        <button id="btnReset" class="icon-btn" onclick="resetView()">
+          <span class="material-symbols-rounded">fit_screen</span>
+        </button>
+        <button id="btnSpoiler" class="icon-btn active-toggle" onclick="toggleSpoilerPanel()" title="Spoiler Shield">
+          <span class="material-symbols-rounded">shield</span>
+        </button>
+        <button id="btnAbout" class="icon-btn" onclick="toggleAbout()">
+          <span class="material-symbols-rounded">info</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Character Selector -->
+    <div id="charSelector">
+      <div class="selector-label">Select Crew Member</div>
+      <div id="charPills" class="char-pills"></div>
+    </div>
+
+    <!-- Globe Container -->
+    <div id="globeContainer">
+      <canvas id="globeCanvas"></canvas>
+    </div>
+
+    <!-- Character Info Card -->
+    <div id="charCard" class="char-card hidden">
+      <div class="card-header">
+        <div class="card-emoji" id="cardEmoji"></div>
+        <div class="card-titles">
+          <h2 id="cardName"></h2>
+          <p id="cardEpithet" class="card-epithet"></p>
+        </div>
+        <a id="cardWiki" class="icon-btn wiki-link" href="#" target="_blank" rel="noopener" title="View on Wiki">
+          <span class="material-symbols-rounded">info</span>
+        </a>
+        <button class="icon-btn card-close" onclick="closeCard()">
+          <span class="material-symbols-rounded">close</span>
+        </button>
+      </div>
+      <div class="card-stats">
+        <div class="stat"><span class="stat-label">Role</span><span class="stat-value" id="cardRole"></span></div>
+        <div class="stat"><span class="stat-label">Bounty</span><span class="stat-value" id="cardBounty"></span></div>
+        <div class="stat"><span class="stat-label">Devil Fruit</span><span class="stat-value" id="cardFruit"></span></div>
+        <div class="stat"><span class="stat-label">Islands Visited</span><span class="stat-value" id="cardIslands"></span></div>
+      </div>
+      <p class="card-bio" id="cardBio"></p>
+    </div>
+
+    <!-- Island Tooltip -->
+    <div id="islandTooltip" class="island-tooltip hidden">
+      <div class="tooltip-header">
+        <h3 id="tooltipName"></h3>
+        <a id="tooltipWiki" class="wiki-link-sm" href="#" target="_blank" rel="noopener" title="View on Wiki">
+          <span class="material-symbols-rounded">info</span>
+        </a>
+      </div>
+      <p id="tooltipArc"></p>
+      <p id="tooltipSea"></p>
+      <p id="tooltipDesc" class="tooltip-desc"></p>
+      <div id="tooltipCrewSection" class="tooltip-crew-section" style="display:none">
+        <div class="tooltip-crew-divider"></div>
+        <p id="tooltipCrewHeader" class="tooltip-crew-header"></p>
+        <p id="tooltipCrewEvent" class="tooltip-crew-event"></p>
+      </div>
+    </div>
+
+    <!-- Timeline Slider -->
+    <div id="timelineBar" class="timeline-bar hidden">
+      <div class="timeline-header">
+        <span class="timeline-title" id="timelineTitle">Journey Timeline</span>
+        <span class="timeline-step" id="timelineStep"></span>
+      </div>
+      <div class="timeline-track-wrapper">
+        <input type="range" id="timelineSlider" class="timeline-slider" min="0" max="1" value="1" step="1">
+        <div class="timeline-dots" id="timelineDots"></div>
+      </div>
+      <div class="timeline-labels">
+        <span id="timelineStart" class="timeline-label-edge"></span>
+        <span id="timelineEnd" class="timeline-label-edge"></span>
+      </div>
+    </div>
+
+    <!-- Search Bar -->
+    <div id="searchBar" class="search-bar hidden">
+      <span class="material-symbols-rounded search-icon">search</span>
+      <input id="searchInput" type="text" placeholder="Search islands..." autocomplete="off">
+      <button class="search-clear" onclick="clearSearch()">
+        <span class="material-symbols-rounded">close</span>
+      </button>
+      <div id="searchResults" class="search-results"></div>
+    </div>
+
+    <!-- Island Labels Overlay (HTML on top of canvas) -->
+    <div id="labelsOverlay"></div>
+
+    <!-- Spoiler Shield Panel -->
+    <div id="spoilerPanel" class="spoiler-panel hidden">
+      <div class="spoiler-header">
+        <span class="material-symbols-rounded" style="font-size:18px;color:var(--accent)">shield</span>
+        <h3>Spoiler Shield</h3>
+      </div>
+      <p class="spoiler-desc">Choose where you are in the story. Everything after will be hidden.</p>
+      <div id="spoilerArcs" class="spoiler-arcs"></div>
+      <button class="spoiler-reset" onclick="resetSpoilerFilter()">Show Full Timeline</button>
+    </div>
+
+    <!-- About Popup -->
+    <div id="aboutPopup" class="about-popup hidden">
+      <div class="about-denden">🐌</div>
+      <div class="about-call">
+        <p class="about-moshi">Moshi Moshi?</p>
+        <div class="about-divider"></div>
+        <p class="about-name">paradoxSid</p>
+        <p class="about-tagline">The man who'll become King of the Devs!</p>
+      </div>
+      <p class="about-punchline">...wait, wrong line. I just built this map. 🍖</p>
+    </div>
+
+  </div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
