@@ -6,7 +6,7 @@
     const D2R = Math.PI / 180;
     const TEX_W = 2048, TEX_H = 1024;
 
-    let islands = {}, crew = [], selectedCrew = null, islandEvents = {};
+    let islands = {}, crew = [], selectedCrewIds = new Set(), lastSelectedCrew = null, islandEvents = {};
     let scene, camera, renderer, globeGroup, cloudMesh;
     let islandMeshes = {}, islandGlows = {}, islandPins = {};
     let journeyLines = [], shipMesh, journeyArrows = [], journeyGlows = [];
@@ -264,57 +264,57 @@
             const absLat = Math.abs(lat);
             const eqDist = absLat / 90;
             // Zone strengths (smooth transitions between belts)
-            const calmStr = ss(10, 13, absLat) * (1 - ss(17, 20, absLat));
+            const calmStr = ss(9, 11, absLat) * (1 - ss(17, 20, absLat));
             const blueStr = ss(17, 22, absLat);
-            const glStr   = 1 - ss(9, 13, absLat);
+            const glStr   = 1 - ss(9, 11, absLat);
             for (let x = 0; x < TEX_W; x++) {
                 const lng = (x / TEX_W) * 360 - 180;
                 const i = (y * TEX_W + x) * 4;
                 const n = fbm(x * 0.005, y * 0.005, 3) * 0.5 + 0.5;
-                // Base colour: deep navy → rich blue → teal near equator
-                let r = 4 + eqDist * 12 + n * 8;
-                let g = 28 + (1 - eqDist) * 28 + n * 14;
-                let b = 58 + (1 - eqDist) * 30 + n * 18;
+                // Base colour: vibrant anime blue (One Piece style)
+                let r = 15 + eqDist * 8 + n * 3;
+                let g = 80 + (1 - eqDist) * 60 + n * 8;
+                let b = 170 + (1 - eqDist) * 45 + n * 10;
 
-                // ── Calm Belt: eerie teal-grey, unnaturally still ──
+                // ── Calm Belt: eerie pale teal, dead-still (Oda style) ──
                 if (calmStr > 0) {
-                    const s = calmStr * (0.18 + n * 0.07);
-                    r = r * (1 - s) + (28 + n * 12) * s;
-                    g = g * (1 - s) + (68 + n * 14) * s;
-                    b = b * (1 - s) + (72 + n * 10) * s;
+                    const s = calmStr * (0.50 + n * 0.06);
+                    r = r * (1 - s) + (80 + n * 10) * s;
+                    g = g * (1 - s) + (115 + n * 12) * s;
+                    b = b * (1 - s) + (125 + n * 8) * s;
                 }
                 // ── Four Blues ──
                 if (blueStr > 0) {
                     let tR, tG, tB;
                     if (lat > 0 && lng >= 0) {
-                        // East Blue — clear classic cerulean
-                        tR = 8 + n * 6; tG = 42 + n * 14; tB = 108 + n * 18;
+                        // East Blue — bright anime cerulean
+                        tR = 20 + n * 4; tG = 95 + n * 10; tB = 200 + n * 12;
                     } else if (lat > 0) {
-                        // North Blue — cool indigo-purple
-                        tR = 24 + n * 10; tG = 20 + n * 10; tB = 88 + n * 18;
+                        // North Blue — cool anime blue-violet
+                        tR = 35 + n * 6; tG = 55 + n * 8; tB = 165 + n * 12;
                     } else if (lng < 0) {
-                        // West Blue — deep teal-green
-                        tR = 6 + n * 5; tG = 55 + n * 16; tB = 65 + n * 14;
+                        // West Blue — vivid teal-blue
+                        tR = 12 + n * 4; tG = 105 + n * 10; tB = 145 + n * 10;
                     } else {
-                        // South Blue — warm amber-turquoise
-                        tR = 38 + n * 14; tG = 48 + n * 12; tB = 52 + n * 10;
+                        // South Blue — warm aquamarine
+                        tR = 25 + n * 6; tG = 110 + n * 10; tB = 155 + n * 8;
                     }
-                    const s = blueStr * (0.24 + n * 0.06);
+                    const s = blueStr * (0.30 + n * 0.05);
                     r = r * (1 - s) + tR * s;
                     g = g * (1 - s) + tG * s;
                     b = b * (1 - s) + tB * s;
                 }
-                // ── Grand Line ──
+                // ── Grand Line: deeper, dramatic anime waters ──
                 if (glStr > 0) {
                     let tR, tG, tB, s;
                     if (lng < -5) {
-                        // New World — darker, storm-reddish purple
-                        tR = 38 + n * 10; tG = 10 + n * 6; tB = 36 + n * 10;
-                        s = glStr * (0.28 + n * 0.08);
+                        // New World — dark stormy indigo
+                        tR = 12 + n * 4; tG = 18 + n * 6; tB = 55 + n * 10;
+                        s = glStr * (0.45 + n * 0.08);
                     } else if (lng > 5) {
-                        // Paradise — deep warm indigo
-                        tR = 18 + n * 8; tG = 28 + n * 10; tB = 58 + n * 10;
-                        s = glStr * (0.22 + n * 0.06);
+                        // Paradise — rich deep blue
+                        tR = 8 + n * 3; tG = 30 + n * 8; tB = 80 + n * 12;
+                        s = glStr * (0.40 + n * 0.08);
                     } else { s = 0; tR = tG = tB = 0; }
                     if (s > 0) {
                         r = r * (1 - s) + tR * s;
@@ -340,7 +340,7 @@
     }
 
     function paintRedLine(ctx) {
-        // The Red Line — continental mountain wall
+        // The Red Line — massive mountain range dividing the globe
         const rlHalf = 7;
 
         [0, 180].forEach(cLng => {
@@ -357,31 +357,39 @@
                     const distCenter = Math.abs(dx) / effHalf;
                     if (distCenter >= 1) continue;
 
-                    // Simple noise-based shade instead of expensive hillshading
+                    // Multi-octave noise for anime mountain look
                     const n1 = fbm(px * 0.02 + 50, y * 0.015, 2) * 0.5 + 0.5;
-                    const shade = 0.6 + n1 * 0.55;
+                    const n2 = fbm(px * 0.04 + 80, y * 0.03, 3) * 0.5 + 0.5;
+                    const ridge = Math.abs(fbm(px * 0.008, y * 0.006 + 200, 3));
+                    // Simulated light — reduced noise variation for cleaner anime look
+                    const slopeX = fbm((px + 1) * 0.02 + 50, y * 0.015, 2) - fbm((px - 1) * 0.02 + 50, y * 0.015, 2);
+                    const shade = Math.max(0.5, Math.min(1.15, 0.75 + slopeX * 2.0 + n2 * 0.15));
                     let r, g, b, a;
 
                     if (distCenter > 0.86) {
+                        // Foothills fading — anime bright edge
                         const fade = (1 - distCenter) / 0.14;
-                        r = lerp(100, 140, n1); g = lerp(28, 45, n1); b = lerp(18, 30, n1);
-                        a = fade * 0.8;
+                        r = lerp(150, 190, n1); g = lerp(35, 55, n1); b = lerp(25, 40, n1);
+                        a = fade * 0.88;
                     } else if (distCenter > 0.7) {
-                        r = 130 + n1 * 30; g = 35 + n1 * 12; b = 20 + n1 * 8;
-                        a = 0.95;
+                        // Lower slopes — saturated red
+                        r = 175 + n1 * 20; g = 35 + n1 * 8; b = 22 + n1 * 6;
+                        a = 0.96;
                     } else if (distCenter > 0.45) {
-                        const cliff = n1 * 0.25 + 0.75;
-                        r = 175 * cliff; g = 35 * cliff; b = 20 * cliff;
+                        // Mid slopes — bold crimson
+                        r = 210 + n1 * 15; g = 38 + n1 * 6; b = 24 + n1 * 5;
                         a = 0.97;
                     } else if (distCenter > 0.18) {
-                        r = 210 * (0.7 + n1 * 0.3); g = 30 * (0.7 + n1 * 0.3); b = 15 * (0.7 + n1 * 0.3);
+                        // Upper slopes — vivid bright red
+                        r = 235 + n1 * 10; g = 40 + n1 * 5; b = 25 + n1 * 4;
                         a = 0.98;
                     } else {
+                        // Peak zone — brightest red, snow at polar latitudes
                         if (absLat > 38 && n1 > 0.42) {
                             const snow = Math.min(1, (absLat - 38) / 30 + n1 * 0.25);
-                            r = lerp(220, 245, snow); g = lerp(35, 232, snow); b = lerp(20, 228, snow);
+                            r = lerp(240, 252, snow); g = lerp(42, 240, snow); b = lerp(28, 238, snow);
                         } else {
-                            r = 225 + n1 * 25; g = 25 + n1 * 8; b = 12 + n1 * 6;
+                            r = 245 + n1 * 8; g = 35 + n1 * 5; b = 20 + n1 * 4;
                         }
                         a = 0.99;
                     }
@@ -398,39 +406,36 @@
     }
 
     function paintCalm(ctx) {
-        // Calm Belts: still, glassy water bands at ±12–18° lat — slightly greener, flatter look
-        [[12, 18], [-18, -12]].forEach(([latMin, latMax]) => {
+        // Calm Belts: pale, eerie stillness — anime style muted band
+        [[10, 18], [-18, -10]].forEach(([latMin, latMax]) => {
             const yMin = latToY(latMax), yMax = latToY(latMin);
-            // Gradient fill — more opaque at center
             for (let y = Math.floor(yMin); y < Math.ceil(yMax); y++) {
                 const t = (y - yMin) / (yMax - yMin);
-                const center = 1 - Math.abs(t - 0.5) * 2; // peaks at band center
-                ctx.fillStyle = `rgba(35,60,75,${(center * 0.28).toFixed(2)})`;
+                const center = 1 - Math.abs(t - 0.5) * 2;
+                ctx.fillStyle = `rgba(95,120,130,${(center * 0.18).toFixed(2)})`;
                 ctx.fillRect(0, y, TEX_W, 1);
             }
-            // Subtle border shimmer
+            // Thin clean border lines
             [yMin, yMax].forEach(yy => {
-                ctx.strokeStyle = "rgba(100,170,200,0.12)";
-                ctx.lineWidth = 1;
+                ctx.strokeStyle = "rgba(150,190,210,0.15)";
+                ctx.lineWidth = 0.8;
                 ctx.beginPath(); ctx.moveTo(0, yy); ctx.lineTo(TEX_W, yy); ctx.stroke();
             });
         });
     }
 
     function paintGrandLine(ctx) {
-        // Grand Line belt: ±10° of equator — slightly warmer water, subtle gold tint borders
+        // Grand Line belt: ±10° of equator — deeper anime-blue tint
         const yMin = latToY(10), yMax = latToY(-10);
         for (let y = Math.floor(yMin); y < Math.ceil(yMax); y++) {
-            ctx.fillStyle = "rgba(60,55,25,0.04)";
+            ctx.fillStyle = "rgba(8,12,35,0.14)";
             ctx.fillRect(0, y, TEX_W, 1);
         }
-        // Gold border lines
+        // Clean thin border lines
         [latToY(10), latToY(-10)].forEach(yy => {
-            ctx.strokeStyle = "rgba(200,180,80,0.12)";
-            ctx.lineWidth = 1.5;
-            ctx.setLineDash([6, 4]);
+            ctx.strokeStyle = "rgba(180,200,220,0.18)";
+            ctx.lineWidth = 1.2;
             ctx.beginPath(); ctx.moveTo(0, yy); ctx.lineTo(TEX_W, yy); ctx.stroke();
-            ctx.setLineDash([]);
         });
     }
 
@@ -597,14 +602,14 @@
     }
 
     function paintOceanDetail(ctx) {
-        // Subtle wave/current lines
-        ctx.globalAlpha = 0.018;
-        ctx.strokeStyle = "#6EC6FF";
-        ctx.lineWidth = 0.8;
-        for (let y = 0; y < TEX_H; y += 6) {
+        // Subtle anime-style wave lines
+        ctx.globalAlpha = 0.025;
+        ctx.strokeStyle = "#8AD4FF";
+        ctx.lineWidth = 0.6;
+        for (let y = 0; y < TEX_H; y += 8) {
             ctx.beginPath();
-            for (let x = 0; x <= TEX_W; x += 3) {
-                const wy = y + Math.sin(x * 0.012 + y * 0.008) * 2.5 + fbm(x * 0.003, y * 0.003, 2) * 3;
+            for (let x = 0; x <= TEX_W; x += 4) {
+                const wy = y + Math.sin(x * 0.01 + y * 0.006) * 2 + fbm(x * 0.002, y * 0.002, 2) * 2;
                 x === 0 ? ctx.moveTo(x, wy) : ctx.lineTo(x, wy);
             }
             ctx.stroke();
@@ -835,19 +840,19 @@
                     if (hNorm > 0.55 && absLat > 45) {
                         // Snow-capped peaks at high latitudes
                         const s = Math.min(1, (absLat - 45) / 25);
-                        r = lerp(0.82, 0.96, s); g = lerp(0.22, 0.93, s); b = lerp(0.12, 0.91, s);
+                        r = lerp(0.88, 0.98, s); g = lerp(0.25, 0.94, s); b = lerp(0.15, 0.92, s);
                     } else if (hNorm > 0.5) {
-                        // Bright crimson peaks
-                        r = 0.85 + n1 * 0.1; g = 0.12 + n1 * 0.04; b = 0.06 + n1 * 0.02;
+                        // Vivid bright crimson peaks
+                        r = 0.92 + n1 * 0.06; g = 0.15 + n1 * 0.03; b = 0.08 + n1 * 0.02;
                     } else if (hNorm > 0.3) {
-                        // Vivid red mid-slopes
-                        r = 0.70 + n1 * 0.1; g = 0.15 + n1 * 0.04; b = 0.08 + n1 * 0.03;
+                        // Bold red mid-slopes
+                        r = 0.82 + n1 * 0.08; g = 0.14 + n1 * 0.03; b = 0.09 + n1 * 0.02;
                     } else if (hNorm > 0.1) {
-                        // Dark red lower slopes 
-                        r = 0.52 + n1 * 0.08; g = 0.14 + n1 * 0.04; b = 0.08 + n1 * 0.03;
+                        // Saturated red lower slopes
+                        r = 0.68 + n1 * 0.06; g = 0.13 + n1 * 0.03; b = 0.08 + n1 * 0.02;
                     } else {
-                        // Reddish-brown base at edges
-                        r = 0.38 + n1 * 0.06; g = 0.12 + n1 * 0.03; b = 0.07 + n1 * 0.02;
+                        // Red-brown base at edges
+                        r = 0.55 + n1 * 0.05; g = 0.12 + n1 * 0.02; b = 0.07 + n1 * 0.02;
                     }
                     // Blend canal areas toward dark water blue
                     if (canalBlend > 0) {
@@ -878,10 +883,10 @@
 
             const mat = new THREE.MeshPhongMaterial({
                 vertexColors: true,
-                shininess: 12,
-                specular: 0x331111,
-                emissive: 0x1a0505,
-                emissiveIntensity: 0.3,
+                shininess: 18,
+                specular: 0x552222,
+                emissive: 0x220808,
+                emissiveIntensity: 0.25,
                 side: THREE.DoubleSide,
             });
 
@@ -1892,29 +1897,57 @@
     function selectCrew(id) {
         const member = crew.find(c => c.id === id);
         if (!member) return;
-        selectedCrew = member;
-        document.querySelectorAll(".char-pill").forEach(p => p.classList.toggle("active", p.dataset.id === id));
+
+        // Toggle: add or remove
+        if (selectedCrewIds.has(id)) {
+            selectedCrewIds.delete(id);
+        } else {
+            selectedCrewIds.add(id);
+        }
+
+        // Update pill active states
+        document.querySelectorAll(".char-pill").forEach(p => p.classList.toggle("active", selectedCrewIds.has(p.dataset.id)));
+
+        if (selectedCrewIds.size === 0) {
+            // Nothing selected — clear everything
+            lastSelectedCrew = null;
+            clearAllJourneys();
+            closeCard();
+            document.getElementById("timelineBar").style.display = "none";
+            return;
+        }
+
+        // Scroll to the just-toggled pill
         const ap = document.querySelector('.char-pill[data-id="' + id + '"]');
         if (ap) ap.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-        // Apply spoiler filter
-        const filteredMember = Object.assign({}, member, { journey: getSpoilerFilteredJourney(member) });
-        drawJourney(filteredMember);
-        updateCard(filteredMember);
-        setupTimeline(filteredMember);
+
+        // If the member was just added, make it the "last selected" for card/timeline
+        if (selectedCrewIds.has(id)) {
+            lastSelectedCrew = member;
+        } else {
+            // Removed — pick another one as last
+            const remaining = crew.filter(c => selectedCrewIds.has(c.id));
+            lastSelectedCrew = remaining[remaining.length - 1] || null;
+        }
+
+        // Redraw all selected journeys
+        drawAllJourneys();
+
+        // Show card and timeline for the last selected member
+        if (lastSelectedCrew) {
+            const filteredMember = Object.assign({}, lastSelectedCrew, { journey: getSpoilerFilteredJourney(lastSelectedCrew) });
+            updateCard(filteredMember);
+            setupTimeline(filteredMember);
+            document.getElementById("timelineBar").style.display = "";
+        }
     }
 
-    /* ════════════════════════════════════════════════ */
-    /*  DRAW JOURNEY                                    */
-    /* ════════════════════════════════════════════════ */
-    function drawJourney(member) {
-        // Clean up previous journey
+    function clearAllJourneys() {
         journeyLines.forEach(l => globeGroup.remove(l));
         journeyArrows.forEach(a => globeGroup.remove(a));
         journeyGlows.forEach(g => globeGroup.remove(g));
         journeyLines = []; journeyArrows = []; journeyGlows = [];
         if (shipMesh) { globeGroup.remove(shipMesh); shipMesh = null; }
-
-        // Reset all markers to default
         Object.entries(islandMeshes).forEach(([id, mesh]) => {
             mesh.material.emissive.set(0x112211);
             mesh.material.emissiveIntensity = 0.15;
@@ -1922,6 +1955,28 @@
             if (islandPins[id]) islandPins[id].material.opacity = 0.12;
         });
         Object.values(labelEls).forEach(l => l.classList.remove("active", "origin"));
+    }
+
+    function drawAllJourneys() {
+        clearAllJourneys();
+        const selected = crew.filter(c => selectedCrewIds.has(c.id));
+        selected.forEach(member => {
+            const filteredMember = Object.assign({}, member, { journey: getSpoilerFilteredJourney(member) });
+            drawJourneySingle(filteredMember);
+        });
+    }
+
+    /* ════════════════════════════════════════════════ */
+    /*  DRAW JOURNEY                                    */
+    /* ════════════════════════════════════════════════ */
+    function drawJourney(member) {
+        // Full clear + single draw (used by timeline scrub)
+        clearAllJourneys();
+        drawJourneySingle(member);
+    }
+
+    function drawJourneySingle(member) {
+        // Draw one member's journey (additive — doesn't clear first)
 
         const journey = member.journey;
         const joinIdx = journey.indexOf(member.joinedAt);
@@ -2142,7 +2197,7 @@
         const color = new THREE.Color(colorHex);
 
         // Determine if post-timeskip (after Sabaody return)
-        const journey = selectedCrew ? selectedCrew.journey : [];
+        const journey = lastSelectedCrew ? lastSelectedCrew.journey : [];
         const lastIdx = journey.length - 1;
         const sabaodyReturn = journey.lastIndexOf('sabaody');
         const isPostTimeskip = sabaodyReturn > journey.indexOf('sabaody');
@@ -2208,86 +2263,69 @@
     }
 
     /* ════════════════════════════════════════════════ */
-    /*  SEA KINGS — animated silhouettes in Calm Belt   */
+    /*  SEA KINGS — simple 3D silhouettes in Calm Belt  */
     /* ════════════════════════════════════════════════ */
-    function createSeaKingShape() {
-        // Serpentine sea king body as a smooth tube
-        const pts = [];
-        const bodyLen = 18;
-        for (let i = 0; i <= bodyLen; i++) {
-            const t = i / bodyLen;
-            // Tapered body: thin at head, thick in middle, thin at tail
-            pts.push(new THREE.Vector3(t * 1.2 - 0.6, Math.sin(t * Math.PI * 2.5) * 0.06, 0));
-        }
-        const curve = new THREE.CatmullRomCurve3(pts);
-        // Body thins toward head and tail
-        const radiusFunc = (t) => {
-            const body = Math.sin(t * Math.PI) * 0.04;
-            return Math.max(0.005, body);
-        };
-        // Custom tube with variable radius
-        const segs = 32, radSegs = 6;
-        const frames = curve.computeFrenetFrames(segs, false);
-        const verts = [], indices = [], uvs = [];
-        for (let i = 0; i <= segs; i++) {
-            const t = i / segs;
-            const pos = curve.getPointAt(t);
-            const N = frames.normals[i], B = frames.binormals[i];
-            const r = radiusFunc(t);
-            for (let j = 0; j <= radSegs; j++) {
-                const a = (j / radSegs) * Math.PI * 2;
-                const nx = Math.cos(a), ny = Math.sin(a);
-                verts.push(pos.x + r * (nx * N.x + ny * B.x));
-                verts.push(pos.y + r * (nx * N.y + ny * B.y));
-                verts.push(pos.z + r * (nx * N.z + ny * B.z));
-                uvs.push(t, j / radSegs);
-            }
-        }
-        for (let i = 0; i < segs; i++) {
-            for (let j = 0; j < radSegs; j++) {
-                const a = i * (radSegs + 1) + j;
-                const b = a + radSegs + 1;
-                indices.push(a, b, a + 1, b, b + 1, a + 1);
-            }
-        }
-        const geo = new THREE.BufferGeometry();
-        geo.setAttribute('position', new THREE.Float32BufferAttribute(verts, 3));
-        geo.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
-        geo.setIndex(indices);
-        geo.computeVertexNormals();
-        return geo;
+    function createSeaKingMesh(color) {
+        const group = new THREE.Group();
+        const mat = new THREE.MeshPhongMaterial({
+            color: color,
+            shininess: 15,
+            transparent: true, opacity: 0.85,
+        });
+        // Neck: cylinder tapered (wider at base, thinner at top)
+        const neckGeo = new THREE.CylinderGeometry(0.03, 0.06, 0.25, 8);
+        const neck = new THREE.Mesh(neckGeo, mat);
+        neck.position.y = 0.125; // half height
+        group.add(neck);
+        // Head: slightly squashed sphere
+        const headGeo = new THREE.SphereGeometry(0.06, 8, 6);
+        const head = new THREE.Mesh(headGeo, mat);
+        head.position.y = 0.28;
+        head.scale.set(1, 0.8, 1.2); // slightly elongated snout
+        group.add(head);
+        // Eyes: two small white spheres
+        const eyeMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+        const eyeGeo = new THREE.SphereGeometry(0.012, 4, 4);
+        const eyeL = new THREE.Mesh(eyeGeo, eyeMat);
+        eyeL.position.set(-0.04, 0.29, 0.04);
+        group.add(eyeL);
+        const eyeR = new THREE.Mesh(eyeGeo, eyeMat);
+        eyeR.position.set(0.04, 0.29, 0.04);
+        group.add(eyeR);
+        // Pupils
+        const pupilMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
+        const pupilGeo = new THREE.SphereGeometry(0.006, 4, 4);
+        const pupilL = new THREE.Mesh(pupilGeo, pupilMat);
+        pupilL.position.set(-0.04, 0.29, 0.052);
+        group.add(pupilL);
+        const pupilR = new THREE.Mesh(pupilGeo, pupilMat);
+        pupilR.position.set(0.04, 0.29, 0.052);
+        group.add(pupilR);
+        return group;
     }
 
     function createSeaKings() {
-        const skGeo = createSeaKingShape();
-        // Place sea kings in the calm belts (lat ±12 to ±18)
         const placements = [
-            { lat: 15, lngStart: 30,  dir: 1,  scale: 0.5, speed: 0.08 },
-            { lat: 14, lngStart: 100, dir: -1, scale: 0.65, speed: 0.06 },
-            { lat: 16, lngStart: -60, dir: 1,  scale: 0.45, speed: 0.09 },
-            { lat: -15, lngStart: 70,  dir: -1, scale: 0.55, speed: 0.07 },
-            { lat: -14, lngStart: -30, dir: 1,  scale: 0.6,  speed: 0.065 },
-            { lat: -16, lngStart: 140, dir: -1, scale: 0.5,  speed: 0.08 },
-            { lat: 13, lngStart: -120, dir: 1,  scale: 0.4,  speed: 0.1 },
-            { lat: -13, lngStart: -140, dir: -1, scale: 0.45, speed: 0.075 },
+            { lat: 15, lngStart: 30,  dir: 1,  scale: 0.35, speed: 0.04 },
+            { lat: 14, lngStart: 100, dir: -1, scale: 0.45, speed: 0.03 },
+            { lat: 16, lngStart: -60, dir: 1,  scale: 0.3,  speed: 0.05 },
+            { lat: -15, lngStart: 70,  dir: -1, scale: 0.4,  speed: 0.035 },
+            { lat: -14, lngStart: -30, dir: 1,  scale: 0.38, speed: 0.03 },
+            { lat: -16, lngStart: 140, dir: -1, scale: 0.35, speed: 0.04 },
+            { lat: 13, lngStart: -120, dir: 1,  scale: 0.3,  speed: 0.05 },
+            { lat: -13, lngStart: -140, dir: -1, scale: 0.38, speed: 0.04 },
         ];
+        const colors = [0x1a3a3a, 0x2a2a40, 0x1a2a2a, 0x2a3a2a, 0x3a2a2a, 0x2a2a3a];
         placements.forEach(p => {
-            const mat = new THREE.MeshPhongMaterial({
-                color: new THREE.Color().setHSL(0.55 + Math.random() * 0.1, 0.4, 0.12),
-                emissive: new THREE.Color().setHSL(0.5 + Math.random() * 0.12, 0.5, 0.06),
-                emissiveIntensity: 0.5,
-                transparent: true, opacity: 0.55,
-                shininess: 10,
-            });
-            const mesh = new THREE.Mesh(skGeo.clone(), mat);
+            const col = colors[Math.floor(Math.random() * colors.length)];
+            const mesh = createSeaKingMesh(col);
             mesh.scale.setScalar(p.scale);
             mesh.userData = {
                 lat: p.lat, lngOffset: p.lngStart, dir: p.dir,
                 speed: p.speed, phase: Math.random() * Math.PI * 2,
                 undulatePhase: Math.random() * 100,
             };
-            // Initial position
-            const pos = latLngToVec3(p.lat, p.lngStart, GR + 0.02);
+            const pos = latLngToVec3(p.lat, p.lngStart, GR);
             mesh.position.copy(pos);
             globeGroup.add(mesh);
             seaKings.push(mesh);
@@ -2300,24 +2338,21 @@
             ud.lngOffset += ud.speed * ud.dir;
             if (ud.lngOffset > 180) ud.lngOffset -= 360;
             if (ud.lngOffset < -180) ud.lngOffset += 360;
-            // Undulating latitude for swimming motion
-            const undLat = ud.lat + Math.sin(time * 0.4 + ud.undulatePhase) * 1.2;
-            const pos = latLngToVec3(undLat, ud.lngOffset, GR + 0.02);
+            const undLat = ud.lat + Math.sin(time * 0.3 + ud.undulatePhase) * 0.8;
+            const pos = latLngToVec3(undLat, ud.lngOffset, GR);
             sk.position.copy(pos);
-            // Orient along travel direction
-            const aheadLng = ud.lngOffset + ud.dir * 2;
-            const aheadPos = latLngToVec3(undLat, aheadLng, GR + 0.02);
-            const dir = aheadPos.clone().sub(pos).normalize();
+            // Orient: Y-axis (head) points away from globe surface
             const normal = pos.clone().normalize();
-            const tangent = dir.clone().projectOnPlane(normal).normalize();
-            const up = normal;
-            const right = new THREE.Vector3().crossVectors(up, tangent).normalize();
-            const m = new THREE.Matrix4().makeBasis(tangent, up, right);
+            const aheadLng = ud.lngOffset + ud.dir * 2;
+            const aheadPos = latLngToVec3(undLat, aheadLng, GR);
+            const travelDir = aheadPos.clone().sub(pos).normalize();
+            const tangent = travelDir.projectOnPlane(normal).normalize();
+            const right = new THREE.Vector3().crossVectors(normal, tangent).normalize();
+            const m = new THREE.Matrix4().makeBasis(right, normal, tangent);
             sk.quaternion.setFromRotationMatrix(m);
-            // Undulating body motion via scale wiggle
-            const wiggle = 1 + Math.sin(time * 2 + ud.phase) * 0.05;
-            sk.scale.setScalar(sk.userData.baseScale || (sk.userData.baseScale = sk.scale.x));
-            sk.scale.y *= wiggle;
+            // Gentle sway
+            const sway = Math.sin(time * 1.5 + ud.phase) * 0.06;
+            sk.rotateZ(sway);
         });
     }
 
@@ -2389,6 +2424,7 @@
 
         canvas.addEventListener("pointerdown", e => {
             if (e.target.closest(".char-card, .icon-btn, .char-pill, .legend-panel, .island-label-3d")) return;
+            canvas.setPointerCapture(e.pointerId);
             isDragging = true; dragMoved = false;
             prevMouse = { x: e.clientX, y: e.clientY };
             autoRotate = false;
@@ -2410,8 +2446,15 @@
             }
         });
 
-        canvas.addEventListener("pointerup", () => { isDragging = false; });
-        canvas.addEventListener("pointercancel", () => { isDragging = false; });
+        canvas.addEventListener("pointerup", e => {
+            isDragging = false;
+            if (canvas.hasPointerCapture(e.pointerId)) canvas.releasePointerCapture(e.pointerId);
+        });
+        canvas.addEventListener("pointercancel", e => {
+            isDragging = false;
+            if (canvas.hasPointerCapture(e.pointerId)) canvas.releasePointerCapture(e.pointerId);
+        });
+        canvas.addEventListener("pointerleave", () => { isDragging = false; });
 
         canvas.addEventListener("wheel", e => {
             e.preventDefault();
@@ -2565,10 +2608,13 @@
         document.getElementById("tooltipDesc").textContent = isl.desc || "";
         /* ── Crew-specific event info ── */
         const crewSec = document.getElementById("tooltipCrewSection");
-        if (selectedCrew && islandEvents[selectedCrew.id] && islandEvents[selectedCrew.id][islandId]) {
-            document.getElementById("tooltipCrewHeader").textContent = selectedCrew.emoji + " " + selectedCrew.name;
-            document.getElementById("tooltipCrewHeader").style.color = selectedCrew.color;
-            document.getElementById("tooltipCrewEvent").textContent = islandEvents[selectedCrew.id][islandId];
+        const selectedMembers = crew.filter(c => selectedCrewIds.has(c.id));
+        const eventsForIsland = selectedMembers.filter(m => islandEvents[m.id] && islandEvents[m.id][islandId]);
+        if (eventsForIsland.length > 0) {
+            const lines = eventsForIsland.map(m => m.emoji + " " + m.name + ": " + islandEvents[m.id][islandId]);
+            document.getElementById("tooltipCrewHeader").textContent = eventsForIsland.map(m => m.emoji).join(" ");
+            document.getElementById("tooltipCrewHeader").style.color = eventsForIsland[0].color;
+            document.getElementById("tooltipCrewEvent").textContent = lines.join("\n");
             crewSec.style.display = "";
         } else {
             crewSec.style.display = "none";
@@ -2640,15 +2686,25 @@
         spoilerArcLimit = arc;
         document.getElementById("btnSpoiler").classList.add("active-toggle");
         buildSpoilerArcs();
-        // Re-apply to current crew if one is selected
-        if (selectedCrew) selectCrew(selectedCrew.id);
+        // Re-apply to current crew if any are selected
+        if (selectedCrewIds.size > 0) drawAllJourneys();
+        if (lastSelectedCrew && selectedCrewIds.has(lastSelectedCrew.id)) {
+            const filteredMember = Object.assign({}, lastSelectedCrew, { journey: getSpoilerFilteredJourney(lastSelectedCrew) });
+            updateCard(filteredMember);
+            setupTimeline(filteredMember);
+        }
     }
 
     function resetSpoilerFilter() {
         spoilerArcLimit = null;
         document.getElementById("btnSpoiler").classList.remove("active-toggle");
         buildSpoilerArcs();
-        if (selectedCrew) selectCrew(selectedCrew.id);
+        if (selectedCrewIds.size > 0) drawAllJourneys();
+        if (lastSelectedCrew && selectedCrewIds.has(lastSelectedCrew.id)) {
+            const filteredMember = Object.assign({}, lastSelectedCrew, { journey: getSpoilerFilteredJourney(lastSelectedCrew) });
+            updateCard(filteredMember);
+            setupTimeline(filteredMember);
+        }
         document.getElementById("spoilerPanel").classList.add("hidden");
     }
 
@@ -2907,8 +2963,8 @@
             const slider = document.getElementById("timelineSlider");
             if (!slider) return;
             slider.addEventListener("input", () => {
-                if (!selectedCrew) return;
-                const filtered = Object.assign({}, selectedCrew, { journey: getSpoilerFilteredJourney(selectedCrew) });
+                if (!lastSelectedCrew) return;
+                const filtered = Object.assign({}, lastSelectedCrew, { journey: getSpoilerFilteredJourney(lastSelectedCrew) });
                 const idx = parseInt(slider.value);
                 updateTimelineStep(idx, filtered);
                 drawJourneyUpTo(filtered, idx);
