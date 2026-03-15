@@ -877,7 +877,7 @@ const CREW_DATA = [
     epithet: "Straw Hat",
     role: "Captain",
     bounty: "3,000,000,000",
-    devilFruit: "Hito Hito no Mi, Model: Nika",
+    devilFruit: "Gomu Gomu no Mi",
     color: "#E74C3C",
     emoji: "👒",
     origin: "foosha",
