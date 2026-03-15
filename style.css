@@ -470,6 +470,7 @@ html, body {
 .tooltip-crew-event {
   font-size: 11px; line-height: 1.45;
   color: rgba(255,255,255,0.7) !important; font-style: italic;
+  white-space: pre-line;
 }
 
 /* ── Legend Panel ─────────────────────────────── */
