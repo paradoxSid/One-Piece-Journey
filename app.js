@@ -14,6 +14,9 @@
     let labelEls = {};
     let seaLabelSprites = [];
     let seaKings = [];
+    let globeMesh;
+    let isEditMode = false;
+    let draggedIsland = null;
     let autoRotate = true, rotSpeed = 0.0006;
     let isDragging = false, dragMoved = false, prevMouse = { x: 0, y: 0 };
     let targetRotY = 0, targetRotX = 0.25, currentRotY = 0, currentRotX = 0.25;
@@ -203,8 +206,8 @@
             emissive: 0x020810,
             emissiveIntensity: 0.25,
         });
-        const globe = new THREE.Mesh(geo, mat);
-        globeGroup.add(globe);
+        globeMesh = new THREE.Mesh(geo, mat);
+        globeGroup.add(globeMesh);
 
         // ── 3D Red Line mountain ridge ──
         createRedLineMesh();
@@ -2429,6 +2432,23 @@
             prevMouse = { x: e.clientX, y: e.clientY };
             autoRotate = false;
             document.getElementById("btnAutoRotate").classList.remove("active-toggle");
+
+            // Check if clicking on island in edit mode
+            if (isEditMode) {
+                const clickVec = new THREE.Vector2(
+                    (e.clientX / window.innerWidth) * 2 - 1,
+                    -(e.clientY / window.innerHeight) * 2 + 1
+                );
+                raycaster.setFromCamera(clickVec, camera);
+                const targets = [...Object.values(islandMeshes), ...Object.values(islandGlows)];
+                const hits = raycaster.intersectObjects(targets, false);
+                if (hits.length) {
+                    const id = hits[0].object.userData.islandId;
+                    if (id && islands[id]) {
+                        draggedIsland = id;
+                    }
+                }
+            }
         });
 
         canvas.addEventListener("pointermove", e => {
@@ -2437,9 +2457,27 @@
             if (isDragging) {
                 const dx = e.clientX - prevMouse.x, dy = e.clientY - prevMouse.y;
                 if (Math.abs(dx) > 2 || Math.abs(dy) > 2) dragMoved = true;
-                targetRotY += dx * 0.005;
-                targetRotX += dy * 0.003;
-                targetRotX = Math.max(-1.2, Math.min(1.2, targetRotX));
+                if (draggedIsland && isEditMode) {
+                    // Drag island
+                    raycaster.setFromCamera(mouseVec, camera);
+                    const hits = raycaster.intersectObject(globeMesh);
+                    if (hits.length) {
+                        const point = hits[0].point;
+                        // Transform to globe local space
+                        const localPoint = point.clone().applyMatrix4(globeGroup.matrixWorld.clone().invert());
+                        // Undo the globe tilt to get unrotated coordinates
+                        const unrotatedPoint = localPoint.clone().applyAxisAngle(new THREE.Vector3(1, 0, 0), -currentRotX);
+                        const {lat, lng} = vec3ToLatLng(unrotatedPoint);
+                        islands[draggedIsland].lat = lat;
+                        islands[draggedIsland].lng = lng;
+                        updateIslandPosition(draggedIsland);
+                    }
+                } else {
+                    // Rotate globe
+                    targetRotY += dx * 0.005;
+                    targetRotX += dy * 0.003;
+                    targetRotX = Math.max(-1.2, Math.min(1.2, targetRotX));
+                }
                 prevMouse = { x: e.clientX, y: e.clientY };
             } else {
                 checkHover(e);
@@ -2448,13 +2486,18 @@
 
         canvas.addEventListener("pointerup", e => {
             isDragging = false;
+            draggedIsland = null;
             if (canvas.hasPointerCapture(e.pointerId)) canvas.releasePointerCapture(e.pointerId);
         });
         canvas.addEventListener("pointercancel", e => {
             isDragging = false;
+            draggedIsland = null;
             if (canvas.hasPointerCapture(e.pointerId)) canvas.releasePointerCapture(e.pointerId);
         });
-        canvas.addEventListener("pointerleave", () => { isDragging = false; });
+        canvas.addEventListener("pointerleave", () => { 
+            isDragging = false; 
+            draggedIsland = null; 
+        });
 
         canvas.addEventListener("wheel", e => {
             e.preventDefault();
@@ -3035,4 +3078,43 @@
             radius * Math.cos(phi),
             radius * Math.sin(phi) * Math.sin(theta)
         );
+    }
+
+    function toggleEditMode() {
+        isEditMode = !isEditMode;
+        document.getElementById("btnEdit").classList.toggle("active-toggle", isEditMode);
+        if (!isEditMode) {
+            draggedIsland = null;
+        }
+    }
+
+    function exportIslands() {
+        console.log(JSON.stringify(islands, null, 2));
+        alert('Islands exported to console');
+    }
+
+    function vec3ToLatLng(vec) {
+        const radius = vec.length();
+        const phi = Math.acos(vec.y / radius);
+        const lat = 90 - phi / D2R;
+        const lng = Math.atan2(vec.z, -vec.x) / D2R - 180;
+        return {lat, lng};
+    }
+
+    // Make functions global
+    window.toggleEditMode = toggleEditMode;
+    window.exportIslands = exportIslands;
+
+    function updateIslandPosition(id) {
+        const isl = islands[id];
+        const elevation = isl.elevation || 0;
+        const surfR = GR + 0.012 + elevation;
+        const surfPos = latLngToVec3(isl.lat, isl.lng, surfR);
+        const normal = surfPos.clone().normalize();
+        islandMeshes[id].position.copy(surfPos);
+        const up = new THREE.Vector3(0, 0, 1);
+        const quat = new THREE.Quaternion().setFromUnitVectors(up, normal);
+        islandMeshes[id].quaternion.copy(quat);
+        islandGlows[id].position.copy(surfPos);
+        islandPins[id].position.copy(surfPos);
     }

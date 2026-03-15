@@ -1,672 +1,1127 @@
 /* One Piece Journey Map — Data */
 const ISLAND_DATA = {
-    // ── East Blue ── top-right quadrant (lat +18 to +45, lng +5 to +85)
-    foosha:       { name: "Foosha Village",       lat: 28, lng: 75,  sea: "east",      arc: "Romance Dawn",
-                    desc: "A small peaceful village in the Goa Kingdom on Dawn Island. Luffy grew up here under Makino's care and was inspired by Shanks." },
-    shells:       { name: "Shells Town",          lat: 25, lng: 62,  sea: "east",      arc: "Romance Dawn",
-                    desc: "A Marine base town where Captain Morgan ruled with tyranny. Luffy freed Zoro from execution here." },
-    orange:       { name: "Orange Town",          lat: 32, lng: 52,  sea: "east",      arc: "Orange Town",
-                    desc: "A town terrorized by Buggy the Clown. Luffy defeated Buggy and met Chouchou, the loyal dog." },
-    syrup:        { name: "Syrup Village",        lat: 24, lng: 42,  sea: "east",      arc: "Syrup Village",
-                    desc: "Usopp's quiet hometown where Kaya lived. Captain Kuro's plot was foiled here and the Going Merry was gifted to the crew." },
-    baratie:      { name: "Baratie",              lat: 20, lng: 32,  sea: "east",      arc: "Baratie",
-                    desc: "A floating restaurant on the sea run by Chef Zeff. Sanji worked here as a sous chef before joining the Straw Hats." },
-    arlong:       { name: "Arlong Park",          lat: 22, lng: 25,  sea: "east",      arc: "Arlong Park",
-                    desc: "The fortress of the Fish-Man pirate Arlong in Conomi Islands. Luffy destroyed it to free Nami from her servitude." },
-    loguetown:    { name: "Loguetown",            lat: 20, lng: 18,  sea: "east",      arc: "Loguetown",
-                    desc: "The Town of the Beginning and the End — where Gold Roger was born and executed. Last stop before the Grand Line." },
-
-    // ── Grand Line — Paradise ── right half of equator (lat ≈ -8 to +8, lng +2 to +170)
-    reverse:      { name: "Reverse Mountain",     lat: 0,   lng: 2,   sea: "grandline", arc: "Reverse Mountain", elevation: 0.42,
-                    desc: "The only entrance to the Grand Line from the four Blues. Canals flow upward and converge at the peak, then rush down into the Grand Line." },
-    twincape:     { name: "Twin Cape",            lat: 0,   lng: 6,   sea: "grandline", arc: "Reverse Mountain",
-                    desc: "A lighthouse at the base of Reverse Mountain where Crocus lives. Laboon, Brook's whale friend, has been waiting here for 50 years." },
-    whisky:       { name: "Whisky Peak",          lat: 3,   lng: 18,  sea: "grandline", arc: "Whisky Peak",
-                    desc: "A town of bounty hunters disguised as friendly townsfolk. Zoro single-handedly defeated 100 of Baroque Works agents here." },
-    littlegarden: { name: "Little Garden",        lat: -3,  lng: 28,  sea: "grandline", arc: "Little Garden",
-                    desc: "A prehistoric island where two giants, Dorry and Brogy, have been dueling for 100 years. Dinosaurs still roam freely." },
-    drum:         { name: "Drum Island",          lat: 7,   lng: 40,  sea: "grandline", arc: "Drum Island",
-                    desc: "A winter island with a towering drum-shaped mountain. Home to Dr. Kureha and where Chopper joined the crew." },
-    alabasta:     { name: "Alabasta",             lat: -4,  lng: 52,  sea: "grandline", arc: "Alabasta",
-                    desc: "A vast desert kingdom ruled by King Cobra. Crocodile's Baroque Works nearly toppled it. Vivi chose to stay to rebuild her country." },
-    jaya:         { name: "Jaya",                 lat: 3,   lng: 62,  sea: "grandline", arc: "Jaya",
-                    desc: "A crescent-shaped island — half was blasted into the sky 400 years ago. Luffy met Blackbeard here without knowing his identity." },
-    skypiea:      { name: "Skypiea",              lat: 3,   lng: 62,  sea: "sky",       arc: "Skypiea", elevation: 0.18,
-                    desc: "A sky island 10,000 meters above the sea, sitting on clouds. The Straw Hats defeated the self-proclaimed God Enel here." },
-    longring:     { name: "Long Ring Long Land",  lat: -3,  lng: 74,  sea: "grandline", arc: "Long Ring Long Land",
-                    desc: "A peculiar island where everything is elongated. The Straw Hats competed in the Davy Back Fight against the Foxy Pirates." },
-    water7:       { name: "Water 7",              lat: 5,   lng: 86,  sea: "grandline", arc: "Water 7",
-                    desc: "The City of Water — a Venice-like shipbuilding capital built on a sinking island. Home of the Galley-La Company and the legendary shipwrights." },
-    enies:        { name: "Enies Lobby",          lat: -5,  lng: 162, sea: "grandline", arc: "Enies Lobby",
-                    desc: "The Judicial Island that never sees night. Connected to Impel Down and Marineford via the Gates of Justice and the Tarai Current. The Straw Hats declared war on the World Government here to rescue Robin." },
-    thriller:     { name: "Thriller Bark",        lat: 3,   lng: 108, sea: "grandline", arc: "Thriller Bark",
-                    desc: "A massive ship-island in the Florian Triangle, shrouded in fog. Gecko Moria stole shadows here. Brook joined the crew after his defeat." },
-    sabaody:      { name: "Sabaody Archipelago",  lat: -2,  lng: 166, sea: "grandline", arc: "Sabaody Archipelago",
-                    desc: "A mangrove archipelago near the Red Line, known for its bubble-coated trees. Here Kuma separated the crew, and they reunited 2 years later." },
-
-    // ── Special — near second Red Line crossing (Calm Belt / GL) ──
-    amazon:       { name: "Amazon Lily",          lat: -17, lng: 155, sea: "calm",      arc: "Amazon Lily",
-                    desc: "An island of warrior women in the Calm Belt, ruled by the Pirate Empress Boa Hancock. Luffy was sent here by Kuma." },
-    impel:        { name: "Impel Down",           lat: -16, lng: 168, sea: "calm",      arc: "Impel Down",
-                    desc: "The great underwater gaol of the World Government with levels of increasing torment. Luffy broke in to rescue Ace." },
-    marineford:   { name: "Marineford",           lat: -8,  lng: 172, sea: "grandline", arc: "Marineford",
-                    desc: "Marine Headquarters where the Paramount War took place. Whitebeard fell here and Ace lost his life protecting Luffy." },
-
-    // ── Timeskip origins ── (scattered across the four Blues)
-    kuraigana:    { name: "Kuraigana Island",     lat: 30,  lng: -60, sea: "north",     arc: "Timeskip",
-                    desc: "A dark, desolate island where Dracule Mihawk lives in a ruined castle. Zoro trained here for two years to master Haki." },
-    weatheria:    { name: "Weatheria",            lat: 35,  lng: -40, sea: "sky",       arc: "Timeskip", elevation: 0.15,
-                    desc: "A small sky island inhabited by weather scientists. Nami studied advanced weather science here during the timeskip." },
-    boin:         { name: "Boin Archipelago",     lat: -32, lng: 45,  sea: "south",     arc: "Timeskip",
-                    desc: "A lush island filled with bizarre giant plants and insects. Usopp trained here and gained the Pop Green arsenal." },
-    kamabakka:    { name: "Kamabakka Kingdom",    lat: 32,  lng: -25, sea: "north",     arc: "Timeskip",
-                    desc: "The 'land of maidens' — an island of okama. Sanji trained under Ivankov's followers and perfected his Diable Jambe here." },
-    torino:       { name: "Torino Kingdom",       lat: -35, lng: 55,  sea: "south",     arc: "Timeskip",
-                    desc: "An island with advanced tribal knowledge of botany and medicines. Chopper studied new medical techniques here." },
-    baldimore:    { name: "Baldimore",            lat: 38,  lng: -50, sea: "north",     arc: "Timeskip",
-                    desc: "A winter island home to Dr. Vegapunk's birthplace, full of mechanical innovations. Franky powered up with Vegapunk's blueprints." },
-    tequila:      { name: "Tequila Wolf",         lat: 35,  lng: 55,  sea: "east",      arc: "Timeskip",
-                    desc: "A frozen wasteland where the World Government enslaves people to build a massive bridge. Robin was sent here by Kuma." },
-    harahettania: { name: "Harahettania",         lat: 38,  lng: -70, sea: "north",     arc: "Timeskip",
-                    desc: "An impoverished island of demon-summoning cultists. Brook was mistaken for Satan here before being captured." },
-    namakura:     { name: "Namakura Island",      lat: 40,  lng: -65, sea: "north",     arc: "Timeskip",
-                    desc: "Also known as Harahettania's neighboring island. Brook became the Soul King here during the timeskip, growing famous for his music." },
-    rusukaina:    { name: "Rusukaina",            lat: -17, lng: 150, sea: "calm",      arc: "Timeskip",
-                    desc: "An uninhabited jungle island in the Calm Belt with 48 seasons per year. Luffy trained under Rayleigh for 2 years to master Haki." },
-
-    // ── New World ── left half of Grand Line (lat ≈ 0°, lng -170° to -5°)
-    fishman:      { name: "Fish-Man Island",      lat: 0,   lng: 178, sea: "grandline", arc: "Fish-Man Island", elevation: 0.12,
-                    desc: "An underwater paradise 10,000m below the Red Line, protected by a giant bubble. Home of the Fish-Men and Merfolk. Jinbe's homeland." },
-    punk:         { name: "Punk Hazard",          lat: 4,   lng: -165,sea: "newworld",  arc: "Punk Hazard",
-                    desc: "An island split between fire and ice after a battle between Akainu and Aokiji. Caesar Clown conducted illegal experiments here." },
-    dressrosa:    { name: "Dressrosa",            lat: -3,  lng: -140,sea: "newworld",  arc: "Dressrosa",
-                    desc: "The country of love, passion and toys. Doflamingo ruled as a tyrant, turning citizens into living toys. Luffy's Gear 4 debuted here." },
-    zou:          { name: "Zou",                  lat: 6,   lng: -120,sea: "newworld",  arc: "Zou",
-                    desc: "A kingdom on the back of a giant 1,000-year-old elephant named Zunesha that walks the seas. Home of the Mink Tribe." },
-    wholecake:    { name: "Whole Cake Island",    lat: -4,  lng: -100,sea: "newworld",  arc: "Whole Cake Island",
-                    desc: "Big Mom's candy-coated territory made of food. Sanji was taken here for a political marriage. The crew barely escaped alive." },
-    wano:         { name: "Wano Country",         lat: 5,   lng: -70, sea: "newworld",  arc: "Wano",
-                    desc: "An isolated samurai nation with closed borders. The alliance took down Kaido and Big Mom here. Jinbe officially joined the crew." },
-    egghead:      { name: "Egghead",              lat: -2,  lng: -45, sea: "newworld",  arc: "Egghead",
-                    desc: "Dr. Vegapunk's futuristic research island, 500 years ahead of current technology. The true nature of the world is being revealed here." },
-
-    // ── Character Origins (off main path) ──
-    ohara:        { name: "Ohara",                lat: -32, lng: -55, sea: "west",      arc: "Robin's Past",
-                    desc: "An island of scholars destroyed by the World Government's Buster Call for researching the Void Century. Robin was its sole survivor." },
-    germa:        { name: "Germa Kingdom",        lat: 40,  lng: -35, sea: "north",     arc: "Sanji's Past",
-                    desc: "A mobile, seafaring kingdom that walks on snail ships. The Vinsmoke family — Sanji's cruel, genetically enhanced siblings — rules it." },
-    cocoyashi:    { name: "Cocoyashi Village",    lat: 24,  lng: 23,  sea: "east",      arc: "Nami's Past",
-                    desc: "A small village in the Conomi Islands where Nami grew up with Bell-mère. It was oppressed by Arlong's tribute demands for years." },
-
-    // ── North Blue (additional) ──
-    lvneel:       { name: "Lvneel Kingdom",       lat: 42,  lng: -15, sea: "north",     arc: "Noland's Past",
-                    desc: "A powerful North Blue kingdom. Home of the great explorer Montblanc Noland, who was executed as 'the liar' for claiming he found a city of gold." },
-    flevance:     { name: "Flevance",             lat: 33,  lng: -44, sea: "north",     arc: "Law's Past",
-                    desc: "The White City — destroyed by neighboring nations who feared the Amber Lead disease was contagious. Trafalgar Law was the sole child survivor." },
-    minion_island:{ name: "Minion Island",        lat: 26,  lng: -48, sea: "north",     arc: "Law's Past",
-                    desc: "A wintry North Blue island where Donquixote Rosinante (Corazon) stole the Ope Ope no Mi for Law and was killed by Doflamingo in the snow." },
-    swallow:      { name: "Swallow Island",       lat: 30,  lng: -53, sea: "north",     arc: "Law's Past",
-                    desc: "An island near Flevance in the North Blue. Part of the region where the young Trafalgar Law traveled with the Donquixote Pirates." },
-    spider_miles: { name: "Spider Miles",         lat: 22,  lng: -78, sea: "north",     arc: "Doflamingo's Past",
-                    desc: "A port town in the North Blue where the young Donquixote Doflamingo first established his pirate crew and began his ruthless rise to power." },
-    notice:       { name: "Notice",               lat: 28,  lng: -36, sea: "north",     arc: "Law's Past",
-                    desc: "A North Blue town where Trafalgar Law first encountered Donquixote Rosinante (Corazon), beginning the journey that would save his life." },
-
-    // ── West Blue (additional) ──
-    ilusia:       { name: "Ilusia Kingdom",       lat: -28, lng: -35, sea: "west",      arc: "Reverie",
-                    desc: "A West Blue kingdom that participates in the Reverie. Connected to revolutionary movements and the world's shifting political landscape." },
-    sorbet:       { name: "Sorbet Kingdom",       lat: -32, lng: -28, sea: "west",      arc: "Kuma's Past",
-                    desc: "A West Blue kingdom formerly ruled by a tyrant. Birthplace of Bartholomew Kuma, who sacrificed his body and free will to protect those he loved." },
-    karate_island:{ name: "Karate Island",        lat: -25, lng: -48, sea: "west",      arc: "World",
-                    desc: "A West Blue island known for its martial arts culture. A notable island in the broader geography of the One Piece world." },
-
-    // ── South Blue (additional) ──
-    briss:        { name: "Briss Kingdom",        lat: -30, lng: 32,  sea: "south",     arc: "World",
-                    desc: "A South Blue kingdom that sends representatives to the World Government's Reverie. Part of the broader political world." },
-    centaurea:    { name: "Centaurea",            lat: -26, lng: 18,  sea: "south",     arc: "World",
-                    desc: "An island in the South Blue, part of the network of kingdoms and territories that make up the world under the World Government." },
-
-    // ── Grand Line — Paradise (additional) ──
-    banaro:       { name: "Banaro Island",        lat: -2,  lng: 125, sea: "grandline", arc: "Ace vs Blackbeard",
-                    desc: "The island where Portgas D. Ace confronted Marshall D. Teach (Blackbeard). Their catastrophic battle triggered the events leading to the Paramount War." },
-    baltigo:      { name: "Baltigo",              lat: 2,   lng: 98,  sea: "grandline", arc: "Revolutionary Army",
-                    desc: "The desolate, windswept headquarters of the Revolutionary Army led by Monkey D. Dragon. It was destroyed by the Blackbeard Pirates after its location was exposed." },
-    san_faldo:    { name: "San Faldo",            lat: -1,  lng: 140, sea: "grandline", arc: "Paradise",
-                    desc: "A Grand Line island in Paradise. One of the many islands along the various Log Pose routes between Water 7 and the Red Line." },
-    pucci:        { name: "Pucci",                lat: 3,   lng: 145, sea: "grandline", arc: "Paradise",
-                    desc: "A Grand Line island known for its carnival atmosphere. One of the island routes in the latter half of Paradise." },
-    st_poplar:    { name: "St. Poplar",           lat: 1,   lng: 150, sea: "grandline", arc: "Paradise",
-                    desc: "A Grand Line island near the Sabaody Archipelago region. Known for its spring-like atmosphere and as a waypoint for pirates heading to the New World." },
-
-    // ── Government / Red Line ──
-    mariejois:    { name: "Mary Geoise",          lat: 3,   lng: 175, sea: "grandline", arc: "World Government", elevation: 0.38,
-                    desc: "The Holy Land atop the Red Line — seat of the World Government, the Five Elders, and the mysterious Im-sama. The Reverie of world leaders is held here." },
-
-    // ── New World (additional) ──
-    raijin:       { name: "Raijin Island",        lat: 3,   lng: -158,sea: "newworld",  arc: "New World",
-                    desc: "A lightning-ravaged island at the entrance to the New World. Constant thunderstorms make it extremely dangerous. Urouge was spotted here." },
-    risky_red:    { name: "Risky Red Island",     lat: -4,  lng: -152,sea: "newworld",  arc: "New World",
-                    desc: "A dangerous island in the early New World. One of the possible routes after crossing through Fish-Man Island into the second half of the Grand Line." },
-    mystoria:     { name: "Mystoria Island",      lat: 6,   lng: -148,sea: "newworld",  arc: "New World",
-                    desc: "A mysterious fog-shrouded island in the New World. One of the many treacherous islands that make the second half of the Grand Line infamous." },
-    greenbit:     { name: "Green Bit",            lat: -1,  lng: -138,sea: "newworld",  arc: "Dressrosa",
-                    desc: "A small island connected to Dressrosa by an iron bridge over Fighting Fish-infested waters. The tiny Tontatta Kingdom of dwarves lies hidden underground." },
-    prodence:     { name: "Prodence Kingdom",     lat: -5,  lng: -148,sea: "newworld",  arc: "Dressrosa",
-                    desc: "A New World kingdom ruled by King Elizabello II, whose legendary King Punch can topple fortresses. An ally of the Straw Hat Grand Fleet." },
-    applenine:    { name: "Applenine Island",     lat: 4,   lng: -132,sea: "newworld",  arc: "New World",
-                    desc: "An island in the New World. Part of the vast and dangerous second half of the Grand Line that only the strongest pirates can survive." },
-    sphinx_island:{ name: "Sphinx",               lat: -6,  lng: -112,sea: "newworld",  arc: "Whitebeard's Past",
-                    desc: "Edward Newgate's (Whitebeard's) impoverished homeland. He sent all his treasure here to support the village. Now protected by Marco the Phoenix." },
-    cacao:        { name: "Cacao Island",         lat: -6,  lng: -96, sea: "newworld",  arc: "Whole Cake Island",
-                    desc: "A chocolate-themed island in Big Mom's Tottoland. Site of the mirror ambush where Luffy barely escaped after his brutal fight with Katakuri." },
-    nuts_island:  { name: "Nuts Island",          lat: -2,  lng: -104,sea: "newworld",  arc: "Whole Cake Island",
-                    desc: "One of 34 food-themed islands in Big Mom's Tottoland territory. Part of her vast candy-coated empire spanning the New World." },
-    wheat:        { name: "Wheat Island",         lat: -7,  lng: -106,sea: "newworld",  arc: "Whole Cake Island",
-                    desc: "A grain-themed island in Tottoland. One of Big Mom's many territorial islands, each ruled by one of her children as ministers." },
-    elbaf:        { name: "Elbaf",                lat: 4,   lng: -35, sea: "newworld",  arc: "Elbaf",
-                    desc: "The legendary kingdom of giants — the strongest military nation in the world. Home to legendary warriors like Dorry, Brogy, and Prince Loki." },
-    onigashima:   { name: "Onigashima",           lat: 8,   lng: -66, sea: "newworld",  arc: "Wano",
-                    desc: "A skull-shaped island fortress off the coast of Wano. Kaido's stronghold where the Raid on Onigashima — the alliance's final battle — took place." },
-    hachinosu:    { name: "Hachinosu",            lat: 3,   lng: -55, sea: "newworld",  arc: "Blackbeard",
-                    desc: "Pirate Island (Fullalead) — Blackbeard's stronghold and a lawless pirate haven. SWORD launched a daring raid here. Former base of the Rocks Pirates." },
-    lodestar:     { name: "Lodestar Island",      lat: 2,   lng: -28, sea: "newworld",  arc: "Legend",
-                    desc: "The final island the Log Pose can reach. Gol D. Roger arrived here and discovered that the Poneglyphs point to an even more final island — Laugh Tale." },
-    laughtale:    { name: "Laugh Tale",           lat: 0,   lng: -12, sea: "newworld",  arc: "Legend",
-                    desc: "The final island at the end of the Grand Line, discovered only by Gol D. Roger's crew. It holds the One Piece. Roger named it because he laughed when he found it." },
-    god_valley:   { name: "God Valley",           lat: -22, lng: -42, sea: "west",      arc: "Rocks' Past",
-                    desc: "A now-vanished island formerly in the West Blue, erased from history. The Rocks Pirates were defeated here 38 years ago by the combined might of Garp and Roger in the God Valley Incident." },
-    winners:      { name: "Winner Island",        lat: 4,   lng: -125,sea: "newworld",  arc: "New World",
-                    desc: "A New World island. Part of the dangerous second half of the Grand Line where only the most powerful pirates dare to sail." },
-    foodvalten:   { name: "Foodvalten",           lat: -3,  lng: -160,sea: "newworld",  arc: "New World",
-                    desc: "A New World island that was under Whitebeard's protection. After his death, many of his protected territories fell into chaos and conflict." },
-
-    // ── Sky Islands (additional) ──
-    birka:        { name: "Birka",                lat: 8,   lng: -157,sea: "sky",       arc: "Enel's Past", elevation: 0.18,
-                    desc: "A sky island and Enel's homeland. He destroyed it completely with his Goro Goro no Mi lightning powers before conquering Skypiea. Home of advanced Dial technology." },
-  };
+  "foosha": {
+    "name": "Foosha Village",
+    "lat": 36.5728476821192,
+    "lng": 143.4517766497462,
+    "sea": "east",
+    "arc": "Romance Dawn",
+    "desc": "A small peaceful village in the Goa Kingdom on Dawn Island. Luffy grew up here under Makino's care and was inspired by Shanks."
+  },
+  "shells": {
+    "name": "Shells Town",
+    "lat": 41.788079470198674,
+    "lng": 117.56345177664974,
+    "sea": "east",
+    "arc": "Romance Dawn",
+    "desc": "A Marine base town where Captain Morgan ruled with tyranny. Luffy freed Zoro from execution here."
+  },
+  "orange": {
+    "name": "Orange Town",
+    "lat": 36.05132450331126,
+    "lng": 91.67512690355329,
+    "sea": "east",
+    "arc": "Orange Town",
+    "desc": "A town terrorized by Buggy the Clown. Luffy defeated Buggy and met Chouchou, the loyal dog."
+  },
+  "syrup": {
+    "name": "Syrup Village",
+    "lat": 32.74834437086093,
+    "lng": 58.78172588832487,
+    "sea": "east",
+    "arc": "Syrup Village",
+    "desc": "Usopp's quiet hometown where Kaya lived. Captain Kuro's plot was foiled here and the Going Merry was gifted to the crew."
+  },
+  "baratie": {
+    "name": "Baratie",
+    "lat": 23.882450331125828,
+    "lng": 55.126903553299485,
+    "sea": "east",
+    "arc": "Baratie",
+    "desc": "A floating restaurant on the sea run by Chef Zeff. Sanji worked here as a sous chef before joining the Straw Hats."
+  },
+  "arlong": {
+    "name": "Arlong Park",
+    "lat": 31.531456953642383,
+    "lng": 27.10659898477158,
+    "sea": "east",
+    "arc": "Arlong Park",
+    "desc": "The fortress of the Fish-Man pirate Arlong in Conomi Islands. Luffy destroyed it to free Nami from her servitude."
+  },
+  "loguetown": {
+    "name": "Loguetown",
+    "lat": 28.61724733755623,
+    "lng": -349.30697504262093,
+    "sea": "east",
+    "arc": "Loguetown",
+    "desc": "The Town of the Beginning and the End — where Gold Roger was born and executed. Last stop before the Grand Line."
+  },
+  "reverse": {
+    "name": "Reverse Mountain",
+    "lat": 0.06622516556291203,
+    "lng": 0.3045685279187751,
+    "sea": "grandline",
+    "arc": "Reverse Mountain",
+    "elevation": 0.42,
+    "desc": "The only entrance to the Grand Line from the four Blues. Canals flow upward and converge at the peak, then rush down into the Grand Line."
+  },
+  "twincape": {
+    "name": "Twin Cape",
+    "lat": 1.3309305429011857,
+    "lng": -352.3742039923887,
+    "sea": "grandline",
+    "arc": "Reverse Mountain",
+    "desc": "A lighthouse at the base of Reverse Mountain where Crocus lives. Laboon, Brook's whale friend, has been waiting here for 50 years."
+  },
+  "whisky": {
+    "name": "Whisky Peak",
+    "lat": 3.716887417218544,
+    "lng": 12.487309644670063,
+    "sea": "grandline",
+    "arc": "Whisky Peak",
+    "desc": "A town of bounty hunters disguised as friendly townsfolk. Zoro single-handedly defeated 100 of Baroque Works agents here."
+  },
+  "littlegarden": {
+    "name": "Little Garden",
+    "lat": 2.673841059602651,
+    "lng": 30.761421319796966,
+    "sea": "grandline",
+    "arc": "Little Garden",
+    "desc": "A prehistoric island where two giants, Dorry and Brogy, have been dueling for 100 years. Dinosaurs still roam freely."
+  },
+  "drum": {
+    "name": "Drum Island",
+    "lat": 6.106314553786277,
+    "lng": -317.2535868242714,
+    "sea": "grandline",
+    "arc": "Drum Island",
+    "desc": "A winter island with a towering drum-shaped mountain. Home to Dr. Kureha and where Chopper joined the crew."
+  },
+  "alabasta": {
+    "name": "Alabasta",
+    "lat": 7.019867549668874,
+    "lng": 56.64974619289342,
+    "sea": "grandline",
+    "arc": "Alabasta",
+    "desc": "A vast desert kingdom ruled by King Cobra. Crocodile's Baroque Works nearly toppled it. Vivi chose to stay to rebuild her country."
+  },
+  "jaya": {
+    "name": "Jaya",
+    "lat": 2.1523178807946977,
+    "lng": 72.79187817258881,
+    "sea": "grandline",
+    "arc": "Jaya",
+    "desc": "A crescent-shaped island — half was blasted into the sky 400 years ago. Luffy met Blackbeard here without knowing his identity."
+  },
+  "skypiea": {
+    "name": "Skypiea",
+    "lat": 2.1523178807946977,
+    "lng": 72.48730964467003,
+    "sea": "sky",
+    "arc": "Skypiea",
+    "elevation": 0.18,
+    "desc": "A sky island 10,000 meters above the sea, sitting on clouds. The Straw Hats defeated the self-proclaimed God Enel here."
+  },
+  "longring": {
+    "name": "Long Ring Long Land",
+    "lat": -2.8890728476821153,
+    "lng": 83.14720812182742,
+    "sea": "grandline",
+    "arc": "Long Ring Long Land",
+    "desc": "A peculiar island where everything is elongated. The Straw Hats competed in the Davy Back Fight against the Foxy Pirates."
+  },
+  "water7": {
+    "name": "Water 7",
+    "lat": -0.8859027180195937,
+    "lng": -246.4358810402756,
+    "sea": "grandline",
+    "arc": "Water 7",
+    "desc": "The City of Water — a Venice-like shipbuilding capital built on a sinking island. Home of the Galley-La Company and the legendary shipwrights."
+  },
+  "enies": {
+    "name": "Enies Lobby",
+    "lat": -4.667115510254732,
+    "lng": -223.404530786947,
+    "sea": "grandline",
+    "arc": "Enies Lobby",
+    "desc": "The Judicial Island that never sees night. Connected to Impel Down and Marineford via the Gates of Justice and the Tarai Current. The Straw Hats declared war on the World Government here to rescue Robin."
+  },
+  "thriller": {
+    "name": "Thriller Bark",
+    "lat": 3.319644716329279,
+    "lng": -227.81118741842158,
+    "sea": "grandline",
+    "arc": "Thriller Bark",
+    "desc": "A massive ship-island in the Florian Triangle, shrouded in fog. Gecko Moria stole shadows here. Brook joined the crew after his defeat."
+  },
+  "sabaody": {
+    "name": "Sabaody Archipelago",
+    "lat": 0.5634375737569144,
+    "lng": -191.294090425645,
+    "sea": "grandline",
+    "arc": "Sabaody Archipelago",
+    "desc": "A mangrove archipelago near the Red Line, known for its bubble-coated trees. Here Kuma separated the crew, and they reunited 2 years later."
+  },
+  "amazon": {
+    "name": "Amazon Lily",
+    "lat": -13.614735483470213,
+    "lng": -227.5089133153929,
+    "sea": "calm",
+    "arc": "Amazon Lily",
+    "desc": "An island of warrior women in the Calm Belt, ruled by the Pirate Empress Boa Hancock. Luffy was sent here by Kuma."
+  },
+  "impel": {
+    "name": "Impel Down",
+    "lat": -14.195669235735991,
+    "lng": -204.69356250307538,
+    "sea": "calm",
+    "arc": "Impel Down",
+    "desc": "The great underwater gaol of the World Government with levels of increasing torment. Luffy broke in to rescue Ace."
+  },
+  "marineford": {
+    "name": "Marineford",
+    "lat": -5.543097730657408,
+    "lng": -189.68403408681527,
+    "sea": "grandline",
+    "arc": "Marineford",
+    "desc": "Marine Headquarters where the Paramount War took place. Whitebeard fell here and Ace lost his life protecting Luffy."
+  },
+  "kuraigana": {
+    "name": "Kuraigana Island",
+    "lat": 7.2322644419625846,
+    "lng": -206.95019674548564,
+    "sea": "grandline",
+    "arc": "Timeskip",
+    "desc": "A dark, desolate island where Dracule Mihawk lives in a ruined castle. Zoro trained here for two years to master Haki."
+  },
+  "weatheria": {
+    "name": "Weatheria",
+    "lat": 38.13741721854305,
+    "lng": -40.20304568527919,
+    "sea": "sky",
+    "arc": "Timeskip",
+    "elevation": 0.15,
+    "desc": "A small sky island inhabited by weather scientists. Nami studied advanced weather science here during the timeskip."
+  },
+  "boin": {
+    "name": "Boin Archipelago",
+    "lat": -5.84437086092715,
+    "lng": 22.842639593908643,
+    "sea": "grandline",
+    "arc": "Timeskip",
+    "desc": "A lush island filled with bizarre giant plants and insects. Usopp trained here and gained the Pop Green arsenal."
+  },
+  "kamabakka": {
+    "name": "Kamabakka Kingdom",
+    "lat": -6.192052980132445,
+    "lng": 50.86294416243655,
+    "sea": "grandline",
+    "arc": "Timeskip",
+    "desc": "The 'land of maidens' — an island of okama. Sanji trained under Ivankov's followers and perfected his Diable Jambe here."
+  },
+  "torino": {
+    "name": "Torino Kingdom",
+    "lat": -22.88079470198676,
+    "lng": 84.97461928934007,
+    "sea": "south",
+    "arc": "Timeskip",
+    "desc": "An island with advanced tribal knowledge of botany and medicines. Chopper studied new medical techniques here."
+  },
+  "baldimore": {
+    "name": "Baldimore",
+    "lat": 4.23841059602649,
+    "lng": 95.93908629441626,
+    "sea": "grandline",
+    "arc": "Timeskip",
+    "desc": "A winter island home to Dr. Vegapunk's birthplace, full of mechanical innovations. Franky powered up with Vegapunk's blueprints."
+  },
+  "tequila": {
+    "name": "Tequila Wolf",
+    "lat": 48.39403973509934,
+    "lng": 75.83756345177665,
+    "sea": "east",
+    "arc": "Timeskip",
+    "desc": "A frozen wasteland where the World Government enslaves people to build a massive bridge. Robin was sent here by Kuma."
+  },
+  "harahettania": {
+    "name": "Harahettania",
+    "lat": 2,
+    "lng": 140,
+    "sea": "grandline",
+    "arc": "Timeskip",
+    "desc": "An impoverished island of demon-summoning cultists. Brook was mistaken for Satan here before being captured."
+  },
+  "namakura": {
+    "name": "Namakura Island",
+    "lat": -6.88741721854305,
+    "lng": 89.23857868020303,
+    "sea": "grandline",
+    "arc": "Timeskip",
+    "desc": "Also known as Harahettania's neighboring island. Brook became the Soul King here during the timeskip, growing famous for his music."
+  },
+  "rusukaina": {
+    "name": "Rusukaina",
+    "lat": -12.119636140784905,
+    "lng": -234.8478786828792,
+    "sea": "calm",
+    "arc": "Timeskip",
+    "desc": "An uninhabited jungle island in the Calm Belt with 48 seasons per year. Luffy trained under Rayleigh for 2 years to master Haki."
+  },
+  "fishman": {
+    "name": "Fish-Man Island",
+    "lat": 2.1523178807946977,
+    "lng": 178.78172588832484,
+    "sea": "grandline",
+    "arc": "Fish-Man Island",
+    "elevation": 0.12,
+    "desc": "An underwater paradise 10,000m below the Red Line, protected by a giant bubble. Home of the Fish-Men and Merfolk. Jinbe's homeland."
+  },
+  "punk": {
+    "name": "Punk Hazard",
+    "lat": -3.58443708609272,
+    "lng": -161.42131979695432,
+    "sea": "newworld",
+    "arc": "Punk Hazard",
+    "desc": "An island split between fire and ice after a battle between Akainu and Aokiji. Caesar Clown conducted illegal experiments here."
+  },
+  "dressrosa": {
+    "name": "Dressrosa",
+    "lat": -2.1937086092715177,
+    "lng": -131.26903553299493,
+    "sea": "newworld",
+    "arc": "Dressrosa",
+    "desc": "The country of love, passion and toys. Doflamingo ruled as a tyrant, turning citizens into living toys. Luffy's Gear 4 debuted here."
+  },
+  "zou": {
+    "name": "Zou",
+    "lat": -3.44936859365707,
+    "lng": -72.72551098682813,
+    "sea": "newworld",
+    "arc": "Zou",
+    "desc": "A kingdom on the back of a giant 1,000-year-old elephant named Zunesha that walks the seas. Home of the Mink Tribe."
+  },
+  "wholecake": {
+    "name": "Whole Cake Island",
+    "lat": 5.379396303976407,
+    "lng": -85.38142091055651,
+    "sea": "newworld",
+    "arc": "Whole Cake Island",
+    "desc": "HIIII Big Mom's candy-coated territory made of food. Sanji was taken here for a political marriage. The crew barely escaped alive."
+  },
+  "wano": {
+    "name": "Wano Country",
+    "lat": 7.715231788079471,
+    "lng": -55.126903553299485,
+    "sea": "newworld",
+    "arc": "Wano",
+    "desc": "An isolated samurai nation with closed borders. The alliance took down Kaido and Big Mom here. Jinbe officially joined the crew."
+  },
+  "egghead": {
+    "name": "Egghead",
+    "lat": -1.2303919330623785,
+    "lng": -47.28356843734559,
+    "sea": "newworld",
+    "arc": "Egghead",
+    "desc": "Dr. Vegapunk's futuristic research island, 500 years ahead of current technology. The true nature of the world is being revealed here."
+  },
+  "ohara": {
+    "name": "Ohara",
+    "lat": -21.83774834437085,
+    "lng": -112.08121827411168,
+    "sea": "west",
+    "arc": "Robin's Past",
+    "desc": "An island of scholars destroyed by the World Government's Buster Call for researching the Void Century. Robin was its sole survivor."
+  },
+  "germa": {
+    "name": "Germa Kingdom",
+    "lat": 42.13576158940397,
+    "lng": -16.14213197969542,
+    "sea": "north",
+    "arc": "Sanji's Past",
+    "desc": "A mobile, seafaring kingdom that walks on snail ships. The Vinsmoke family — Sanji's cruel, genetically enhanced siblings — rules it."
+  },
+  "cocoyashi": {
+    "name": "Cocoyashi Village",
+    "lat": 29.966887417218544,
+    "lng": 32.58883248730962,
+    "sea": "east",
+    "arc": "Nami's Past",
+    "desc": "A small village in the Conomi Islands where Nami grew up with Bell-mère. It was oppressed by Arlong's tribute demands for years."
+  },
+  "lvneel": {
+    "name": "Lvneel Kingdom",
+    "lat": 30.94003637035879,
+    "lng": -30.92915116421804,
+    "sea": "north",
+    "arc": "Noland's Past",
+    "desc": "A powerful North Blue kingdom. Home of the great explorer Montblanc Noland, who was executed as 'the liar' for claiming he found a city of gold."
+  },
+  "flevance": {
+    "name": "Flevance",
+    "lat": 44.22185430463576,
+    "lng": -96.24365482233503,
+    "sea": "north",
+    "arc": "Law's Past",
+    "desc": "The White City — destroyed by neighboring nations who feared the Amber Lead disease was contagious. Trafalgar Law was the sole child survivor."
+  },
+  "minion_island": {
+    "name": "Minion Island",
+    "lat": 37.9635761589404,
+    "lng": -100.20304568527918,
+    "sea": "north",
+    "arc": "Law's Past",
+    "desc": "A wintry North Blue island where Donquixote Rosinante (Corazon) stole the Ope Ope no Mi for Law and was killed by Doflamingo in the snow."
+  },
+  "swallow": {
+    "name": "Swallow Island",
+    "lat": 33.09602649006622,
+    "lng": -107.81725888324874,
+    "sea": "north",
+    "arc": "Law's Past",
+    "desc": "An island near Flevance in the North Blue. Part of the region where the young Trafalgar Law traveled with the Donquixote Pirates."
+  },
+  "spider_miles": {
+    "name": "Spider Miles",
+    "lat": 38.658940397350996,
+    "lng": -114.82233502538071,
+    "sea": "north",
+    "arc": "Doflamingo's Past",
+    "desc": "A port town in the North Blue where the young Donquixote Doflamingo first established his pirate crew and began his ruthless rise to power."
+  },
+  "notice": {
+    "name": "Notice",
+    "lat": 26.142384105960264,
+    "lng": -78.88324873096448,
+    "sea": "north",
+    "arc": "Law's Past",
+    "desc": "A North Blue town where Trafalgar Law first encountered Donquixote Rosinante (Corazon), beginning the journey that would save his life."
+  },
+  "ilusia": {
+    "name": "Ilusia Kingdom",
+    "lat": -28.096026490066237,
+    "lng": -131.5736040609137,
+    "sea": "west",
+    "arc": "Reverie",
+    "desc": "A West Blue kingdom that participates in the Reverie. Connected to revolutionary movements and the world's shifting political landscape."
+  },
+  "sorbet": {
+    "name": "Sorbet Kingdom",
+    "lat": -30.435836005585287,
+    "lng": -203.0827798737894,
+    "sea": "south",
+    "arc": "Kuma's Past",
+    "desc": "A West Blue kingdom formerly ruled by a tyrant. Birthplace of Bartholomew Kuma, who sacrificed his body and free will to protect those he loved."
+  },
+  "karate_island": {
+    "name": "Karate Island",
+    "lat": -25.185083950294995,
+    "lng": -196.95119296082623,
+    "sea": "grandline",
+    "arc": "World",
+    "desc": "A West Blue island known for its martial arts culture. A notable island in the broader geography of the One Piece world."
+  },
+  "briss": {
+    "name": "Briss Kingdom",
+    "lat": -29.486754966887418,
+    "lng": 24.974619289340097,
+    "sea": "south",
+    "arc": "World",
+    "desc": "A South Blue kingdom that sends representatives to the World Government's Reverie. Part of the broader political world."
+  },
+  "centaurea": {
+    "name": "Centaurea",
+    "lat": -34.35430463576159,
+    "lng": 103.85786802030458,
+    "sea": "south",
+    "arc": "World",
+    "desc": "An island in the South Blue, part of the network of kingdoms and territories that make up the world under the World Government."
+  },
+  "banaro": {
+    "name": "Banaro Island",
+    "lat": 4.0831110857458555,
+    "lng": -246.5443744119717,
+    "sea": "grandline",
+    "arc": "Ace vs Blackbeard",
+    "desc": "The island where Portgas D. Ace confronted Marshall D. Teach (Blackbeard). Their catastrophic battle triggered the events leading to the Paramount War."
+  },
+  "baltigo": {
+    "name": "Baltigo",
+    "lat": -8.451986754966889,
+    "lng": -84.36548223350255,
+    "sea": "grandline",
+    "arc": "Revolutionary Army",
+    "desc": "The desolate, windswept headquarters of the Revolutionary Army led by Monkey D. Dragon. It was destroyed by the Blackbeard Pirates after its location was exposed."
+  },
+  "san_faldo": {
+    "name": "San Faldo",
+    "lat": -8.114617000753157,
+    "lng": -260.3909735886526,
+    "sea": "grandline",
+    "arc": "Paradise",
+    "desc": "A Grand Line island in Paradise. One of the many islands along the various Log Pose routes between Water 7 and the Red Line."
+  },
+  "pucci": {
+    "name": "Pucci",
+    "lat": -1.324503311258276,
+    "lng": 95.93908629441626,
+    "sea": "grandline",
+    "arc": "Paradise",
+    "desc": "A Grand Line island known for its carnival atmosphere. One of the island routes in the latter half of Paradise."
+  },
+  "st_poplar": {
+    "name": "St. Poplar",
+    "lat": -5.7010927126683555,
+    "lng": -245.7874031466945,
+    "sea": "grandline",
+    "arc": "Paradise",
+    "desc": "A Grand Line island near the Sabaody Archipelago region. Known for its spring-like atmosphere and as a waypoint for pirates heading to the New World."
+  },
+  "mariejois": {
+    "name": "Mary Geoise",
+    "lat": 0.2400662251655561,
+    "lng": 179.08629441624367,
+    "sea": "grandline",
+    "arc": "World Government",
+    "elevation": 0.38,
+    "desc": "The Holy Land atop the Red Line — seat of the World Government, the Five Elders, and the mysterious Im-sama. The Reverie of world leaders is held here."
+  },
+  "raijin": {
+    "name": "Raijin Island",
+    "lat": 0.06622516556291203,
+    "lng": -158.6802030456853,
+    "sea": "newworld",
+    "arc": "New World",
+    "desc": "A lightning-ravaged island at the entrance to the New World. Constant thunderstorms make it extremely dangerous. Urouge was spotted here."
+  },
+  "risky_red": {
+    "name": "Risky Red Island",
+    "lat": 2.5,
+    "lng": -154.11167512690355,
+    "sea": "newworld",
+    "arc": "New World",
+    "desc": "A dangerous island in the early New World. One of the possible routes after crossing through Fish-Man Island into the second half of the Grand Line."
+  },
+  "mystoria": {
+    "name": "Mystoria Island",
+    "lat": 5.6291390728476784,
+    "lng": -158.3756345177665,
+    "sea": "newworld",
+    "arc": "New World",
+    "desc": "A mysterious fog-shrouded island in the New World. One of the many treacherous islands that make the second half of the Grand Line infamous."
+  },
+  "greenbit": {
+    "name": "Green Bit",
+    "lat": 0.41390728476821437,
+    "lng": -125.17766497461929,
+    "sea": "newworld",
+    "arc": "Dressrosa",
+    "desc": "A small island connected to Dressrosa by an iron bridge over Fighting Fish-infested waters. The tiny Tontatta Kingdom of dwarves lies hidden underground."
+  },
+  "prodence": {
+    "name": "Prodence Kingdom",
+    "lat": -6.365894039735103,
+    "lng": -140.40609137055839,
+    "sea": "newworld",
+    "arc": "Dressrosa",
+    "desc": "A New World kingdom ruled by King Elizabello II, whose legendary King Punch can topple fortresses. An ally of the Straw Hat Grand Fleet."
+  },
+  "applenine": {
+    "name": "Applenine Island",
+    "lat": 3.3692052980132416,
+    "lng": -112.99492385786802,
+    "sea": "newworld",
+    "arc": "New World",
+    "desc": "An island in the New World. Part of the vast and dangerous second half of the Grand Line that only the strongest pirates can survive."
+  },
+  "sphinx_island": {
+    "name": "Sphinx",
+    "lat": -4.105960264900659,
+    "lng": -36.54822335025381,
+    "sea": "newworld",
+    "arc": "Whitebeard's Past",
+    "desc": "Edward Newgate's (Whitebeard's) impoverished homeland. He sent all his treasure here to support the village. Now protected by Marco the Phoenix."
+  },
+  "cacao": {
+    "name": "Cacao Island",
+    "lat": 1.109271523178812,
+    "lng": -80.71065989847715,
+    "sea": "newworld",
+    "arc": "Whole Cake Island",
+    "desc": "A chocolate-themed island in Big Mom's Tottoland. Site of the mirror ambush where Luffy barely escaped after his brutal fight with Katakuri."
+  },
+  "nuts_island": {
+    "name": "Nuts Island",
+    "lat": 4.759933774834437,
+    "lng": -94.11167512690355,
+    "sea": "newworld",
+    "arc": "Whole Cake Island",
+    "desc": "One of 34 food-themed islands in Big Mom's Tottoland territory. Part of her vast candy-coated empire spanning the New World."
+  },
+  "wheat": {
+    "name": "Wheat Island",
+    "lat": 7.367549668874176,
+    "lng": -79.49238578680203,
+    "sea": "newworld",
+    "arc": "Whole Cake Island",
+    "desc": "A grain-themed island in Tottoland. One of Big Mom's many territorial islands, each ruled by one of her children as ministers."
+  },
+  "elbaf": {
+    "name": "Elbaf",
+    "lat": 5.281456953642383,
+    "lng": -34.72081218274113,
+    "sea": "newworld",
+    "arc": "Elbaf",
+    "desc": "The legendary kingdom of giants — the strongest military nation in the world. Home to legendary warriors like Dorry, Brogy, and Prince Loki."
+  },
+  "onigashima": {
+    "name": "Onigashima",
+    "lat": 5.281456953642383,
+    "lng": -57.25888324873097,
+    "sea": "newworld",
+    "arc": "Wano",
+    "desc": "A skull-shaped island fortress off the coast of Wano. Kaido's stronghold where the Raid on Onigashima — the alliance's final battle — took place."
+  },
+  "hachinosu": {
+    "name": "Hachinosu",
+    "lat": -0.10761589403973204,
+    "lng": -29.847715736040612,
+    "sea": "newworld",
+    "arc": "Blackbeard",
+    "desc": "Pirate Island (Fullalead) — Blackbeard's stronghold and a lawless pirate haven. SWORD launched a daring raid here. Former base of the Rocks Pirates."
+  },
+  "lodestar": {
+    "name": "Lodestar Island",
+    "lat": 0.06622516556291203,
+    "lng": -21.015228426395936,
+    "sea": "newworld",
+    "arc": "Legend",
+    "desc": "The final island the Log Pose can reach. Gol D. Roger arrived here and discovered that the Poneglyphs point to an even more final island — Laugh Tale."
+  },
+  "laughtale": {
+    "name": "Laugh Tale",
+    "lat": 0,
+    "lng": -12,
+    "sea": "newworld",
+    "arc": "Legend",
+    "desc": "The final island at the end of the Grand Line, discovered only by Gol D. Roger's crew. It holds the One Piece. Roger named it because he laughed when he found it."
+  },
+  "god_valley": {
+    "name": "God Valley",
+    "lat": -31.2251655629139,
+    "lng": -60.913705583756354,
+    "sea": "west",
+    "arc": "Rocks' Past",
+    "desc": "A now-vanished island formerly in the West Blue, erased from history. The Rocks Pirates were defeated here 38 years ago by the combined might of Garp and Roger in the God Valley Incident."
+  },
+  "winners": {
+    "name": "Winner Island",
+    "lat": 8.58443708609272,
+    "lng": -27.411167512690355,
+    "sea": "newworld",
+    "arc": "New World",
+    "desc": "A New World island. Part of the dangerous second half of the Grand Line where only the most powerful pirates dare to sail."
+  },
+  "foodvalten": {
+    "name": "Foodvalten",
+    "lat": -1.283403065694472,
+    "lng": -60.319158015622776,
+    "sea": "newworld",
+    "arc": "New World",
+    "desc": "A New World island that was under Whitebeard's protection. After his death, many of his protected territories fell into chaos and conflict."
+  },
+  "birka": {
+    "name": "Birka",
+    "lat": 19.36258278145695,
+    "lng": 80.10152284263961,
+    "sea": "sky",
+    "arc": "Enel's Past",
+    "elevation": 0.18,
+    "desc": "A sky island and Enel's homeland. He destroyed it completely with his Goro Goro no Mi lightning powers before conquering Skypiea. Home of advanced Dial technology."
+  }
+};
 
 const ISLAND_EVENTS = {
-    luffy: {
-      foosha: "Grew up here under Makino's care. Ate the Gomu Gomu no Mi by accident. Was inspired by Red-Haired Shanks to become a pirate.",
-      shells: "Rescued Roronoa Zoro from Captain Morgan's execution post. Recruited his first crewmate.",
-      orange: "Defeated Buggy the Clown who was terrorizing the town. Met Nami for the first time.",
-      syrup: "Exposed Captain Kuro's assassination plot against Kaya. Recruited Usopp and received the Going Merry.",
-      baratie: "Fought Don Krieg's armada alongside the Baratie chefs. Recruited Sanji as the crew's cook.",
-      arlong: "Destroyed Arlong Park with a single devastating punch. Freed Nami from her 8-year servitude to Arlong.",
-      loguetown: "Stood on Gol D. Roger's execution platform. Was saved from Smoker and Buggy by his father, Dragon.",
-      reverse: "Entered the Grand Line through the upward canals, riding a wave of determination.",
-      twincape: "Met the whale Laboon and Crocus. Drew a poorly-drawn Jolly Roger on Laboon as a promise to return.",
-      whisky: "Ate a massive feast, unaware the hosts were Baroque Works bounty hunters. Got into a fight with Zoro over protecting Vivi.",
-      littlegarden: "Befriended the giants Dorry and Brogy. Helped them fight off Baroque Works' sabotage of their 100-year duel.",
-      drum: "Climbed the sheer Drum Rockies with bare hands, carrying Nami and Sanji on his back through a blizzard.",
-      alabasta: "Defeated Crocodile in three grueling battles. Saved the kingdom of Alabasta and bid farewell to Vivi.",
-      jaya: "Refused to fight Bellamy despite mockery. Was inspired by Blackbeard's speech about dreams never dying.",
-      skypiea: "Defeated the self-proclaimed God Enel. Rang the Golden Bell of Shandora, proving Noland was no liar.",
-      longring: "Won the Davy Back Fight against the Foxy Pirates, protecting his crew from being taken.",
-      water7: "Had a painful falling out with Usopp over the Going Merry. Lost Robin to CP9.",
-      enies: "Declared war on the World Government to rescue Robin. Debuted Gear 2 and Gear 3 against Rob Lucci.",
-      thriller: "Defeated Oars with the entire crew. Gained Brook as a crewmate after Moria's defeat.",
-      sabaody: "Punched a Celestial Dragon to protect his friends. Was overwhelmed by Kuma and separated from his crew.",
-      amazon: "Landed on the island of warrior women. Befriended Boa Hancock and learned of Ace's impending execution.",
-      impel: "Broke into the world's most secure prison. Allied with Ivankov, Jinbe, and Crocodile to stage a massive breakout.",
-      marineford: "Fought desperately in the Paramount War to save Ace. Witnessed Ace's death and was saved by Jinbe and Law.",
-      rusukaina: "Trained under Silvers Rayleigh for 2 years. Mastered all three types of Haki — Observation, Armament, and Conqueror's.",
-      fishman: "Defeated Hody Jones and liberated Fish-Man Island. Befriended Princess Shirahoshi (the ancient weapon Poseidon).",
-      punk: "Defeated Caesar Clown. Formed a pivotal alliance with Trafalgar Law to take down the Yonko.",
-      dressrosa: "Defeated Doflamingo using Gear 4: Boundman. Accidentally formed the Straw Hat Grand Fleet of 5,600 followers.",
-      zou: "Learned about the Road Poneglyphs needed to reach Laugh Tale. Formed the Ninja-Pirate-Mink-Samurai Alliance.",
-      wholecake: "Crashed Big Mom's tea party to retrieve Sanji. Fought Katakuri and advanced his Observation Haki to see the future.",
-      wano: "Awakened Gear 5 (Nika form) and defeated Kaido atop Onigashima. Liberated Wano after 20 years of Kaido's oppression.",
-      onigashima: "Fought Kaido one-on-one atop the Skull Dome. Awakened his true Devil Fruit — the Hito Hito no Mi, Model: Nika — and defeated the world's strongest creature.",
-      cacao: "Emerged from the Mirro-World after a grueling 11-hour fight with Katakuri. Barely escaped Big Mom's forces in a desperate chase through Cacao Island.",
-      greenbit: "Crossed the dangerous iron bridge to Green Bit. Encountered the Tontatta dwarves and learned about Doflamingo's true grip on Dressrosa.",
-      elbaf: "Finally reached the legendary island of giants. The island Usopp and the crew had heard about since Little Garden.",
-      egghead: "Met Dr. Vegapunk and learned about Joy Boy, the Void Century, and the true nature of the world."
-    },
-    zoro: {
-      shells: "Was held captive and starving under Captain Morgan. Agreed to join Luffy after being freed — became the first Straw Hat.",
-      orange: "Fought Buggy's swordsman Cabaji while heavily injured. Showed his relentless fighting spirit early on.",
-      syrup: "Helped defeat Captain Kuro's Black Cat Pirates alongside the crew on the beach.",
-      baratie: "Challenged Dracule Mihawk, the world's greatest swordsman, and was utterly defeated. Vowed to Luffy he would never lose again.",
-      arlong: "Fought the Fish-Man Hatchan while still bleeding from Mihawk's massive chest wound.",
-      loguetown: "Obtained two new swords — Sandai Kitetsu (cursed) and Yubashiri — testing his luck at the sword shop.",
-      reverse: "Entered the Grand Line with the crew, ready for the challenges ahead.",
-      twincape: "Arrived at the entrance to the Grand Line alongside the crew.",
-      whisky: "Single-handedly defeated all 100 Baroque Works bounty hunters at the welcome banquet while the others slept.",
-      littlegarden: "Was trapped in Mr. 3's wax casing and attempted to cut off his own feet to escape rather than give up.",
-      drum: "Braved the frozen terrain while still recovering from Baroque Works injuries.",
-      alabasta: "Defeated Mr. 1 (Daz Bones) by learning to cut steel — a breakthrough in his swordsmanship.",
-      jaya: "Stayed loyal through the crew's mockery by Bellamy's gang. Joined the quest to Skypiea.",
-      skypiea: "Defeated Ohm, one of Enel's priests, in the Upper Yard survival game.",
-      longring: "Fought in the Davy Back Fight to protect the crew from Foxy's tricks.",
-      water7: "Stood by Luffy during the painful conflict with Usopp, showing his resolve as first mate.",
-      enies: "Defeated Kaku of CP9 using his new technique Asura (nine-sword style illusion).",
-      thriller: "Took all of Luffy's accumulated pain and fatigue from Bartholomew Kuma. When asked what happened — \"Nothing happened.\"",
-      sabaody: "Was overwhelmed by Kuma's power. Sent flying to the dark island of Kuraigana.",
-      kuraigana: "Swallowed his pride and begged Mihawk to train him for 2 years. Mastered Haki and advanced sword techniques.",
-      onigashima: "Fought King the Wildfire on the Live Floor. Unleashed Conqueror's Haki coating and defeated Kaido's right-hand man with a final Kings of Hell slash.",
-      fishman: "Demonstrated overwhelming post-timeskip power. Cut a ship in half with a single slash.",
-      punk: "Fought alongside the Straw Hat-Heart alliance on the half-frozen, half-burning island.",
-      dressrosa: "Defeated the massive stone colossus Pica by slicing him clean in two mid-air.",
-      zou: "Helped form the alliance and learned about the Road Poneglyphs from the Minks.",
-      wano: "Received Enma, Kozuki Oden's legendary sword. Fought Kaido on the rooftop and scarred him. Defeated King the Wildfire.",
-      egghead: "Protected the crew on the futuristic island, ready as always for any threat."
-    },
-    nami: {
-      cocoyashi: "Grew up here with her adoptive mother Bell-mère. Was forced into Arlong's servitude as a child cartographer.",
-      arlong: "Was finally freed when Luffy destroyed Arlong Park. Tearfully asked Luffy for help and officially joined the crew.",
-      loguetown: "Stocked up on supplies and navigator tools before the perilous journey to the Grand Line.",
-      reverse: "Navigated the treacherous currents of Reverse Mountain into the Grand Line.",
-      twincape: "Helped with navigation at the entrance. Received a Log Pose to navigate the Grand Line.",
-      whisky: "Was fooled by the welcoming townsfolk before Baroque Works revealed themselves.",
-      littlegarden: "Was bitten by a prehistoric insect and fell severely ill, leading the crew to rush to Drum Island.",
-      drum: "Was critically ill with a high fever. Luffy carried her up the mountain to reach Dr. Kureha.",
-      alabasta: "Fought and defeated Miss Doublefinger using her first Clima-Tact weapon. Showed combat potential for the first time.",
-      jaya: "Navigated the crew to the Knock Up Stream — the only way to reach Skypiea — with precise calculations.",
-      skypiea: "Explored the ruins of Shandora. Rode the Waver across the White Sea and found Enel's ark.",
-      longring: "Competed in the Davy Back Fight and outsmarted the Foxy Pirates with her wits.",
-      water7: "Dealt with the emotional fallout of the Going Merry's irreparable damage and Robin's departure.",
-      enies: "Fought and defeated Kalifa of CP9 using the improved Clima-Tact. Helped rescue Robin.",
-      thriller: "Was targeted by the invisible Absalom. Fought bravely during the Thriller Bark battle.",
-      sabaody: "Was sent flying to the sky island Weatheria by Kuma's paw attack.",
-      weatheria: "Studied advanced weather science for 2 years with the Weatheria scientists. Vastly upgraded her Clima-Tact.",
-      fishman: "Stood up for Fish-Man equality despite being human. Fought Hody's forces with her new weather abilities.",
-      punk: "Navigated the hazardous waters of Punk Hazard and helped protect the kidnapped children.",
-      dressrosa: "Fought alongside the crew during the Dressrosa operation.",
-      zou: "Played a key role in alliance planning. Helped decipher the Road Poneglyph information.",
-      wholecake: "Navigated through Big Mom's dangerous territory. Helped rescue Sanji from the Vinsmoke marriage.",
-      wano: "Fought Kaido's forces using Zeus, a sentient thundercloud she tamed from Big Mom. Defeated Ulti.",
-      onigashima: "Used Zeus to devastating effect during the Raid. Defeated Ulti of the Tobi Roppo with a massive lightning attack.",
-      egghead: "Explored Dr. Vegapunk's futuristic research alongside the crew."
-    },
-    usopp: {
-      syrup: "Defended his village from Captain Kuro's attack with courage. Joined the crew and received the Going Merry from Kaya.",
-      baratie: "Supported the crew during the battle against Don Krieg's armada at the floating restaurant.",
-      arlong: "Sniped from a distance and fought alongside Nami's villagers to take down Arlong's crew.",
-      loguetown: "Prepared gear for the Grand Line while grappling with fear of the dangers ahead.",
-      reverse: "Braved the entrance to the Grand Line despite being terrified of the journey.",
-      twincape: "Helped the crew at the Grand Line entrance. Saw Laboon for the first time.",
-      whisky: "Fell for the Baroque Works agents' hospitality trap along with the rest of the crew.",
-      littlegarden: "Showed remarkable courage against Baroque Works agents. Befriended the giants and was inspired by their warrior spirit.",
-      drum: "Helped the crew traverse the frozen terrain to find a doctor for Nami.",
-      alabasta: "Fought as part of the crew against Baroque Works. Showed early signs of his sniping prowess.",
-      jaya: "Was frustrated by Bellamy's mockery of their dreams but trusted Luffy's choice not to fight.",
-      skypiea: "Helped defeat Enel's forces in the ruins of Shandora. Displayed bravery despite his fears.",
-      longring: "Competed in the Davy Back Fight. Used creative tactics to help win events.",
-      water7: "Left the crew in a devastating dispute over the Going Merry. Fought Luffy in a heartbreaking duel.",
-      enies: "Returned as 'Sogeking' — burned the World Government flag on Luffy's orders. Made an impossible long-range shot from the Tower of Justice.",
-      thriller: "Defeated Perona — his negativity made him immune to her Hollow powers. A fight only he could win.",
-      sabaody: "Was sent flying to Boin Archipelago by Kuma's attack.",
-      boin: "Trained for 2 years among giant carnivorous plants. Gained physical strength and the Pop Green (plant weapon) arsenal.",
-      fishman: "Showed off his powerful new Pop Green abilities against the New Fish-Man Pirates.",
-      punk: "Fought Caesar's henchmen with his plant-based weapons. Proved his growth as a warrior.",
-      dressrosa: "Became 'God Usopp' by rallying the enslaved toys. Awakened Observation Haki to save Luffy from Sugar.",
-      greenbit: "Accompanied Robin to Green Bit. Encountered the Tontatta dwarves who believed his lies and made him their hero.",
-      zou: "Helped plan the alliance strategy with the Mink Tribe.",
-      wano: "Fought in the Raid on Onigashima. Provided sniper support for the alliance forces.",
-      onigashima: "Fought bravely during the Raid despite being injured. Carried Kin'emon through the fire while providing sniper cover.",
-      egghead: "Explored Vegapunk's futuristic technology on the island."
-    },
-    sanji: {
-      germa: "Escaped his abusive childhood in the Vinsmoke family. Was disowned for showing empathy and weakness.",
-      baratie: "Worked as sous chef under Red Leg Zeff. Joined the Straw Hats after Zeff convinced him to chase his dream of finding the All Blue.",
-      arlong: "Defeated Kuroobi, a Fish-Man Karate expert, in an underwater and surface battle.",
-      loguetown: "Stocked provisions for the Grand Line. Had a brief encounter with the Marines.",
-      reverse: "Entered the Grand Line with the crew as their cook.",
-      twincape: "Arrived at the Grand Line entrance alongside the Straw Hats.",
-      whisky: "Flirted with the female bounty hunters before the trap was revealed. Fought Baroque Works agents.",
-      littlegarden: "Outsmarted Mr. 3 using a Den Den Mushi. Called Crocodile posing as Mr. 3 to buy time for the crew.",
-      drum: "Was critically injured protecting Nami from an avalanche. Luffy carried both him and Nami up the mountain.",
-      alabasta: "Infiltrated Rain Dinners as the mysterious 'Mr. Prince'. Defeated Mr. 2 Bon Clay in a fierce battle.",
-      jaya: "Helped prepare for the dangerous trip to the sky island Skypiea.",
-      skypiea: "Saved the crew multiple times from Enel's forces. Fought the priest Satori.",
-      longring: "Competed in the Davy Back Fight, playing a pivotal role in the soccer-like match.",
-      water7: "Discovered CP9's true identity when they took Robin. Attempted a solo rescue mission.",
-      enies: "Defeated Jabra of CP9 using Diable Jambe for the first time — his leg ignited with spinning friction.",
-      thriller: "Fought Absalom to protect Nami. Was furious that Absalom had the Suke Suke no Mi (invisibility fruit).",
-      sabaody: "Was sent flying to Kamabakka Kingdom by Kuma — to his absolute horror.",
-      kamabakka: "Trained under Ivankov's followers for 2 years. Perfected Diable Jambe and learned Sky Walk (air-walking technique).",
-      fishman: "Showcased powerful new techniques post-timeskip. Nearly fainted from nosebleeds around mermaids.",
-      punk: "Had his body swapped by Law's power. Fought in the alliance against Caesar's forces.",
-      dressrosa: "Guarded the Thousand Sunny and later joined the fight. Clashed with Doflamingo briefly.",
-      zou: "Learned the truth about the Vinsmoke family. Was taken by Capone Bege to Big Mom's territory for a political marriage.",
-      wholecake: "Confronted his family's cruelty. Baked a cake to calm Big Mom's rampage. Chose to return to the Straw Hats.",
-      wano: "Used the Germa Raid Suit. Fought and defeated Queen. Awakened latent Vinsmoke genetic enhancements.",
-      onigashima: "Destroyed the Germa Raid Suit, rejecting his family's legacy. Awakened Ifrit Jambe and defeated Queen with superhuman power.",
-      cacao: "Waited at Cacao Island to help Luffy escape after the Katakuri fight. Fought Oven to protect the crew's retreat.",
-      egghead: "Fought alongside the crew on Vegapunk's futuristic research island."
-    },
-    chopper: {
-      drum: "Was born a reindeer outcast. Trained under Dr. Hiluluk and Dr. Kureha. Joined the Straw Hats after Wapol's defeat.",
-      alabasta: "Fought Mr. 4 and Miss Merry Christmas using his Rumble Ball transformations for the first time in real combat.",
-      jaya: "Explored Jaya and provided medical care for the crew's injuries.",
-      skypiea: "Defeated Gedatsu, one of Enel's priests, using his various Point transformations in the Upper Yard.",
-      longring: "Competed in the Davy Back Fight. Was briefly 'won' by the Foxy Pirates before being rescued.",
-      water7: "Provided emotional support during the crew's crisis over Merry and Robin.",
-      enies: "Fought Kumadori of CP9. Unleashed Monster Point for the first time — powerful but uncontrolled and dangerous.",
-      thriller: "Used his medical skills to treat the crew. Fought Hogback's zombie creations.",
-      sabaody: "Was sent flying to Torino Kingdom by Kuma's attack.",
-      torino: "Studied advanced medicine, botany, and pharmacology for 2 years. Mastered new Rumble Ball forms with full control.",
-      fishman: "Used his improved transformations against the New Fish-Man Pirates. Showed full Monster Point control.",
-      punk: "Treated the children who were experimented on by Caesar Clown. Showed his dedication as a doctor.",
-      dressrosa: "Provided critical medical support during the battle for Dressrosa.",
-      zou: "Used his medical expertise to treat the Minks who were poisoned by Caesar's Koro gas.",
-      wholecake: "Supported the crew through Big Mom's territory and looked after the ship.",
-      wano: "Fought Queen in controlled Monster Point. Treated the wounded during the massive Onigashima raid.",
-      onigashima: "Used Monster Point to battle Queen directly. Served as the battlefield medic, saving countless lives during the chaotic Raid.",
-      egghead: "Was fascinated by Vegapunk's advanced medical research and technology."
-    },
-    robin: {
-      ohara: "Grew up studying Poneglyphs on the island of scholars. Was the sole survivor when the World Government's Buster Call destroyed everything.",
-      alabasta: "Served as Crocodile's partner 'Miss All Sunday' in Baroque Works. Joined the Straw Hats after asking Luffy to let her live.",
-      jaya: "Decoded ancient Poneglyph clues that led the crew to Skypiea. Began revealing her archaeological skills.",
-      skypiea: "Read the Shandorian Poneglyph in the Golden Bell, uncovering part of the ancient history and Roger's message.",
-      longring: "Participated alongside the crew against the Foxy Pirates in the Davy Back Fight.",
-      water7: "Was captured by CP9 and surrendered herself to protect the crew from a Buster Call. Believed she had to die.",
-      enies: "Was rescued by the crew who declared war on the World Government for her. Cried out 'I want to live!' — her turning point.",
-      thriller: "Fought alongside the crew using her Hana Hana no Mi powers against Moria's forces.",
-      sabaody: "Was sent flying to Tequila Wolf by Kuma's paw attack.",
-      tequila: "Was briefly enslaved before being rescued by the Revolutionary Army. Trained with Dragon's forces for 2 years.",
-      fishman: "Read the Poneglyph on Fish-Man Island, learning about Joy Boy's ancient promise to the Fish-Men.",
-      punk: "Investigated Caesar's research and uncovered his dark experiments on children and weapons of mass destruction.",
-      dressrosa: "Was key to the Tontatta dwarves' liberation plan. Used her powers extensively in the underground battle.",
-      greenbit: "Traveled to Green Bit for the exchange operation. Met the Tontatta dwarves and uncovered the underground passage to Dressrosa.",
-      zou: "Read the Road Poneglyph on Zou — critical information for finding the final island, Laugh Tale.",
-      wano: "Read Wano's Road Poneglyph. Defeated Black Maria using her awakened Demonio Fleur transformation.",
-      onigashima: "Defeated Black Maria of the Tobi Roppo using her awakened Demonio Fleur — a giant demonic form made of blooming limbs.",
-      egghead: "Connected with Vegapunk's knowledge about the Void Century and the ancient world's true history."
-    },
-    franky: {
-      water7: "Led the Franky Family as a dismantler. Built the Thousand Sunny from Adam Wood. Joined the crew as shipwright.",
-      enies: "Fought and defeated Fukurou of CP9. Used his Coup de Vent to help the crew escape the falling island.",
-      thriller: "Used his vehicles, weapons, and engineering against Oars. Provided tactical support to the crew.",
-      sabaody: "Was sent flying to Baldimore — Vegapunk's birthplace — by Kuma's attack.",
-      baldimore: "Studied Vegapunk's blueprints and technology for 2 years. Rebuilt himself into a far more powerful cyborg.",
-      fishman: "Unveiled his incredible post-timeskip body. Debuted General Franky — a giant robot mecha — against the enemy.",
-      punk: "Used General Franky against Caesar's forces. His cyborg abilities proved vital in the harsh terrain.",
-      dressrosa: "Fought Senor Pink in a battle of manliness — both fighters respected each other's resolve. Won with a final suplex.",
-      zou: "Protected the Thousand Sunny and helped plan the Wano alliance strategy.",
-      wano: "Fought and defeated Sasaki using General Franky. Protected the alliance during the Onigashima raid.",
-      onigashima: "Used General Franky to battle Sasaki of the Tobi Roppo. Protected the samurai forces with his engineering prowess.",
-      egghead: "Was amazed by Vegapunk's technology, comparing it to his own inventions with both admiration and rivalry."
-    },
-    brook: {
-      thriller: "Was trapped alone on Thriller Bark for 50 years, his shadow stolen by Moria. Joined the crew after being freed. Dreams of reuniting with Laboon.",
-      sabaody: "Was sent flying to the Namakura region by Kuma's paw attack.",
-      harahettania: "Landed among demon-summoning cultists who mistook his skeleton form for Satan himself.",
-      namakura: "Became the world-famous 'Soul King' musician during the timeskip. His concerts drew massive crowds.",
-      fishman: "Used his skeleton body to explore underwater freely. Fought the New Fish-Man Pirates with Soul Solid (ice sword).",
-      punk: "Deployed his Soul Solid techniques in combat against Caesar's forces on the divided island.",
-      dressrosa: "Fought alongside the crew and protected key allies during the Dressrosa liberation.",
-      zou: "Arrived on Zou early with the advance team. Fought Jack's forces bravely and helped protect the Minks.",
-      wholecake: "Stole Big Mom's Road Poneglyph rubbings — a crucial mission success. Fought Big Mom's chess soldiers solo.",
-      wano: "Used his Soul King musical abilities and combat skills during the Raid on Onigashima.",
-      onigashima: "Fought alongside Robin against Black Maria's forces. Used his Soul Solid ice techniques to protect allies during the Raid.",
-      egghead: "Supported the crew on Vegapunk's island with his unique undead perspective."
-    },
-    jinbe: {
-      fishman: "Born and raised here. Former Sun Pirates captain and Warlord. Dedicated his life to protecting Fish-Man Island and its people.",
-      impel: "Was imprisoned for refusing to fight in the Paramount War. Was freed during Luffy's daring breakout and allied with him.",
-      marineford: "Fought alongside Luffy in the Paramount War. Saved Luffy's life after Ace's death, shielding him from Akainu's magma fist.",
-      wholecake: "Officially resigned from Big Mom's crew, offering his life as the price. Helped the Straw Hats escape her territory.",
-      wano: "Arrived at Onigashima and officially joined the Straw Hat crew. Defeated Who's-Who of the Tobi Roppo.",
-      onigashima: "Officially became the 10th member of the Straw Hat Pirates. Defeated Who's-Who using Fish-Man Karate, proving his worth as the crew's helmsman.",
-      egghead: "Served as helmsman, navigating the dangerous waters around Egghead with expert skill."
-    }
-  };
+  luffy: {
+    foosha: "Grew up here under Makino's care. Ate the Gomu Gomu no Mi by accident. Was inspired by Red-Haired Shanks to become a pirate.",
+    shells: "Rescued Roronoa Zoro from Captain Morgan's execution post. Recruited his first crewmate.",
+    orange: "Defeated Buggy the Clown who was terrorizing the town. Met Nami for the first time.",
+    syrup: "Exposed Captain Kuro's assassination plot against Kaya. Recruited Usopp and received the Going Merry.",
+    baratie: "Fought Don Krieg's armada alongside the Baratie chefs. Recruited Sanji as the crew's cook.",
+    arlong: "Destroyed Arlong Park with a single devastating punch. Freed Nami from her 8-year servitude to Arlong.",
+    loguetown: "Stood on Gol D. Roger's execution platform. Was saved from Smoker and Buggy by his father, Dragon.",
+    reverse: "Entered the Grand Line through the upward canals, riding a wave of determination.",
+    twincape: "Met the whale Laboon and Crocus. Drew a poorly-drawn Jolly Roger on Laboon as a promise to return.",
+    whisky: "Ate a massive feast, unaware the hosts were Baroque Works bounty hunters. Got into a fight with Zoro over protecting Vivi.",
+    littlegarden: "Befriended the giants Dorry and Brogy. Helped them fight off Baroque Works' sabotage of their 100-year duel.",
+    drum: "Climbed the sheer Drum Rockies with bare hands, carrying Nami and Sanji on his back through a blizzard.",
+    alabasta: "Defeated Crocodile in three grueling battles. Saved the kingdom of Alabasta and bid farewell to Vivi.",
+    jaya: "Refused to fight Bellamy despite mockery. Was inspired by Blackbeard's speech about dreams never dying.",
+    skypiea: "Defeated the self-proclaimed God Enel. Rang the Golden Bell of Shandora, proving Noland was no liar.",
+    longring: "Won the Davy Back Fight against the Foxy Pirates, protecting his crew from being taken.",
+    water7: "Had a painful falling out with Usopp over the Going Merry. Lost Robin to CP9.",
+    enies: "Declared war on the World Government to rescue Robin. Debuted Gear 2 and Gear 3 against Rob Lucci.",
+    thriller: "Defeated Oars with the entire crew. Gained Brook as a crewmate after Moria's defeat.",
+    sabaody: "Punched a Celestial Dragon to protect his friends. Was overwhelmed by Kuma and separated from his crew.",
+    amazon: "Landed on the island of warrior women. Befriended Boa Hancock and learned of Ace's impending execution.",
+    impel: "Broke into the world's most secure prison. Allied with Ivankov, Jinbe, and Crocodile to stage a massive breakout.",
+    marineford: "Fought desperately in the Paramount War to save Ace. Witnessed Ace's death and was saved by Jinbe and Law.",
+    rusukaina: "Trained under Silvers Rayleigh for 2 years. Mastered all three types of Haki — Observation, Armament, and Conqueror's.",
+    fishman: "Defeated Hody Jones and liberated Fish-Man Island. Befriended Princess Shirahoshi (the ancient weapon Poseidon).",
+    punk: "Defeated Caesar Clown. Formed a pivotal alliance with Trafalgar Law to take down the Yonko.",
+    dressrosa: "Defeated Doflamingo using Gear 4: Boundman. Accidentally formed the Straw Hat Grand Fleet of 5,600 followers.",
+    zou: "Learned about the Road Poneglyphs needed to reach Laugh Tale. Formed the Ninja-Pirate-Mink-Samurai Alliance.",
+    wholecake: "Crashed Big Mom's tea party to retrieve Sanji. Fought Katakuri and advanced his Observation Haki to see the future.",
+    wano: "Awakened Gear 5 (Nika form) and defeated Kaido atop Onigashima. Liberated Wano after 20 years of Kaido's oppression.",
+    onigashima: "Fought Kaido one-on-one atop the Skull Dome. Awakened his true Devil Fruit — the Hito Hito no Mi, Model: Nika — and defeated the world's strongest creature.",
+    cacao: "Emerged from the Mirro-World after a grueling 11-hour fight with Katakuri. Barely escaped Big Mom's forces in a desperate chase through Cacao Island.",
+    greenbit: "Crossed the dangerous iron bridge to Green Bit. Encountered the Tontatta dwarves and learned about Doflamingo's true grip on Dressrosa.",
+    elbaf: "Finally reached the legendary island of giants. The island Usopp and the crew had heard about since Little Garden.",
+    egghead: "Met Dr. Vegapunk and learned about Joy Boy, the Void Century, and the true nature of the world."
+  },
+  zoro: {
+    shells: "Was held captive and starving under Captain Morgan. Agreed to join Luffy after being freed — became the first Straw Hat.",
+    orange: "Fought Buggy's swordsman Cabaji while heavily injured. Showed his relentless fighting spirit early on.",
+    syrup: "Helped defeat Captain Kuro's Black Cat Pirates alongside the crew on the beach.",
+    baratie: "Challenged Dracule Mihawk, the world's greatest swordsman, and was utterly defeated. Vowed to Luffy he would never lose again.",
+    arlong: "Fought the Fish-Man Hatchan while still bleeding from Mihawk's massive chest wound.",
+    loguetown: "Obtained two new swords — Sandai Kitetsu (cursed) and Yubashiri — testing his luck at the sword shop.",
+    reverse: "Entered the Grand Line with the crew, ready for the challenges ahead.",
+    twincape: "Arrived at the entrance to the Grand Line alongside the crew.",
+    whisky: "Single-handedly defeated all 100 Baroque Works bounty hunters at the welcome banquet while the others slept.",
+    littlegarden: "Was trapped in Mr. 3's wax casing and attempted to cut off his own feet to escape rather than give up.",
+    drum: "Braved the frozen terrain while still recovering from Baroque Works injuries.",
+    alabasta: "Defeated Mr. 1 (Daz Bones) by learning to cut steel — a breakthrough in his swordsmanship.",
+    jaya: "Stayed loyal through the crew's mockery by Bellamy's gang. Joined the quest to Skypiea.",
+    skypiea: "Defeated Ohm, one of Enel's priests, in the Upper Yard survival game.",
+    longring: "Fought in the Davy Back Fight to protect the crew from Foxy's tricks.",
+    water7: "Stood by Luffy during the painful conflict with Usopp, showing his resolve as first mate.",
+    enies: "Defeated Kaku of CP9 using his new technique Asura (nine-sword style illusion).",
+    thriller: "Took all of Luffy's accumulated pain and fatigue from Bartholomew Kuma. When asked what happened — \"Nothing happened.\"",
+    sabaody: "Was overwhelmed by Kuma's power. Sent flying to the dark island of Kuraigana.",
+    kuraigana: "Swallowed his pride and begged Mihawk to train him for 2 years. Mastered Haki and advanced sword techniques.",
+    onigashima: "Fought King the Wildfire on the Live Floor. Unleashed Conqueror's Haki coating and defeated Kaido's right-hand man with a final Kings of Hell slash.",
+    fishman: "Demonstrated overwhelming post-timeskip power. Cut a ship in half with a single slash.",
+    punk: "Fought alongside the Straw Hat-Heart alliance on the half-frozen, half-burning island.",
+    dressrosa: "Defeated the massive stone colossus Pica by slicing him clean in two mid-air.",
+    zou: "Helped form the alliance and learned about the Road Poneglyphs from the Minks.",
+    wano: "Received Enma, Kozuki Oden's legendary sword. Fought Kaido on the rooftop and scarred him. Defeated King the Wildfire.",
+    egghead: "Protected the crew on the futuristic island, ready as always for any threat."
+  },
+  nami: {
+    cocoyashi: "Grew up here with her adoptive mother Bell-mère. Was forced into Arlong's servitude as a child cartographer.",
+    arlong: "Was finally freed when Luffy destroyed Arlong Park. Tearfully asked Luffy for help and officially joined the crew.",
+    loguetown: "Stocked up on supplies and navigator tools before the perilous journey to the Grand Line.",
+    reverse: "Navigated the treacherous currents of Reverse Mountain into the Grand Line.",
+    twincape: "Helped with navigation at the entrance. Received a Log Pose to navigate the Grand Line.",
+    whisky: "Was fooled by the welcoming townsfolk before Baroque Works revealed themselves.",
+    littlegarden: "Was bitten by a prehistoric insect and fell severely ill, leading the crew to rush to Drum Island.",
+    drum: "Was critically ill with a high fever. Luffy carried her up the mountain to reach Dr. Kureha.",
+    alabasta: "Fought and defeated Miss Doublefinger using her first Clima-Tact weapon. Showed combat potential for the first time.",
+    jaya: "Navigated the crew to the Knock Up Stream — the only way to reach Skypiea — with precise calculations.",
+    skypiea: "Explored the ruins of Shandora. Rode the Waver across the White Sea and found Enel's ark.",
+    longring: "Competed in the Davy Back Fight and outsmarted the Foxy Pirates with her wits.",
+    water7: "Dealt with the emotional fallout of the Going Merry's irreparable damage and Robin's departure.",
+    enies: "Fought and defeated Kalifa of CP9 using the improved Clima-Tact. Helped rescue Robin.",
+    thriller: "Was targeted by the invisible Absalom. Fought bravely during the Thriller Bark battle.",
+    sabaody: "Was sent flying to the sky island Weatheria by Kuma's paw attack.",
+    weatheria: "Studied advanced weather science for 2 years with the Weatheria scientists. Vastly upgraded her Clima-Tact.",
+    fishman: "Stood up for Fish-Man equality despite being human. Fought Hody's forces with her new weather abilities.",
+    punk: "Navigated the hazardous waters of Punk Hazard and helped protect the kidnapped children.",
+    dressrosa: "Fought alongside the crew during the Dressrosa operation.",
+    zou: "Played a key role in alliance planning. Helped decipher the Road Poneglyph information.",
+    wholecake: "Navigated through Big Mom's dangerous territory. Helped rescue Sanji from the Vinsmoke marriage.",
+    wano: "Fought Kaido's forces using Zeus, a sentient thundercloud she tamed from Big Mom. Defeated Ulti.",
+    onigashima: "Used Zeus to devastating effect during the Raid. Defeated Ulti of the Tobi Roppo with a massive lightning attack.",
+    egghead: "Explored Dr. Vegapunk's futuristic research alongside the crew."
+  },
+  usopp: {
+    syrup: "Defended his village from Captain Kuro's attack with courage. Joined the crew and received the Going Merry from Kaya.",
+    baratie: "Supported the crew during the battle against Don Krieg's armada at the floating restaurant.",
+    arlong: "Sniped from a distance and fought alongside Nami's villagers to take down Arlong's crew.",
+    loguetown: "Prepared gear for the Grand Line while grappling with fear of the dangers ahead.",
+    reverse: "Braved the entrance to the Grand Line despite being terrified of the journey.",
+    twincape: "Helped the crew at the Grand Line entrance. Saw Laboon for the first time.",
+    whisky: "Fell for the Baroque Works agents' hospitality trap along with the rest of the crew.",
+    littlegarden: "Showed remarkable courage against Baroque Works agents. Befriended the giants and was inspired by their warrior spirit.",
+    drum: "Helped the crew traverse the frozen terrain to find a doctor for Nami.",
+    alabasta: "Fought as part of the crew against Baroque Works. Showed early signs of his sniping prowess.",
+    jaya: "Was frustrated by Bellamy's mockery of their dreams but trusted Luffy's choice not to fight.",
+    skypiea: "Helped defeat Enel's forces in the ruins of Shandora. Displayed bravery despite his fears.",
+    longring: "Competed in the Davy Back Fight. Used creative tactics to help win events.",
+    water7: "Left the crew in a devastating dispute over the Going Merry. Fought Luffy in a heartbreaking duel.",
+    enies: "Returned as 'Sogeking' — burned the World Government flag on Luffy's orders. Made an impossible long-range shot from the Tower of Justice.",
+    thriller: "Defeated Perona — his negativity made him immune to her Hollow powers. A fight only he could win.",
+    sabaody: "Was sent flying to Boin Archipelago by Kuma's attack.",
+    boin: "Trained for 2 years among giant carnivorous plants. Gained physical strength and the Pop Green (plant weapon) arsenal.",
+    fishman: "Showed off his powerful new Pop Green abilities against the New Fish-Man Pirates.",
+    punk: "Fought Caesar's henchmen with his plant-based weapons. Proved his growth as a warrior.",
+    dressrosa: "Became 'God Usopp' by rallying the enslaved toys. Awakened Observation Haki to save Luffy from Sugar.",
+    greenbit: "Accompanied Robin to Green Bit. Encountered the Tontatta dwarves who believed his lies and made him their hero.",
+    zou: "Helped plan the alliance strategy with the Mink Tribe.",
+    wano: "Fought in the Raid on Onigashima. Provided sniper support for the alliance forces.",
+    onigashima: "Fought bravely during the Raid despite being injured. Carried Kin'emon through the fire while providing sniper cover.",
+    egghead: "Explored Vegapunk's futuristic technology on the island."
+  },
+  sanji: {
+    germa: "Escaped his abusive childhood in the Vinsmoke family. Was disowned for showing empathy and weakness.",
+    baratie: "Worked as sous chef under Red Leg Zeff. Joined the Straw Hats after Zeff convinced him to chase his dream of finding the All Blue.",
+    arlong: "Defeated Kuroobi, a Fish-Man Karate expert, in an underwater and surface battle.",
+    loguetown: "Stocked provisions for the Grand Line. Had a brief encounter with the Marines.",
+    reverse: "Entered the Grand Line with the crew as their cook.",
+    twincape: "Arrived at the Grand Line entrance alongside the Straw Hats.",
+    whisky: "Flirted with the female bounty hunters before the trap was revealed. Fought Baroque Works agents.",
+    littlegarden: "Outsmarted Mr. 3 using a Den Den Mushi. Called Crocodile posing as Mr. 3 to buy time for the crew.",
+    drum: "Was critically injured protecting Nami from an avalanche. Luffy carried both him and Nami up the mountain.",
+    alabasta: "Infiltrated Rain Dinners as the mysterious 'Mr. Prince'. Defeated Mr. 2 Bon Clay in a fierce battle.",
+    jaya: "Helped prepare for the dangerous trip to the sky island Skypiea.",
+    skypiea: "Saved the crew multiple times from Enel's forces. Fought the priest Satori.",
+    longring: "Competed in the Davy Back Fight, playing a pivotal role in the soccer-like match.",
+    water7: "Discovered CP9's true identity when they took Robin. Attempted a solo rescue mission.",
+    enies: "Defeated Jabra of CP9 using Diable Jambe for the first time — his leg ignited with spinning friction.",
+    thriller: "Fought Absalom to protect Nami. Was furious that Absalom had the Suke Suke no Mi (invisibility fruit).",
+    sabaody: "Was sent flying to Kamabakka Kingdom by Kuma — to his absolute horror.",
+    kamabakka: "Trained under Ivankov's followers for 2 years. Perfected Diable Jambe and learned Sky Walk (air-walking technique).",
+    fishman: "Showcased powerful new techniques post-timeskip. Nearly fainted from nosebleeds around mermaids.",
+    punk: "Had his body swapped by Law's power. Fought in the alliance against Caesar's forces.",
+    dressrosa: "Guarded the Thousand Sunny and later joined the fight. Clashed with Doflamingo briefly.",
+    zou: "Learned the truth about the Vinsmoke family. Was taken by Capone Bege to Big Mom's territory for a political marriage.",
+    wholecake: "Confronted his family's cruelty. Baked a cake to calm Big Mom's rampage. Chose to return to the Straw Hats.",
+    wano: "Used the Germa Raid Suit. Fought and defeated Queen. Awakened latent Vinsmoke genetic enhancements.",
+    onigashima: "Destroyed the Germa Raid Suit, rejecting his family's legacy. Awakened Ifrit Jambe and defeated Queen with superhuman power.",
+    cacao: "Waited at Cacao Island to help Luffy escape after the Katakuri fight. Fought Oven to protect the crew's retreat.",
+    egghead: "Fought alongside the crew on Vegapunk's futuristic research island."
+  },
+  chopper: {
+    drum: "Was born a reindeer outcast. Trained under Dr. Hiluluk and Dr. Kureha. Joined the Straw Hats after Wapol's defeat.",
+    alabasta: "Fought Mr. 4 and Miss Merry Christmas using his Rumble Ball transformations for the first time in real combat.",
+    jaya: "Explored Jaya and provided medical care for the crew's injuries.",
+    skypiea: "Defeated Gedatsu, one of Enel's priests, using his various Point transformations in the Upper Yard.",
+    longring: "Competed in the Davy Back Fight. Was briefly 'won' by the Foxy Pirates before being rescued.",
+    water7: "Provided emotional support during the crew's crisis over Merry and Robin.",
+    enies: "Fought Kumadori of CP9. Unleashed Monster Point for the first time — powerful but uncontrolled and dangerous.",
+    thriller: "Used his medical skills to treat the crew. Fought Hogback's zombie creations.",
+    sabaody: "Was sent flying to Torino Kingdom by Kuma's attack.",
+    torino: "Studied advanced medicine, botany, and pharmacology for 2 years. Mastered new Rumble Ball forms with full control.",
+    fishman: "Used his improved transformations against the New Fish-Man Pirates. Showed full Monster Point control.",
+    punk: "Treated the children who were experimented on by Caesar Clown. Showed his dedication as a doctor.",
+    dressrosa: "Provided critical medical support during the battle for Dressrosa.",
+    zou: "Used his medical expertise to treat the Minks who were poisoned by Caesar's Koro gas.",
+    wholecake: "Supported the crew through Big Mom's territory and looked after the ship.",
+    wano: "Fought Queen in controlled Monster Point. Treated the wounded during the massive Onigashima raid.",
+    onigashima: "Used Monster Point to battle Queen directly. Served as the battlefield medic, saving countless lives during the chaotic Raid.",
+    egghead: "Was fascinated by Vegapunk's advanced medical research and technology."
+  },
+  robin: {
+    ohara: "Grew up studying Poneglyphs on the island of scholars. Was the sole survivor when the World Government's Buster Call destroyed everything.",
+    alabasta: "Served as Crocodile's partner 'Miss All Sunday' in Baroque Works. Joined the Straw Hats after asking Luffy to let her live.",
+    jaya: "Decoded ancient Poneglyph clues that led the crew to Skypiea. Began revealing her archaeological skills.",
+    skypiea: "Read the Shandorian Poneglyph in the Golden Bell, uncovering part of the ancient history and Roger's message.",
+    longring: "Participated alongside the crew against the Foxy Pirates in the Davy Back Fight.",
+    water7: "Was captured by CP9 and surrendered herself to protect the crew from a Buster Call. Believed she had to die.",
+    enies: "Was rescued by the crew who declared war on the World Government for her. Cried out 'I want to live!' — her turning point.",
+    thriller: "Fought alongside the crew using her Hana Hana no Mi powers against Moria's forces.",
+    sabaody: "Was sent flying to Tequila Wolf by Kuma's paw attack.",
+    tequila: "Was briefly enslaved before being rescued by the Revolutionary Army. Trained with Dragon's forces for 2 years.",
+    fishman: "Read the Poneglyph on Fish-Man Island, learning about Joy Boy's ancient promise to the Fish-Men.",
+    punk: "Investigated Caesar's research and uncovered his dark experiments on children and weapons of mass destruction.",
+    dressrosa: "Was key to the Tontatta dwarves' liberation plan. Used her powers extensively in the underground battle.",
+    greenbit: "Traveled to Green Bit for the exchange operation. Met the Tontatta dwarves and uncovered the underground passage to Dressrosa.",
+    zou: "Read the Road Poneglyph on Zou — critical information for finding the final island, Laugh Tale.",
+    wano: "Read Wano's Road Poneglyph. Defeated Black Maria using her awakened Demonio Fleur transformation.",
+    onigashima: "Defeated Black Maria of the Tobi Roppo using her awakened Demonio Fleur — a giant demonic form made of blooming limbs.",
+    egghead: "Connected with Vegapunk's knowledge about the Void Century and the ancient world's true history."
+  },
+  franky: {
+    water7: "Led the Franky Family as a dismantler. Built the Thousand Sunny from Adam Wood. Joined the crew as shipwright.",
+    enies: "Fought and defeated Fukurou of CP9. Used his Coup de Vent to help the crew escape the falling island.",
+    thriller: "Used his vehicles, weapons, and engineering against Oars. Provided tactical support to the crew.",
+    sabaody: "Was sent flying to Baldimore — Vegapunk's birthplace — by Kuma's attack.",
+    baldimore: "Studied Vegapunk's blueprints and technology for 2 years. Rebuilt himself into a far more powerful cyborg.",
+    fishman: "Unveiled his incredible post-timeskip body. Debuted General Franky — a giant robot mecha — against the enemy.",
+    punk: "Used General Franky against Caesar's forces. His cyborg abilities proved vital in the harsh terrain.",
+    dressrosa: "Fought Senor Pink in a battle of manliness — both fighters respected each other's resolve. Won with a final suplex.",
+    zou: "Protected the Thousand Sunny and helped plan the Wano alliance strategy.",
+    wano: "Fought and defeated Sasaki using General Franky. Protected the alliance during the Onigashima raid.",
+    onigashima: "Used General Franky to battle Sasaki of the Tobi Roppo. Protected the samurai forces with his engineering prowess.",
+    egghead: "Was amazed by Vegapunk's technology, comparing it to his own inventions with both admiration and rivalry."
+  },
+  brook: {
+    thriller: "Was trapped alone on Thriller Bark for 50 years, his shadow stolen by Moria. Joined the crew after being freed. Dreams of reuniting with Laboon.",
+    sabaody: "Was sent flying to the Namakura region by Kuma's paw attack.",
+    harahettania: "Landed among demon-summoning cultists who mistook his skeleton form for Satan himself.",
+    namakura: "Became the world-famous 'Soul King' musician during the timeskip. His concerts drew massive crowds.",
+    fishman: "Used his skeleton body to explore underwater freely. Fought the New Fish-Man Pirates with Soul Solid (ice sword).",
+    punk: "Deployed his Soul Solid techniques in combat against Caesar's forces on the divided island.",
+    dressrosa: "Fought alongside the crew and protected key allies during the Dressrosa liberation.",
+    zou: "Arrived on Zou early with the advance team. Fought Jack's forces bravely and helped protect the Minks.",
+    wholecake: "Stole Big Mom's Road Poneglyph rubbings — a crucial mission success. Fought Big Mom's chess soldiers solo.",
+    wano: "Used his Soul King musical abilities and combat skills during the Raid on Onigashima.",
+    onigashima: "Fought alongside Robin against Black Maria's forces. Used his Soul Solid ice techniques to protect allies during the Raid.",
+    egghead: "Supported the crew on Vegapunk's island with his unique undead perspective."
+  },
+  jinbe: {
+    fishman: "Born and raised here. Former Sun Pirates captain and Warlord. Dedicated his life to protecting Fish-Man Island and its people.",
+    impel: "Was imprisoned for refusing to fight in the Paramount War. Was freed during Luffy's daring breakout and allied with him.",
+    marineford: "Fought alongside Luffy in the Paramount War. Saved Luffy's life after Ace's death, shielding him from Akainu's magma fist.",
+    wholecake: "Officially resigned from Big Mom's crew, offering his life as the price. Helped the Straw Hats escape her territory.",
+    wano: "Arrived at Onigashima and officially joined the Straw Hat crew. Defeated Who's-Who of the Tobi Roppo.",
+    onigashima: "Officially became the 10th member of the Straw Hat Pirates. Defeated Who's-Who using Fish-Man Karate, proving his worth as the crew's helmsman.",
+    egghead: "Served as helmsman, navigating the dangerous waters around Egghead with expert skill."
+  }
+};
 
 const CREW_DATA = [
-    {
-      id: "luffy",
-      name: "Monkey D. Luffy",
-      epithet: "Straw Hat",
-      role: "Captain",
-      bounty: "3,000,000,000",
-      devilFruit: "Hito Hito no Mi, Model: Nika",
-      color: "#E74C3C",
-      emoji: "👒",
-      origin: "foosha",
-      joinedAt: "foosha",
-      bio: "A rubber man who dreams of becoming the Pirate King. He set sail from Foosha Village in East Blue and has been gathering his crew ever since.",
-      journey: [
-        "foosha","shells","orange","syrup","baratie","arlong","loguetown",
-        "reverse","twincape","whisky","littlegarden","drum","alabasta",
-        "jaya","skypiea","jaya","longring","water7","enies","water7",
-        "thriller","sabaody","amazon","impel","marineford",
-        "rusukaina","sabaody",
-        "fishman","punk","dressrosa","zou","wholecake","wano","egghead","elbaf"
-      ],
-      bountyHistory: {
-        arlong: 30000000, alabasta: 100000000, enies: 300000000,
-        sabaody: 400000000, marineford: 400000000,
-        fishman: 400000000, dressrosa: 500000000,
-        wholecake: 1500000000, wano: 3000000000, egghead: 3000000000,
-        elbaf: 3000000000
-      }
-    },
-    {
-      id: "zoro",
-      name: "Roronoa Zoro",
-      epithet: "Pirate Hunter",
-      role: "Swordsman",
-      bounty: "1,111,000,000",
-      devilFruit: "None",
-      color: "#27AE60",
-      emoji: "⚔️",
-      origin: "shells",
-      joinedAt: "shells",
-      bio: "A three-sword style master aiming to become the world's greatest swordsman. Trained under Dracule Mihawk during the two-year timeskip.",
-      journey: [
-        "shells","orange","syrup","baratie","arlong","loguetown",
-        "reverse","twincape","whisky","littlegarden","drum","alabasta",
-        "jaya","skypiea","jaya","longring","water7","enies","water7",
-        "thriller","sabaody",
-        "kuraigana","sabaody",
-        "fishman","punk","dressrosa","zou","wano","egghead","elbaf"
-      ],
-      bountyHistory: {
-        alabasta: 60000000, enies: 120000000,
-        sabaody: 120000000, dressrosa: 320000000,
-        wano: 1111000000, egghead: 1111000000,
-        elbaf: 1111000000
-      }
-    },
-    {
-      id: "nami",
-      name: "Nami",
-      epithet: "Cat Burglar",
-      role: "Navigator",
-      bounty: "366,000,000",
-      devilFruit: "None",
-      color: "#F39C12",
-      emoji: "🗺️",
-      origin: "cocoyashi",
-      joinedAt: "arlong",
-      bio: "A skilled navigator and cartographer who dreams of drawing a complete map of the world. Freed from Arlong's tyranny by Luffy.",
-      journey: [
-        "cocoyashi","arlong","loguetown",
-        "reverse","twincape","whisky","littlegarden","drum","alabasta",
-        "jaya","skypiea","jaya","longring","water7","enies","water7",
-        "thriller","sabaody",
-        "weatheria","sabaody",
-        "fishman","punk","dressrosa","zou","wholecake","wano","egghead","elbaf"
-      ],
-      bountyHistory: {
-        enies: 16000000, sabaody: 16000000,
-        dressrosa: 66000000, wano: 366000000, egghead: 366000000,
-        elbaf: 366000000
-      }
-    },
-    {
-      id: "usopp",
-      name: "Usopp",
-      epithet: "God",
-      role: "Sniper",
-      bounty: "500,000,000",
-      devilFruit: "None",
-      color: "#F1C40F",
-      emoji: "🎯",
-      origin: "syrup",
-      joinedAt: "syrup",
-      bio: "A creative sniper and storyteller who dreams of becoming a brave warrior of the sea, just like his father Yasopp.",
-      journey: [
-        "syrup","baratie","arlong","loguetown",
-        "reverse","twincape","whisky","littlegarden","drum","alabasta",
-        "jaya","skypiea","jaya","longring","water7","enies","water7",
-        "thriller","sabaody",
-        "boin","sabaody",
-        "fishman","punk","dressrosa","zou","wano","egghead","elbaf"
-      ],
-      bountyHistory: {
-        enies: 30000000, sabaody: 30000000,
-        dressrosa: 200000000, wano: 500000000, egghead: 500000000,
-        elbaf: 500000000
-      }
-    },
-    {
-      id: "sanji",
-      name: "Vinsmoke Sanji",
-      epithet: "Black Leg",
-      role: "Cook",
-      bounty: "1,032,000,000",
-      devilFruit: "None",
-      color: "#3498DB",
-      emoji: "🍳",
-      origin: "germa",
-      joinedAt: "baratie",
-      bio: "A chivalrous chef from the Germa Kingdom who dreams of finding the All Blue, a legendary sea where fish from all four seas gather.",
-      journey: [
-        "germa","baratie","arlong","loguetown",
-        "reverse","twincape","whisky","littlegarden","drum","alabasta",
-        "jaya","skypiea","jaya","longring","water7","enies","water7",
-        "thriller","sabaody",
-        "kamabakka","sabaody",
-        "fishman","punk","dressrosa","zou","wholecake","wano","egghead","elbaf"
-      ],
-      bountyHistory: {
-        enies: 77000000, sabaody: 77000000,
-        dressrosa: 177000000, wholecake: 330000000,
-        wano: 1032000000, egghead: 1032000000,
-        elbaf: 1032000000
-      }
-    },
-    {
-      id: "chopper",
-      name: "Tony Tony Chopper",
-      epithet: "Cotton Candy Lover",
-      role: "Doctor",
-      bounty: "1,000",
-      devilFruit: "Hito Hito no Mi",
-      color: "#E91E63",
-      emoji: "🩺",
-      origin: "drum",
-      joinedAt: "drum",
-      bio: "A reindeer who gained human abilities from a Devil Fruit. Dreams of becoming a doctor who can cure any disease.",
-      journey: [
-        "drum","alabasta",
-        "jaya","skypiea","jaya","longring","water7","enies","water7",
-        "thriller","sabaody",
-        "torino","sabaody",
-        "fishman","punk","dressrosa","zou","wholecake","wano","egghead","elbaf"
-      ],
-      bountyHistory: {
-        enies: 50, sabaody: 50,
-        dressrosa: 100, wano: 1000, egghead: 1000,
-        elbaf: 1000
-      }
-    },
-    {
-      id: "robin",
-      name: "Nico Robin",
-      epithet: "Devil Child",
-      role: "Archaeologist",
-      bounty: "930,000,000",
-      devilFruit: "Hana Hana no Mi",
-      color: "#8E44AD",
-      emoji: "📖",
-      origin: "ohara",
-      joinedAt: "alabasta",
-      bio: "The sole survivor of Ohara, she seeks the Rio Poneglyph to uncover the True History of the Void Century.",
-      journey: [
-        "ohara","alabasta",
-        "jaya","skypiea","jaya","longring","water7","enies","water7",
-        "thriller","sabaody",
-        "tequila","sabaody",
-        "fishman","punk","dressrosa","zou","wano","egghead","elbaf"
-      ],
-      bountyHistory: {
-        ohara: 79000000, enies: 80000000, sabaody: 80000000,
-        dressrosa: 130000000, wano: 930000000, egghead: 930000000,
-        elbaf: 930000000
-      }
-    },
-    {
-      id: "franky",
-      name: "Franky",
-      epithet: "Cyborg",
-      role: "Shipwright",
-      bounty: "394,000,000",
-      devilFruit: "None",
-      color: "#00BCD4",
-      emoji: "🤖",
-      origin: "water7",
-      joinedAt: "water7",
-      bio: "A cola-powered cyborg shipwright who built the Thousand Sunny. Dreams of sailing on a ship he built to the end of the Grand Line.",
-      journey: [
-        "water7","enies","water7",
-        "thriller","sabaody",
-        "baldimore","sabaody",
-        "fishman","punk","dressrosa","zou","wano","egghead","elbaf"
-      ],
-      bountyHistory: {
-        enies: 44000000, sabaody: 44000000,
-        dressrosa: 94000000, wano: 394000000, egghead: 394000000,
-        elbaf: 394000000
-      }
-    },
-    {
-      id: "brook",
-      name: "Brook",
-      epithet: "Soul King",
-      role: "Musician",
-      bounty: "383,000,000",
-      devilFruit: "Yomi Yomi no Mi",
-      color: "#607D8B",
-      emoji: "🎵",
-      origin: "thriller",
-      joinedAt: "thriller",
-      bio: "A living skeleton revived by his Devil Fruit. He spent 50 years alone in the Florian Triangle before joining the crew. Dreams of reuniting with Laboon.",
-      journey: [
-        "thriller","sabaody",
-        "harahettania","namakura","sabaody",
-        "fishman","punk","dressrosa","zou","wholecake","wano","egghead","elbaf"
-      ],
-      bountyHistory: {
-        thriller: 33000000, sabaody: 33000000,
-        dressrosa: 83000000, wano: 383000000, egghead: 383000000,
-        elbaf: 383000000
-      }
-    },
-    {
-      id: "jinbe",
-      name: "Jinbe",
-      epithet: "Knight of the Sea",
-      role: "Helmsman",
-      bounty: "1,100,000,000",
-      devilFruit: "None",
-      color: "#FF5722",
-      emoji: "🌊",
-      origin: "fishman",
-      joinedAt: "wano",
-      bio: "A Fish-Man and former Warlord who officially joined the crew at Wano. A master of Fish-Man Karate and the crew's helmsman.",
-      journey: [
-        "fishman","impel","marineford",
-        "fishman","wholecake","wano","egghead","elbaf"
-      ],
-      bountyHistory: {
-        fishman: 250000000, marineford: 250000000,
-        wholecake: 438000000, wano: 1100000000, egghead: 1100000000,
-        elbaf: 1100000000
-      }
+  {
+    id: "luffy",
+    name: "Monkey D. Luffy",
+    epithet: "Straw Hat",
+    role: "Captain",
+    bounty: "3,000,000,000",
+    devilFruit: "Hito Hito no Mi, Model: Nika",
+    color: "#E74C3C",
+    emoji: "👒",
+    origin: "foosha",
+    joinedAt: "foosha",
+    bio: "A rubber man who dreams of becoming the Pirate King. He set sail from Foosha Village in East Blue and has been gathering his crew ever since.",
+    journey: [
+      "foosha", "shells", "orange", "syrup", "baratie", "arlong", "loguetown",
+      "reverse", "twincape", "whisky", "littlegarden", "drum", "alabasta",
+      "jaya", "skypiea", "jaya", "longring", "water7", "enies", "water7",
+      "thriller", "sabaody", "amazon", "impel", "marineford",
+      "rusukaina", "sabaody",
+      "fishman", "punk", "dressrosa", "zou", "wholecake", "wano", "egghead", "elbaf"
+    ],
+    bountyHistory: {
+      arlong: 30000000, alabasta: 100000000, enies: 300000000,
+      sabaody: 400000000, marineford: 400000000,
+      fishman: 400000000, dressrosa: 500000000,
+      wholecake: 1500000000, wano: 3000000000, egghead: 3000000000,
+      elbaf: 3000000000
     }
-  ];
+  },
+  {
+    id: "zoro",
+    name: "Roronoa Zoro",
+    epithet: "Pirate Hunter",
+    role: "Swordsman",
+    bounty: "1,111,000,000",
+    devilFruit: "None",
+    color: "#27AE60",
+    emoji: "⚔️",
+    origin: "shells",
+    joinedAt: "shells",
+    bio: "A three-sword style master aiming to become the world's greatest swordsman. Trained under Dracule Mihawk during the two-year timeskip.",
+    journey: [
+      "shells", "orange", "syrup", "baratie", "arlong", "loguetown",
+      "reverse", "twincape", "whisky", "littlegarden", "drum", "alabasta",
+      "jaya", "skypiea", "jaya", "longring", "water7", "enies", "water7",
+      "thriller", "sabaody",
+      "kuraigana", "sabaody",
+      "fishman", "punk", "dressrosa", "zou", "wano", "egghead", "elbaf"
+    ],
+    bountyHistory: {
+      alabasta: 60000000, enies: 120000000,
+      sabaody: 120000000, dressrosa: 320000000,
+      wano: 1111000000, egghead: 1111000000,
+      elbaf: 1111000000
+    }
+  },
+  {
+    id: "nami",
+    name: "Nami",
+    epithet: "Cat Burglar",
+    role: "Navigator",
+    bounty: "366,000,000",
+    devilFruit: "None",
+    color: "#F39C12",
+    emoji: "🗺️",
+    origin: "cocoyashi",
+    joinedAt: "arlong",
+    bio: "A skilled navigator and cartographer who dreams of drawing a complete map of the world. Freed from Arlong's tyranny by Luffy.",
+    journey: [
+      "cocoyashi", "arlong", "loguetown",
+      "reverse", "twincape", "whisky", "littlegarden", "drum", "alabasta",
+      "jaya", "skypiea", "jaya", "longring", "water7", "enies", "water7",
+      "thriller", "sabaody",
+      "weatheria", "sabaody",
+      "fishman", "punk", "dressrosa", "zou", "wholecake", "wano", "egghead", "elbaf"
+    ],
+    bountyHistory: {
+      enies: 16000000, sabaody: 16000000,
+      dressrosa: 66000000, wano: 366000000, egghead: 366000000,
+      elbaf: 366000000
+    }
+  },
+  {
+    id: "usopp",
+    name: "Usopp",
+    epithet: "God",
+    role: "Sniper",
+    bounty: "500,000,000",
+    devilFruit: "None",
+    color: "#F1C40F",
+    emoji: "🎯",
+    origin: "syrup",
+    joinedAt: "syrup",
+    bio: "A creative sniper and storyteller who dreams of becoming a brave warrior of the sea, just like his father Yasopp.",
+    journey: [
+      "syrup", "baratie", "arlong", "loguetown",
+      "reverse", "twincape", "whisky", "littlegarden", "drum", "alabasta",
+      "jaya", "skypiea", "jaya", "longring", "water7", "enies", "water7",
+      "thriller", "sabaody",
+      "boin", "sabaody",
+      "fishman", "punk", "dressrosa", "zou", "wano", "egghead", "elbaf"
+    ],
+    bountyHistory: {
+      enies: 30000000, sabaody: 30000000,
+      dressrosa: 200000000, wano: 500000000, egghead: 500000000,
+      elbaf: 500000000
+    }
+  },
+  {
+    id: "sanji",
+    name: "Vinsmoke Sanji",
+    epithet: "Black Leg",
+    role: "Cook",
+    bounty: "1,032,000,000",
+    devilFruit: "None",
+    color: "#3498DB",
+    emoji: "🍳",
+    origin: "germa",
+    joinedAt: "baratie",
+    bio: "A chivalrous chef from the Germa Kingdom who dreams of finding the All Blue, a legendary sea where fish from all four seas gather.",
+    journey: [
+      "germa", "baratie", "arlong", "loguetown",
+      "reverse", "twincape", "whisky", "littlegarden", "drum", "alabasta",
+      "jaya", "skypiea", "jaya", "longring", "water7", "enies", "water7",
+      "thriller", "sabaody",
+      "kamabakka", "sabaody",
+      "fishman", "punk", "dressrosa", "zou", "wholecake", "wano", "egghead", "elbaf"
+    ],
+    bountyHistory: {
+      enies: 77000000, sabaody: 77000000,
+      dressrosa: 177000000, wholecake: 330000000,
+      wano: 1032000000, egghead: 1032000000,
+      elbaf: 1032000000
+    }
+  },
+  {
+    id: "chopper",
+    name: "Tony Tony Chopper",
+    epithet: "Cotton Candy Lover",
+    role: "Doctor",
+    bounty: "1,000",
+    devilFruit: "Hito Hito no Mi",
+    color: "#E91E63",
+    emoji: "🩺",
+    origin: "drum",
+    joinedAt: "drum",
+    bio: "A reindeer who gained human abilities from a Devil Fruit. Dreams of becoming a doctor who can cure any disease.",
+    journey: [
+      "drum", "alabasta",
+      "jaya", "skypiea", "jaya", "longring", "water7", "enies", "water7",
+      "thriller", "sabaody",
+      "torino", "sabaody",
+      "fishman", "punk", "dressrosa", "zou", "wholecake", "wano", "egghead", "elbaf"
+    ],
+    bountyHistory: {
+      enies: 50, sabaody: 50,
+      dressrosa: 100, wano: 1000, egghead: 1000,
+      elbaf: 1000
+    }
+  },
+  {
+    id: "robin",
+    name: "Nico Robin",
+    epithet: "Devil Child",
+    role: "Archaeologist",
+    bounty: "930,000,000",
+    devilFruit: "Hana Hana no Mi",
+    color: "#8E44AD",
+    emoji: "📖",
+    origin: "ohara",
+    joinedAt: "alabasta",
+    bio: "The sole survivor of Ohara, she seeks the Rio Poneglyph to uncover the True History of the Void Century.",
+    journey: [
+      "ohara", "alabasta",
+      "jaya", "skypiea", "jaya", "longring", "water7", "enies", "water7",
+      "thriller", "sabaody",
+      "tequila", "sabaody",
+      "fishman", "punk", "dressrosa", "zou", "wano", "egghead", "elbaf"
+    ],
+    bountyHistory: {
+      ohara: 79000000, enies: 80000000, sabaody: 80000000,
+      dressrosa: 130000000, wano: 930000000, egghead: 930000000,
+      elbaf: 930000000
+    }
+  },
+  {
+    id: "franky",
+    name: "Franky",
+    epithet: "Cyborg",
+    role: "Shipwright",
+    bounty: "394,000,000",
+    devilFruit: "None",
+    color: "#00BCD4",
+    emoji: "🤖",
+    origin: "water7",
+    joinedAt: "water7",
+    bio: "A cola-powered cyborg shipwright who built the Thousand Sunny. Dreams of sailing on a ship he built to the end of the Grand Line.",
+    journey: [
+      "water7", "enies", "water7",
+      "thriller", "sabaody",
+      "baldimore", "sabaody",
+      "fishman", "punk", "dressrosa", "zou", "wano", "egghead", "elbaf"
+    ],
+    bountyHistory: {
+      enies: 44000000, sabaody: 44000000,
+      dressrosa: 94000000, wano: 394000000, egghead: 394000000,
+      elbaf: 394000000
+    }
+  },
+  {
+    id: "brook",
+    name: "Brook",
+    epithet: "Soul King",
+    role: "Musician",
+    bounty: "383,000,000",
+    devilFruit: "Yomi Yomi no Mi",
+    color: "#607D8B",
+    emoji: "🎵",
+    origin: "thriller",
+    joinedAt: "thriller",
+    bio: "A living skeleton revived by his Devil Fruit. He spent 50 years alone in the Florian Triangle before joining the crew. Dreams of reuniting with Laboon.",
+    journey: [
+      "thriller", "sabaody",
+      "harahettania", "namakura", "sabaody",
+      "fishman", "punk", "dressrosa", "zou", "wholecake", "wano", "egghead", "elbaf"
+    ],
+    bountyHistory: {
+      thriller: 33000000, sabaody: 33000000,
+      dressrosa: 83000000, wano: 383000000, egghead: 383000000,
+      elbaf: 383000000
+    }
+  },
+  {
+    id: "jinbe",
+    name: "Jinbe",
+    epithet: "Knight of the Sea",
+    role: "Helmsman",
+    bounty: "1,100,000,000",
+    devilFruit: "None",
+    color: "#FF5722",
+    emoji: "🌊",
+    origin: "fishman",
+    joinedAt: "wano",
+    bio: "A Fish-Man and former Warlord who officially joined the crew at Wano. A master of Fish-Man Karate and the crew's helmsman.",
+    journey: [
+      "fishman", "impel", "marineford",
+      "fishman", "wholecake", "wano", "egghead", "elbaf"
+    ],
+    bountyHistory: {
+      fishman: 250000000, marineford: 250000000,
+      wholecake: 438000000, wano: 1100000000, egghead: 1100000000,
+      elbaf: 1100000000
+    }
+  }
+];
