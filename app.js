@@ -3208,6 +3208,156 @@
         }
     }
 
+    function toggleDownloadMenu() {
+        const menu = document.getElementById("downloadMenu");
+        if (menu) menu.classList.toggle("hidden");
+    }
+
+    function toggleMoreMenu() {
+        const menu = document.getElementById("moreMenu");
+        if (menu) menu.classList.toggle("hidden");
+    }
+
+    function showWallpaperHelp() {
+        const modal = document.createElement('div');
+        modal.id = 'helpModal';
+        modal.innerHTML = `
+            <div class="help-content">
+                <h2>Wallpaper Guide</h2>
+                <div class="help-section">
+                    <h3>💻 Windows</h3>
+                    <p>Native Windows doesn't support video wallpapers. Download <b>Lively Wallpaper</b> (Free/Open Source) or <b>Wallpaper Engine</b> (Steam) and drop the file there.</p>
+                </div>
+                <div class="help-section">
+                    <h3>📱 Android</h3>
+                    <p>Use any <b>"Video to Wallpaper"</b> app from the Play Store. Select the downloaded MP4/WebM to set it as your background.</p>
+                </div>
+                <div class="help-section">
+                    <h3>🍎 iOS / macOS</h3>
+                    <p>macOS Sonoma supports Cinematic Wallpapers, but for custom videos, use <b>iWallpaper</b>. On iOS, you may need to convert the video to a Live Photo first.</p>
+                </div>
+                <button class="help-btn" onclick="this.parentElement.parentElement.remove()">GOT IT!</button>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        modal.addEventListener('click', (e) => { if(e.target === modal) modal.remove(); });
+    }
+
+    function recordLiveWallpaper() {
+        const glCanvas = document.getElementById('globeCanvas');
+        if (!glCanvas) return;
+
+        // Detect supported MP4 MIME type
+        const types = [
+            'video/mp4;codecs=hvc1',
+            'video/mp4;codecs=avc1'
+        ];
+        let supportedType = types.find(t => MediaRecorder.isTypeSupported(t));
+        
+        if (!supportedType) {
+            alert("Your browser does not support high-compatibility MP4 recording. Please try using a modern browser like Chrome, Edge, or Safari.");
+            const indicator = document.getElementById('recordingIndicator');
+            if (indicator) indicator.remove();
+            return;
+        }
+        const extension = 'mp4';
+
+        const W = window.innerWidth;
+        const H = window.innerHeight;
+        const dpr = window.devicePixelRatio || 1;
+
+        // 1. Setup composite canvas for recording
+        const composite = document.createElement('canvas');
+        composite.width  = W * dpr;
+        composite.height = H * dpr;
+        const ctx = composite.getContext('2d');
+
+        // 2. Setup MediaRecorder
+        const stream = composite.captureStream(30); // 30 FPS
+        const recorderOptions = {
+            mimeType: supportedType,
+            videoBitsPerSecond: 8000000 
+        };
+        const recorder = new MediaRecorder(stream, recorderOptions);
+
+        const chunks = [];
+        recorder.ondataavailable = e => chunks.push(e.data);
+        recorder.onstop = () => {
+            const blob = new Blob(chunks, { type: supportedType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `one-piece-journey-live.${extension}`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            // UI cleanup
+            const indicator = document.getElementById('recordingIndicator');
+            if (indicator) {
+                indicator.style.background = 'rgba(0, 180, 0, 0.9)';
+                indicator.innerHTML = '<span class="material-symbols-rounded">check</span> DONE! SEE DOWNLOADS';
+                setTimeout(() => indicator.remove(), 3000);
+            }
+        };
+
+        // 3. UI: Show recording indicator
+        if (document.getElementById('recordingIndicator')) document.getElementById('recordingIndicator').remove();
+        const indicator = document.createElement('div');
+        indicator.id = 'recordingIndicator';
+        indicator.innerHTML = `
+            <div class="rec-dot"></div> 
+            <span>RECORDING (${extension.toUpperCase()}) - 10 SEC...</span>
+        `;
+        document.body.appendChild(indicator);
+
+        // 4. Recording loop
+        let startTime = null;
+        const duration = 10000; // 10 seconds
+
+        function recordFrame(now) {
+            if (!startTime) startTime = now;
+            const elapsed = now - startTime;
+
+            if (elapsed >= duration) {
+                recorder.stop();
+                return;
+            }
+
+            renderer.render(scene, camera);
+            ctx.clearRect(0, 0, composite.width, composite.height);
+            ctx.drawImage(glCanvas, 0, 0, composite.width, composite.height);
+
+            ctx.save();
+            ctx.scale(dpr, dpr);
+            const labels = document.querySelectorAll('.island-label-3d');
+            labels.forEach(el => {
+                const cs = window.getComputedStyle(el);
+                if (cs.display === 'none' || cs.visibility === 'hidden' || parseFloat(cs.opacity) < 0.01) return;
+                const rect = el.getBoundingClientRect();
+                if (rect.width === 0) return;
+                const pinX = rect.left + rect.width / 2;
+                const pinY = rect.bottom;
+                const fontSize = parseFloat(cs.fontSize) || 9;
+                const fontWeight = cs.fontWeight || '400';
+                const color = cs.color || 'rgba(255,255,255,0.55)';
+                const font = `${fontWeight} ${fontSize}px Inter, sans-serif`;
+                ctx.save();
+                ctx.font = font; ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+                ctx.shadowColor = 'rgba(0,0,0,0.8)'; ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 1; ctx.shadowBlur = 4;
+                ctx.fillStyle = color;
+                ctx.fillText(el.textContent, pinX, pinY);
+                ctx.restore();
+            });
+            ctx.restore();
+
+            requestAnimationFrame(recordFrame);
+        }
+
+        recorder.start();
+        requestAnimationFrame(recordFrame);
+    }
+
+
     function vec3ToLatLng(vec) {
         const radius = vec.length();
         const phi = Math.acos(vec.y / radius);
@@ -3220,6 +3370,30 @@
     window.toggleEditMode = toggleEditMode;
     window.exportIslands = exportIslands;
     window.downloadImage = downloadImage;
+    window.recordLiveWallpaper = recordLiveWallpaper;
+    window.toggleDownloadMenu = toggleDownloadMenu;
+    window.toggleMoreMenu = toggleMoreMenu;
+    window.showWallpaperHelp = showWallpaperHelp;
+
+    // Close menus when clicking outside
+    document.addEventListener('mousedown', (e) => {
+        // Download menu
+        const dMenu = document.getElementById('downloadMenu');
+        const dBtn = document.getElementById('btnDownloadMain');
+        if (dMenu && !dMenu.classList.contains('hidden')) {
+            if (!dMenu.contains(e.target) && !dBtn.contains(e.target)) {
+                dMenu.classList.add('hidden');
+            }
+        }
+        // More menu
+        const mMenu = document.getElementById('moreMenu');
+        const mBtn = document.getElementById('btnMore');
+        if (mMenu && !mMenu.classList.contains('hidden')) {
+            if (!mMenu.contains(e.target) && !mBtn.contains(e.target)) {
+                mMenu.classList.add('hidden');
+            }
+        }
+    });
 
     function updateIslandPosition(id) {
         const isl = islands[id];
