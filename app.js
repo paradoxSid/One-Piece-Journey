@@ -133,7 +133,7 @@
     /*  STARS                                           */
     /* ════════════════════════════════════════════════ */
     function createStars() {
-        const n = 4000, pos = new Float32Array(n * 3), cols = new Float32Array(n * 3);
+        const n = 6000, pos = new Float32Array(n * 3), cols = new Float32Array(n * 3);
         for (let i = 0; i < n; i++) {
             const r = 60 + Math.random() * 60;
             const th = Math.random() * Math.PI * 2;
@@ -151,7 +151,7 @@
         geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
         geo.setAttribute("color", new THREE.BufferAttribute(cols, 3));
         scene.add(new THREE.Points(geo, new THREE.PointsMaterial({
-            size: 0.06, sizeAttenuation: true, vertexColors: true, transparent: true, opacity: 0.7
+            size: 0.12, sizeAttenuation: true, vertexColors: true, transparent: true, opacity: 0.7
         })));
     }
 
@@ -3127,6 +3127,87 @@
         alert('Islands exported to console');
     }
 
+    function downloadImage() {
+        const glCanvas = document.getElementById('globeCanvas');
+        if (!glCanvas) return;
+
+        try {
+            // ── 1. Flush the current frame ──
+            renderer.render(scene, camera);
+
+            // ── 2. Grab WebGL pixels ──
+            const glDataURL = glCanvas.toDataURL('image/png');
+
+            // ── 3. Build a composite canvas the same logical size as the viewport ──
+            const W = window.innerWidth;
+            const H = window.innerHeight;
+            const dpr = window.devicePixelRatio || 1;
+
+            const composite = document.createElement('canvas');
+            composite.width  = W * dpr;   // physical pixels
+            composite.height = H * dpr;
+            const ctx = composite.getContext('2d');
+            ctx.scale(dpr, dpr);           // draw in CSS pixels from here on
+
+            // ── 4. Draw the 3-D globe ──
+            const glImg = new Image();
+            glImg.onload = () => {
+                ctx.drawImage(glImg, 0, 0, W, H);
+
+                // ── 5. Composite every visible island label ──
+                const labels = document.querySelectorAll('.island-label-3d');
+                labels.forEach(el => {
+                    // Skip labels the animation loop hid (opacity:0 or visibility:hidden)
+                    const cs = window.getComputedStyle(el);
+                    if (cs.display === 'none' || cs.visibility === 'hidden' || parseFloat(cs.opacity) < 0.01) return;
+
+                    const rect    = el.getBoundingClientRect();
+                    if (rect.width === 0) return;   // off-globe / culled
+
+                    // Centre of the label element in CSS-pixel viewport coords.
+                    // Because CSS sets transform: translate(-50%, -100%) the element
+                    // is anchored at its bottom-centre (which is the island pin position).
+                    const pinX = rect.left + rect.width  / 2;  // horizontal centre
+                    const pinY = rect.bottom;                   // bottom edge = pin point
+
+                    // Mirror the CSS exactly
+                    const fontSize = parseFloat(cs.fontSize) || 9;
+                    const fontWeight = cs.fontWeight || '400';
+                    const color    = cs.color || 'rgba(255,255,255,0.55)';
+                    const font = `${fontWeight} ${fontSize}px Inter, -apple-system, BlinkMacSystemFont, sans-serif`;
+
+                    ctx.save();
+                    ctx.font         = font;
+                    ctx.textAlign    = 'center';
+                    ctx.textBaseline = 'bottom';   // top of text touches pinY
+
+                    // Replicate text-shadow: 0 1px 4px rgba(0,0,0,0.8)
+                    ctx.shadowColor   = 'rgba(0,0,0,0.8)';
+                    ctx.shadowOffsetX = 0;
+                    ctx.shadowOffsetY = 1;
+                    ctx.shadowBlur    = 4;
+
+                    ctx.fillStyle = color;
+                    ctx.fillText(el.textContent, pinX, pinY);
+                    ctx.restore();
+                });
+
+                // ── 6. Download ──
+                const a = document.createElement('a');
+                a.href     = composite.toDataURL('image/png');
+                a.download = 'one-piece-journey.png';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            };
+            glImg.src = glDataURL;
+
+        } catch (error) {
+            console.error('Error capturing canvas:', error);
+            alert('Failed to capture image. This might be due to browser security restrictions.');
+        }
+    }
+
     function vec3ToLatLng(vec) {
         const radius = vec.length();
         const phi = Math.acos(vec.y / radius);
@@ -3138,6 +3219,7 @@
     // Make functions global
     window.toggleEditMode = toggleEditMode;
     window.exportIslands = exportIslands;
+    window.downloadImage = downloadImage;
 
     function updateIslandPosition(id) {
         const isl = islands[id];
