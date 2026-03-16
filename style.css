@@ -541,6 +541,18 @@ html, body {
 @media (max-width: 380px) {
   .char-pill { font-size: 12px; padding: 5px 10px; }
   .stat { padding: 6px; }
+  .island-tooltip { max-width: 250px; }
+}
+
+/* Mobile styles for tooltips */
+@media (max-width: 768px) {
+  .island-tooltip { 
+    max-width: 260px;
+    font-size: 12px;
+  }
+  .island-tooltip h3 { font-size: 13px; }
+  .island-tooltip p { font-size: 10px; }
+  .island-tooltip .tooltip-desc { font-size: 10px; }
 }
 
 /* ── Spoiler Gate ─────────────────────────────── */

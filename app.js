@@ -19,11 +19,12 @@
     let draggedIsland = null;
     let autoRotate = true, rotSpeed = 0.0006;
     let isDragging = false, dragMoved = false, prevMouse = { x: 0, y: 0 };
-    let targetRotY = 0, targetRotX = 0.25, currentRotY = 0, currentRotX = 0.25;
-    let targetZoom = 12, currentZoom = 20;
+    let targetRotY = -2.4, targetRotX = 0.25, currentRotY = -2.4, currentRotX = 0.25;
+    let targetZoom = 20, currentZoom = 20;
     let raycaster, mouseVec;
     let hoveredIsland = null, tooltipTimeout = null;
     let focusedIsland = null;
+    let isTouching = false;
 
     /* ════════════════════════════════════════════════ */
     /*  NOISE — Simple 2-octave value noise            */
@@ -2414,7 +2415,7 @@
         document.getElementById("btnAutoRotate").classList.toggle("active-toggle", autoRotate);
     }
     function resetView() {
-        targetZoom = 12; targetRotX = 0.25; targetRotY = 0;
+        targetZoom = 20; targetRotX = 0.25; targetRotY = -0.8;
         autoRotate = true;
         document.getElementById("btnAutoRotate").classList.add("active-toggle");
     }
@@ -2427,6 +2428,7 @@
 
         canvas.addEventListener("pointerdown", e => {
             if (e.target.closest(".char-card, .icon-btn, .char-pill, .legend-panel, .island-label-3d")) return;
+            if (e.pointerType === "touch") isTouching = true;
             canvas.setPointerCapture(e.pointerId);
             isDragging = true; dragMoved = false;
             prevMouse = { x: e.clientX, y: e.clientY };
@@ -2487,11 +2489,15 @@
         canvas.addEventListener("pointerup", e => {
             isDragging = false;
             draggedIsland = null;
+            if (e.pointerType === "touch") {
+                setTimeout(() => { isTouching = false; }, 100); // Small delay to prevent hover after touch
+            }
             if (canvas.hasPointerCapture(e.pointerId)) canvas.releasePointerCapture(e.pointerId);
         });
         canvas.addEventListener("pointercancel", e => {
             isDragging = false;
             draggedIsland = null;
+            if (e.pointerType === "touch") isTouching = false;
             if (canvas.hasPointerCapture(e.pointerId)) canvas.releasePointerCapture(e.pointerId);
         });
         canvas.addEventListener("pointerleave", () => { 
@@ -2537,7 +2543,7 @@
             // Click on empty space — unfocus
             if (focusedIsland) {
                 focusedIsland = null;
-                targetZoom = 12;
+                targetZoom = 20;
             }
             hideTooltip();
             const lp = document.getElementById("legendPanel");
@@ -2593,6 +2599,7 @@
     /*  RAYCASTING HOVER                                */
     /* ════════════════════════════════════════════════ */
     function checkHover(e) {
+        if (isTouching) return; // Don't show tooltips during touch interactions
         raycaster.setFromCamera(mouseVec, camera);
         // Raycast against both island disc meshes and invisible hitbox spheres
         const targets = [...Object.values(islandMeshes), ...Object.values(islandGlows)];
@@ -2662,11 +2669,38 @@
         } else {
             crewSec.style.display = "none";
         }
-        let tx = e.clientX + 16, ty = e.clientY - 60;
-        if (tx + 280 > window.innerWidth) tx = e.clientX - 290;
-        if (ty < 10) ty = e.clientY + 16;
-        tt.style.left = tx + "px"; tt.style.top = ty + "px";
+        // Show tooltip temporarily to get its dimensions
         tt.classList.remove("hidden");
+        tt.style.left = "0px"; tt.style.top = "0px"; tt.style.visibility = "hidden";
+        
+        // Force reflow to get accurate dimensions
+        tt.offsetHeight;
+        
+        const tooltipRect = tt.getBoundingClientRect();
+        const tooltipWidth = tooltipRect.width;
+        const tooltipHeight = tooltipRect.height;
+        
+        // Now position it properly
+        let tx = e.clientX + 16, ty = e.clientY - 60;
+        
+        // Check if tooltip would go off-screen horizontally
+        if (tx + tooltipWidth > window.innerWidth - 10) {
+            tx = e.clientX - tooltipWidth - 16;
+        }
+        
+        // Check if tooltip would go off-screen vertically  
+        if (ty < 10) {
+            ty = e.clientY + 16;
+        }
+        if (ty + tooltipHeight > window.innerHeight - 10) {
+            ty = window.innerHeight - tooltipHeight - 10;
+        }
+        
+        // Final boundary checks
+        tx = Math.max(10, Math.min(tx, window.innerWidth - tooltipWidth - 10));
+        ty = Math.max(10, Math.min(ty, window.innerHeight - tooltipHeight - 10));
+        
+        tt.style.left = tx + "px"; tt.style.top = ty + "px"; tt.style.visibility = "visible";
     }
     let tooltipHovered = false;
     function scheduleHideTooltip() { tooltipTimeout = setTimeout(() => { if (!tooltipHovered) hideTooltip(); }, 400); }
