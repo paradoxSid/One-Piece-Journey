@@ -48,3 +48,8 @@ One Piece Journey/
 5. Open the deployment URL
 
 No database, API keys, or external services needed — all data is self-contained.
+
+## License & Copyright
+
+- **Code & Assets**: This project is licensed under the [MIT License](LICENSE).
+- **One Piece IP**: *One Piece* is a trademark and copyright of Eiichiro Oda, Shueisha, and Toei Animation. This project is a fan-made application and is not affiliated with or endorsed by the original owners. Story elements and names are used under fair use for educational purposes.
