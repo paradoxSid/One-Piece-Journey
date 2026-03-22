@@ -19,11 +19,12 @@
     let draggedIsland = null;
     let autoRotate = true, rotSpeed = 0.0006;
     let isDragging = false, dragMoved = false, prevMouse = { x: 0, y: 0 };
-    let targetRotY = 0, targetRotX = 0.25, currentRotY = 0, currentRotX = 0.25;
-    let targetZoom = 12, currentZoom = 20;
+    let targetRotY = -2.4, targetRotX = 0.25, currentRotY = -2.4, currentRotX = 0.25;
+    let targetZoom = 20, currentZoom = 20;
     let raycaster, mouseVec;
     let hoveredIsland = null, tooltipTimeout = null;
     let focusedIsland = null;
+    let isTouching = false;
 
     /* ════════════════════════════════════════════════ */
     /*  NOISE — Simple 2-octave value noise            */
@@ -132,7 +133,7 @@
     /*  STARS                                           */
     /* ════════════════════════════════════════════════ */
     function createStars() {
-        const n = 4000, pos = new Float32Array(n * 3), cols = new Float32Array(n * 3);
+        const n = 6000, pos = new Float32Array(n * 3), cols = new Float32Array(n * 3);
         for (let i = 0; i < n; i++) {
             const r = 60 + Math.random() * 60;
             const th = Math.random() * Math.PI * 2;
@@ -150,7 +151,7 @@
         geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
         geo.setAttribute("color", new THREE.BufferAttribute(cols, 3));
         scene.add(new THREE.Points(geo, new THREE.PointsMaterial({
-            size: 0.06, sizeAttenuation: true, vertexColors: true, transparent: true, opacity: 0.7
+            size: 0.12, sizeAttenuation: true, vertexColors: true, transparent: true, opacity: 0.7
         })));
     }
 
@@ -2414,7 +2415,7 @@
         document.getElementById("btnAutoRotate").classList.toggle("active-toggle", autoRotate);
     }
     function resetView() {
-        targetZoom = 12; targetRotX = 0.25; targetRotY = 0;
+        targetZoom = 20; targetRotX = 0.25; targetRotY = -0.8;
         autoRotate = true;
         document.getElementById("btnAutoRotate").classList.add("active-toggle");
     }
@@ -2427,6 +2428,7 @@
 
         canvas.addEventListener("pointerdown", e => {
             if (e.target.closest(".char-card, .icon-btn, .char-pill, .legend-panel, .island-label-3d")) return;
+            if (e.pointerType === "touch") isTouching = true;
             canvas.setPointerCapture(e.pointerId);
             isDragging = true; dragMoved = false;
             prevMouse = { x: e.clientX, y: e.clientY };
@@ -2487,11 +2489,15 @@
         canvas.addEventListener("pointerup", e => {
             isDragging = false;
             draggedIsland = null;
+            if (e.pointerType === "touch") {
+                setTimeout(() => { isTouching = false; }, 100); // Small delay to prevent hover after touch
+            }
             if (canvas.hasPointerCapture(e.pointerId)) canvas.releasePointerCapture(e.pointerId);
         });
         canvas.addEventListener("pointercancel", e => {
             isDragging = false;
             draggedIsland = null;
+            if (e.pointerType === "touch") isTouching = false;
             if (canvas.hasPointerCapture(e.pointerId)) canvas.releasePointerCapture(e.pointerId);
         });
         canvas.addEventListener("pointerleave", () => { 
@@ -2537,7 +2543,7 @@
             // Click on empty space — unfocus
             if (focusedIsland) {
                 focusedIsland = null;
-                targetZoom = 12;
+                targetZoom = 20;
             }
             hideTooltip();
             const lp = document.getElementById("legendPanel");
@@ -2593,6 +2599,7 @@
     /*  RAYCASTING HOVER                                */
     /* ════════════════════════════════════════════════ */
     function checkHover(e) {
+        if (isTouching) return; // Don't show tooltips during touch interactions
         raycaster.setFromCamera(mouseVec, camera);
         // Raycast against both island disc meshes and invisible hitbox spheres
         const targets = [...Object.values(islandMeshes), ...Object.values(islandGlows)];
@@ -2662,11 +2669,38 @@
         } else {
             crewSec.style.display = "none";
         }
-        let tx = e.clientX + 16, ty = e.clientY - 60;
-        if (tx + 280 > window.innerWidth) tx = e.clientX - 290;
-        if (ty < 10) ty = e.clientY + 16;
-        tt.style.left = tx + "px"; tt.style.top = ty + "px";
+        // Show tooltip temporarily to get its dimensions
         tt.classList.remove("hidden");
+        tt.style.left = "0px"; tt.style.top = "0px"; tt.style.visibility = "hidden";
+        
+        // Force reflow to get accurate dimensions
+        tt.offsetHeight;
+        
+        const tooltipRect = tt.getBoundingClientRect();
+        const tooltipWidth = tooltipRect.width;
+        const tooltipHeight = tooltipRect.height;
+        
+        // Now position it properly
+        let tx = e.clientX + 16, ty = e.clientY - 60;
+        
+        // Check if tooltip would go off-screen horizontally
+        if (tx + tooltipWidth > window.innerWidth - 10) {
+            tx = e.clientX - tooltipWidth - 16;
+        }
+        
+        // Check if tooltip would go off-screen vertically  
+        if (ty < 10) {
+            ty = e.clientY + 16;
+        }
+        if (ty + tooltipHeight > window.innerHeight - 10) {
+            ty = window.innerHeight - tooltipHeight - 10;
+        }
+        
+        // Final boundary checks
+        tx = Math.max(10, Math.min(tx, window.innerWidth - tooltipWidth - 10));
+        ty = Math.max(10, Math.min(ty, window.innerHeight - tooltipHeight - 10));
+        
+        tt.style.left = tx + "px"; tt.style.top = ty + "px"; tt.style.visibility = "visible";
     }
     let tooltipHovered = false;
     function scheduleHideTooltip() { tooltipTimeout = setTimeout(() => { if (!tooltipHovered) hideTooltip(); }, 400); }
@@ -3093,6 +3127,237 @@
         alert('Islands exported to console');
     }
 
+    function downloadImage() {
+        const glCanvas = document.getElementById('globeCanvas');
+        if (!glCanvas) return;
+
+        try {
+            // ── 1. Flush the current frame ──
+            renderer.render(scene, camera);
+
+            // ── 2. Grab WebGL pixels ──
+            const glDataURL = glCanvas.toDataURL('image/png');
+
+            // ── 3. Build a composite canvas the same logical size as the viewport ──
+            const W = window.innerWidth;
+            const H = window.innerHeight;
+            const dpr = window.devicePixelRatio || 1;
+
+            const composite = document.createElement('canvas');
+            composite.width  = W * dpr;   // physical pixels
+            composite.height = H * dpr;
+            const ctx = composite.getContext('2d');
+            ctx.scale(dpr, dpr);           // draw in CSS pixels from here on
+
+            // ── 4. Draw the 3-D globe ──
+            const glImg = new Image();
+            glImg.onload = () => {
+                ctx.drawImage(glImg, 0, 0, W, H);
+
+                // ── 5. Composite every visible island label ──
+                const labels = document.querySelectorAll('.island-label-3d');
+                labels.forEach(el => {
+                    // Skip labels the animation loop hid (opacity:0 or visibility:hidden)
+                    const cs = window.getComputedStyle(el);
+                    if (cs.display === 'none' || cs.visibility === 'hidden' || parseFloat(cs.opacity) < 0.01) return;
+
+                    const rect    = el.getBoundingClientRect();
+                    if (rect.width === 0) return;   // off-globe / culled
+
+                    // Centre of the label element in CSS-pixel viewport coords.
+                    // Because CSS sets transform: translate(-50%, -100%) the element
+                    // is anchored at its bottom-centre (which is the island pin position).
+                    const pinX = rect.left + rect.width  / 2;  // horizontal centre
+                    const pinY = rect.bottom;                   // bottom edge = pin point
+
+                    // Mirror the CSS exactly
+                    const fontSize = parseFloat(cs.fontSize) || 9;
+                    const fontWeight = cs.fontWeight || '400';
+                    const color    = cs.color || 'rgba(255,255,255,0.55)';
+                    const font = `${fontWeight} ${fontSize}px Inter, -apple-system, BlinkMacSystemFont, sans-serif`;
+
+                    ctx.save();
+                    ctx.font         = font;
+                    ctx.textAlign    = 'center';
+                    ctx.textBaseline = 'bottom';   // top of text touches pinY
+
+                    // Replicate text-shadow: 0 1px 4px rgba(0,0,0,0.8)
+                    ctx.shadowColor   = 'rgba(0,0,0,0.8)';
+                    ctx.shadowOffsetX = 0;
+                    ctx.shadowOffsetY = 1;
+                    ctx.shadowBlur    = 4;
+
+                    ctx.fillStyle = color;
+                    ctx.fillText(el.textContent, pinX, pinY);
+                    ctx.restore();
+                });
+
+                // ── 6. Download ──
+                const a = document.createElement('a');
+                a.href     = composite.toDataURL('image/png');
+                a.download = 'one-piece-journey.png';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            };
+            glImg.src = glDataURL;
+
+        } catch (error) {
+            console.error('Error capturing canvas:', error);
+            alert('Failed to capture image. This might be due to browser security restrictions.');
+        }
+    }
+
+    function toggleDownloadMenu() {
+        const menu = document.getElementById("downloadMenu");
+        if (menu) menu.classList.toggle("hidden");
+    }
+
+    function toggleMoreMenu() {
+        const menu = document.getElementById("moreMenu");
+        if (menu) menu.classList.toggle("hidden");
+    }
+
+    function showWallpaperHelp() {
+        const modal = document.createElement('div');
+        modal.id = 'helpModal';
+        modal.innerHTML = `
+            <div class="help-content">
+                <h2>Wallpaper Guide</h2>
+                <div class="help-section">
+                    <h3>💻 Windows</h3>
+                    <p>Native Windows doesn't support video wallpapers. Download <b>Lively Wallpaper</b> (Free/Open Source) or <b>Wallpaper Engine</b> (Steam) and drop the file there.</p>
+                </div>
+                <div class="help-section">
+                    <h3>📱 Android</h3>
+                    <p>Use any <b>"Video to Wallpaper"</b> app from the Play Store. Select the downloaded MP4/WebM to set it as your background.</p>
+                </div>
+                <div class="help-section">
+                    <h3>🍎 iOS / macOS</h3>
+                    <p>macOS Sonoma supports Cinematic Wallpapers, but for custom videos, use <b>iWallpaper</b>. On iOS, you may need to convert the video to a Live Photo first.</p>
+                </div>
+                <button class="help-btn" onclick="this.parentElement.parentElement.remove()">GOT IT!</button>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        modal.addEventListener('click', (e) => { if(e.target === modal) modal.remove(); });
+    }
+
+    function recordLiveWallpaper() {
+        const glCanvas = document.getElementById('globeCanvas');
+        if (!glCanvas) return;
+
+        // Detect supported MP4 MIME type
+        const types = [
+            'video/mp4;codecs=hvc1',
+            'video/mp4;codecs=avc1'
+        ];
+        let supportedType = types.find(t => MediaRecorder.isTypeSupported(t));
+        
+        if (!supportedType) {
+            alert("Your browser does not support high-compatibility MP4 recording. Please try using a modern browser like Chrome, Edge, or Safari.");
+            const indicator = document.getElementById('recordingIndicator');
+            if (indicator) indicator.remove();
+            return;
+        }
+        const extension = 'mp4';
+
+        const W = window.innerWidth;
+        const H = window.innerHeight;
+        const dpr = window.devicePixelRatio || 1;
+
+        // 1. Setup composite canvas for recording
+        const composite = document.createElement('canvas');
+        composite.width  = W * dpr;
+        composite.height = H * dpr;
+        const ctx = composite.getContext('2d');
+
+        // 2. Setup MediaRecorder
+        const stream = composite.captureStream(30); // 30 FPS
+        const recorderOptions = {
+            mimeType: supportedType,
+            videoBitsPerSecond: 8000000 
+        };
+        const recorder = new MediaRecorder(stream, recorderOptions);
+
+        const chunks = [];
+        recorder.ondataavailable = e => chunks.push(e.data);
+        recorder.onstop = () => {
+            const blob = new Blob(chunks, { type: supportedType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `one-piece-journey-live.${extension}`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            // UI cleanup
+            const indicator = document.getElementById('recordingIndicator');
+            if (indicator) {
+                indicator.style.background = 'rgba(0, 180, 0, 0.9)';
+                indicator.innerHTML = '<span class="material-symbols-rounded">check</span> DONE! SEE DOWNLOADS';
+                setTimeout(() => indicator.remove(), 3000);
+            }
+        };
+
+        // 3. UI: Show recording indicator
+        if (document.getElementById('recordingIndicator')) document.getElementById('recordingIndicator').remove();
+        const indicator = document.createElement('div');
+        indicator.id = 'recordingIndicator';
+        indicator.innerHTML = `
+            <div class="rec-dot"></div> 
+            <span>RECORDING (${extension.toUpperCase()}) - 10 SEC...</span>
+        `;
+        document.body.appendChild(indicator);
+
+        // 4. Recording loop
+        let startTime = null;
+        const duration = 10000; // 10 seconds
+
+        function recordFrame(now) {
+            if (!startTime) startTime = now;
+            const elapsed = now - startTime;
+
+            if (elapsed >= duration) {
+                recorder.stop();
+                return;
+            }
+
+            renderer.render(scene, camera);
+            ctx.clearRect(0, 0, composite.width, composite.height);
+            ctx.drawImage(glCanvas, 0, 0, composite.width, composite.height);
+
+            ctx.save();
+            ctx.scale(dpr, dpr);
+            const labels = document.querySelectorAll('.island-label-3d');
+            labels.forEach(el => {
+                const cs = window.getComputedStyle(el);
+                if (cs.display === 'none' || cs.visibility === 'hidden' || parseFloat(cs.opacity) < 0.01) return;
+                const rect = el.getBoundingClientRect();
+                if (rect.width === 0) return;
+                const pinX = rect.left + rect.width / 2;
+                const pinY = rect.bottom;
+                const fontSize = parseFloat(cs.fontSize) || 9;
+                const fontWeight = cs.fontWeight || '400';
+                const color = cs.color || 'rgba(255,255,255,0.55)';
+                const font = `${fontWeight} ${fontSize}px Inter, sans-serif`;
+                ctx.save();
+                ctx.font = font; ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+                ctx.shadowColor = 'rgba(0,0,0,0.8)'; ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 1; ctx.shadowBlur = 4;
+                ctx.fillStyle = color;
+                ctx.fillText(el.textContent, pinX, pinY);
+                ctx.restore();
+            });
+            ctx.restore();
+
+            requestAnimationFrame(recordFrame);
+        }
+
+        recorder.start();
+        requestAnimationFrame(recordFrame);
+    }
+
+
     function vec3ToLatLng(vec) {
         const radius = vec.length();
         const phi = Math.acos(vec.y / radius);
@@ -3104,6 +3369,31 @@
     // Make functions global
     window.toggleEditMode = toggleEditMode;
     window.exportIslands = exportIslands;
+    window.downloadImage = downloadImage;
+    window.recordLiveWallpaper = recordLiveWallpaper;
+    window.toggleDownloadMenu = toggleDownloadMenu;
+    window.toggleMoreMenu = toggleMoreMenu;
+    window.showWallpaperHelp = showWallpaperHelp;
+
+    // Close menus when clicking outside
+    document.addEventListener('mousedown', (e) => {
+        // Download menu
+        const dMenu = document.getElementById('downloadMenu');
+        const dBtn = document.getElementById('btnDownloadMain');
+        if (dMenu && !dMenu.classList.contains('hidden')) {
+            if (!dMenu.contains(e.target) && !dBtn.contains(e.target)) {
+                dMenu.classList.add('hidden');
+            }
+        }
+        // More menu
+        const mMenu = document.getElementById('moreMenu');
+        const mBtn = document.getElementById('btnMore');
+        if (mMenu && !mMenu.classList.contains('hidden')) {
+            if (!mMenu.contains(e.target) && !mBtn.contains(e.target)) {
+                mMenu.classList.add('hidden');
+            }
+        }
+    });
 
     function updateIslandPosition(id) {
         const isl = islands[id];

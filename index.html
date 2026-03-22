@@ -91,18 +91,59 @@
         <button id="btnSearch" class="icon-btn" onclick="toggleSearch()">
           <span class="material-symbols-rounded">search</span>
         </button>
-        <button id="btnAutoRotate" class="icon-btn" onclick="toggleAutoRotate()">
-          <span class="material-symbols-rounded">360</span>
-        </button>
-        <button id="btnReset" class="icon-btn" onclick="resetView()">
+        <button id="btnReset" class="icon-btn" onclick="resetView()" title="Reset View">
           <span class="material-symbols-rounded">fit_screen</span>
         </button>
-        <button id="btnSpoiler" class="icon-btn active-toggle" onclick="toggleSpoilerPanel()" title="Spoiler Shield">
+        <button id="btnAutoRotate" class="icon-btn secondary-btn" onclick="toggleAutoRotate()" title="Toggle Auto-Rotate">
+          <span class="material-symbols-rounded">360</span>
+        </button>
+        <button id="btnSpoiler" class="icon-btn secondary-btn active-toggle" onclick="toggleSpoilerPanel()" title="Spoiler Shield">
           <span class="material-symbols-rounded">shield</span>
         </button>
-        <button id="btnAbout" class="icon-btn" onclick="toggleAbout()">
+        <button id="btnAbout" class="icon-btn secondary-btn" onclick="toggleAbout()" title="About">
           <span class="material-symbols-rounded">info</span>
         </button>
+        
+        <div class="more-dropdown" style="position: relative;">
+          <button id="btnMore" class="icon-btn" onclick="toggleMoreMenu()" title="More Options">
+            <span class="material-symbols-rounded">more_vert</span>
+          </button>
+          <div id="moreMenu" class="dropdown-menu hidden">
+            <button class="menu-item mobile-only" onclick="toggleAutoRotate(); toggleMoreMenu();">
+              <span class="material-symbols-rounded">360</span>
+              <span>Auto-Rotate</span>
+            </button>
+            <button class="menu-item mobile-only" onclick="toggleSpoilerPanel(); toggleMoreMenu();">
+              <span class="material-symbols-rounded">shield</span>
+              <span>Spoiler Shield</span>
+            </button>
+            <button class="menu-item mobile-only" onclick="toggleAbout(); toggleMoreMenu();">
+              <span class="material-symbols-rounded">info</span>
+              <span>About Map</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="download-dropdown" style="position: relative;">
+          <button id="btnDownloadMain" class="icon-btn" onclick="toggleDownloadMenu()" title="Download Options">
+            <span class="material-symbols-rounded">download</span>
+          </button>
+          <div id="downloadMenu" class="dropdown-menu hidden">
+            <button class="menu-item" onclick="downloadImage(); toggleDownloadMenu();">
+              <span class="material-symbols-rounded">image</span>
+              <span>Static Image (.png)</span>
+            </button>
+            <button class="menu-item" onclick="recordLiveWallpaper(); toggleDownloadMenu();">
+              <span class="material-symbols-rounded">movie</span>
+              <span>Live Wallpaper (.mp4)</span>
+            </button>
+            <div class="menu-divider"></div>
+            <a href="#wallpaperGuide" class="menu-item help-link" onclick="toggleDownloadMenu(); showWallpaperHelp(); return false;">
+              <span class="material-symbols-rounded">help</span>
+              <span>How to set wallpaper?</span>
+            </a>
+          </div>
+        </div>
         <button id="btnEdit" class="icon-btn" onclick="toggleEditMode()" style="display:none">
           <span class="material-symbols-rounded">edit</span>
         </button>
@@ -217,6 +258,13 @@
         <p class="about-tagline">The man who'll become King of the Devs!</p>
       </div>
       <p class="about-punchline">...wait, wrong line. I just built this map. 🍖</p>
+    </div>
+
+    <!-- Footer / Legal -->
+    <div class="footer-legal">
+      <span>© 2026 paradoxSid - MIT License</span>
+      <span class="legal-separator">|</span>
+      <span>One Piece is © Eiichiro Oda / Shueisha</span>
     </div>
 
   </div>

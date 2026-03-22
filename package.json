@@ -1,0 +1,21 @@
+{
+  "name": "one-piece-journey",
+  "version": "1.0.0",
+  "description": "Interactive 3D globe tracking the Straw Hat Pirates' journey across the Grand Line",
+  "main": "index.html",
+  "scripts": {
+    "start": "live-server --port=8080",
+    "dev": "live-server --port=8080"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  },
+  "keywords": [
+    "one-piece",
+    "interactive-map",
+    "3d-globe",
+    "straw-hat-pirates"
+  ],
+  "author": "",
+  "license": "MIT"
+}
