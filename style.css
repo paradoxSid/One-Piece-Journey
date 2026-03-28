@@ -95,6 +95,33 @@ html, body {
 .icon-btn.active-toggle { background: rgba(255,215,0,0.2); color: var(--accent); }
 .icon-btn .material-symbols-rounded { font-size: 20px; }
 
+/* ── Donation Button ──────────────────────────── */
+#btnDonate {
+  background: #FF813F !important;
+  color: #fff !important;
+  width: auto;
+  padding: 0 14px 0 10px;
+  gap: 6px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.2);
+  box-shadow: 0 0 15px rgba(255, 129, 63, 0.3);
+}
+#btnDonate .btn-text {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+@media (max-width: 500px) {
+  #btnDonate .btn-text { display: none; }
+  #btnDonate { width: 38px; padding: 0; justify-content: center; }
+}
+@keyframes donatePulse {
+  0% { box-shadow: 0 0 0 0 rgba(255, 129, 63, 0.5); }
+  70% { box-shadow: 0 0 0 10px rgba(255, 129, 63, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 129, 63, 0); }
+}
+#btnDonate { animation: donatePulse 2.5s infinite; }
+
 /* ── Search Bar ───────────────────────────────── */
 .search-bar {
   position: fixed; top: calc(var(--safe-top) + 8px); left: 50%; transform: translateX(-50%);
@@ -748,8 +775,18 @@ html, body {
 }
 .about-punchline {
   font-size: 9px; color: rgba(255,255,255,0.25);
-  line-height: 1.3;
+  line-height: 1.3; margin-bottom: 12px;
 }
+.about-bmc-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; padding: 10px;
+  background: #FF813F; color: #fff;
+  border-radius: var(--radius-sm);
+  text-decoration: none; font-size: 13px; font-weight: 700;
+  transition: transform 0.2s, background 0.2s;
+}
+.about-bmc-btn:hover { background: #ff9b6a; transform: scale(1.02); }
+.about-bmc-btn .material-symbols-rounded { font-size: 20px; }
 
 /* ── Utilities ────────────────────────────────── */
 .hidden { display: none !important; pointer-events: none !important; }

@@ -94,38 +94,20 @@
         <button id="btnReset" class="icon-btn" onclick="resetView()" title="Reset View">
           <span class="material-symbols-rounded">fit_screen</span>
         </button>
-        <button id="btnAutoRotate" class="icon-btn secondary-btn" onclick="toggleAutoRotate()" title="Toggle Auto-Rotate">
-          <span class="material-symbols-rounded">360</span>
-        </button>
-        <button id="btnSpoiler" class="icon-btn secondary-btn active-toggle" onclick="toggleSpoilerPanel()" title="Spoiler Shield">
+        <button id="btnSpoiler" class="icon-btn secondary-btn active-toggle" onclick="toggleSpoilerPanel()"
+          title="Spoiler Shield">
           <span class="material-symbols-rounded">shield</span>
+        </button>
+        <button id="btnAutoRotate" class="icon-btn secondary-btn" onclick="toggleAutoRotate()"
+          title="Toggle Auto-Rotate">
+          <span class="material-symbols-rounded">360</span>
         </button>
         <button id="btnAbout" class="icon-btn secondary-btn" onclick="toggleAbout()" title="About">
           <span class="material-symbols-rounded">info</span>
         </button>
-        
-        <div class="more-dropdown" style="position: relative;">
-          <button id="btnMore" class="icon-btn" onclick="toggleMoreMenu()" title="More Options">
-            <span class="material-symbols-rounded">more_vert</span>
-          </button>
-          <div id="moreMenu" class="dropdown-menu hidden">
-            <button class="menu-item mobile-only" onclick="toggleAutoRotate(); toggleMoreMenu();">
-              <span class="material-symbols-rounded">360</span>
-              <span>Auto-Rotate</span>
-            </button>
-            <button class="menu-item mobile-only" onclick="toggleSpoilerPanel(); toggleMoreMenu();">
-              <span class="material-symbols-rounded">shield</span>
-              <span>Spoiler Shield</span>
-            </button>
-            <button class="menu-item mobile-only" onclick="toggleAbout(); toggleMoreMenu();">
-              <span class="material-symbols-rounded">info</span>
-              <span>About Map</span>
-            </button>
-          </div>
-        </div>
 
         <div class="download-dropdown" style="position: relative;">
-          <button id="btnDownloadMain" class="icon-btn" onclick="toggleDownloadMenu()" title="Download Options">
+          <button id="btnDownloadMain" class="icon-btn secondary-btn" onclick="toggleDownloadMenu()" title="Download Options">
             <span class="material-symbols-rounded">download</span>
           </button>
           <div id="downloadMenu" class="dropdown-menu hidden">
@@ -138,12 +120,42 @@
               <span>Live Wallpaper (.mp4)</span>
             </button>
             <div class="menu-divider"></div>
-            <a href="#wallpaperGuide" class="menu-item help-link" onclick="toggleDownloadMenu(); showWallpaperHelp(); return false;">
+            <a href="#wallpaperGuide" class="menu-item help-link"
+              onclick="toggleDownloadMenu(); showWallpaperHelp(); return false;">
               <span class="material-symbols-rounded">help</span>
               <span>How to set wallpaper?</span>
             </a>
           </div>
         </div>
+
+        <div class="more-dropdown" style="position: relative;">
+          <button id="btnMore" class="icon-btn" onclick="toggleMoreMenu()" title="More Options">
+            <span class="material-symbols-rounded">more_vert</span>
+          </button>
+          <div id="moreMenu" class="dropdown-menu hidden">
+            <button class="menu-item mobile-only" onclick="toggleSpoilerPanel(); toggleMoreMenu();">
+              <span class="material-symbols-rounded">shield</span>
+              <span>Spoiler Shield</span>
+            </button>
+            <button class="menu-item mobile-only" onclick="toggleAutoRotate(); toggleMoreMenu();">
+              <span class="material-symbols-rounded">360</span>
+              <span>Auto-Rotate</span>
+            </button>
+            <button class="menu-item mobile-only" onclick="toggleDownloadMenu(); toggleMoreMenu();">
+              <span class="material-symbols-rounded">download</span>
+              <span>Download</span>
+            </button>
+            <button class="menu-item mobile-only" onclick="toggleAbout(); toggleMoreMenu();">
+              <span class="material-symbols-rounded">info</span>
+              <span>About Map</span>
+            </button>
+          </div>
+        </div>
+
+        <button id="btnDonate" class="icon-btn" onclick="window.open('https://www.buymeacoffee.com/0i9pklt', '_blank')" title="Support the Project">
+          <span class="material-symbols-rounded">coffee</span>
+          <span class="btn-text">Support</span>
+        </button>
         <button id="btnEdit" class="icon-btn" onclick="toggleEditMode()" style="display:none">
           <span class="material-symbols-rounded">edit</span>
         </button>
@@ -258,6 +270,10 @@
         <p class="about-tagline">The man who'll become King of the Devs!</p>
       </div>
       <p class="about-punchline">...wait, wrong line. I just built this map. 🍖</p>
+      <a href="https://www.buymeacoffee.com/0i9pklt" target="_blank" class="about-bmc-btn">
+        <span class="material-symbols-rounded">coffee</span>
+        <span>Buy me a coffee</span>
+      </a>
     </div>
 
     <!-- Footer / Legal -->
